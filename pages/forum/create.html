@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布话题 - 美食论坛</title>
+    <meta name="description" content="发布新话题，与厨友们分享交流">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    <link rel="shortcut icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    
+    <!-- CSS 样式文件 -->
+    <link rel="stylesheet" href="../../css/base/reset.css">
+    <link rel="stylesheet" href="../../css/base/variables.css">
+    <link rel="stylesheet" href="../../css/base/base.css">
+    <link rel="stylesheet" href="../../css/components/header.css">
+    <link rel="stylesheet" href="../../css/components/footer.css">
+    <link rel="stylesheet" href="../../css/components/card.css">
+    <link rel="stylesheet" href="../../css/components/clean-form.css">
+    <link rel="stylesheet" href="../../css/components/cool-search.css">
+    <link rel="stylesheet" href="../../css/pages/forum-minimal.css">
+    <link rel="stylesheet" href="../../css/components/notification.css">
+    <link rel="stylesheet" href="../../css/components/clean-buttons.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__logo">
+                    <a href="../../index.html" class="logo">
+                        <img src="../../data/imgs/图标.png" alt="炒菜学习平台" class="logo__icon">
+                        <span class="logo__text">炒菜学习平台</span>
+                    </a>
+                </div>
+                
+                <nav class="header__nav">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="../../index.html" class="nav__link">首页</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../recipes/list.html" class="nav__link">菜谱大全</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../guide/basics.html" class="nav__link">烹饪指南</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="index.html" class="nav__link">美食论坛</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../profile/favorites.html" class="nav__link">我的收藏</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="header__search">
+                    <form class="search__form" id="searchForm">
+                        <input type="text" class="search__input" placeholder="搜索话题..." id="searchInput">
+                        <button type="submit" class="search__btn">
+                            <span class="search__icon">🔍</span>
+                        </button>
+                    </form>
+                </div>
+                
+                <button class="header__menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main">
+        <!-- 页面标题 -->
+        <section class="page-header">
+            <div class="container">
+                <div class="page-header__content">
+                    <h1 class="page-title">发布新话题</h1>
+                    <p class="page-description">分享您的烹饪经验，与厨友们交流互动</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 发布表单 -->
+        <section class="create-topic">
+            <div class="container">
+                <div class="create-form__container">
+                    <div class="main-content">
+                        <!-- 发布表单 -->
+                        <form class="create-form" id="createTopicForm">
+                        <div class="form-section">
+                            <h3 class="form-section__title">基本信息</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="topicCategory">
+                                    话题分类 <span class="required">*</span>
+                                </label>
+                                <select class="form-select" id="topicCategory" required>
+                                    <option value="">请选择分类</option>
+                                    <option value="newbie">新手交流</option>
+                                    <option value="recipe">菜谱分享</option>
+                                    <option value="tools">厨具讨论</option>
+                                    <option value="photo">美食摄影</option>
+                                    <option value="qa">问答求助</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="topicTitle">
+                                    话题标题 <span class="required">*</span>
+                                </label>
+                                <input type="text" class="form-input" id="topicTitle" 
+                                    placeholder="请输入话题标题..." 
+                                    maxlength="100" required>
+                                <div class="form-hint">
+                                    <span class="char-count">
+                                        <span id="titleCharCount">0</span>/100
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="form-section__title">详细内容</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="topicContent">
+                                    话题内容 <span class="required">*</span>
+                                </label>
+                                <div class="editor-toolbar">
+                                    <button type="button" class="editor-btn" data-action="bold" title="加粗（Ctrl+B）">
+                                        <strong>B</strong>
+                                    </button>
+                                    <button type="button" class="editor-btn" data-action="italic" title="斜体（Ctrl+I）">
+                                        <em>I</em>
+                                    </button>
+                                    <button type="button" class="editor-btn" data-action="link" title="插入链接">
+                                        🔗
+                                    </button>
+                                    <button type="button" class="editor-btn" data-action="image" title="上传图片并插入（Ctrl+Shift+I）">
+                                        📷
+                                    </button>
+                                    <button type="button" class="editor-btn" data-action="separator">
+                                        |
+                                    </button>
+                                    <span class="editor-tip" style="font-size: 0.8rem; color: #666;">
+                                        💡 提示：上传图片后点击绿色✓按钮插入到文字中
+                                    </span>
+                                </div>
+                                <div class="editor-container" style="display: flex; gap: 15px;">
+                                    <div class="editor-main" style="flex: 2;">
+                                        <textarea class="form-textarea editor-content" id="topicContent" 
+                                                placeholder="请详细描述您的问题、经验或想法..." 
+                                                rows="12" required></textarea>
+                                        <div class="form-hint">
+                                            <span class="char-count">
+                                                <span id="contentCharCount">0</span>/5000
+                                            </span>
+                                            <span class="editor-tip">支持Markdown格式</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 图片引用助手 -->
+                                    <div class="image-helper" style="
+                                        flex: 1;
+                                        background: #f8f9fa;
+                                        border: 1px solid #e9ecef;
+                                        border-radius: 8px;
+                                        padding: 15px;
+                                        max-height: 300px;
+                                        overflow-y: auto;
+                                        min-width: 200px;
+                                    ">
+                                        <h4 style="margin: 0 0 15px 0; font-size: 0.95rem; color: #333;">📷 图片引用助手</h4>
+                                        <div id="imageHelper" style="font-size: 0.85rem; color: #666;">
+                                            <div class="helper-tip" style="
+                                                background: #e3f2fd;
+                                                padding: 10px;
+                                                border-radius: 6px;
+                                                margin-bottom: 10px;
+                                                font-size: 0.75rem;
+                                                line-height: 1.4;
+                                            ">
+                                                💡 <strong>使用方法：</strong>
+                                                <br>1. 上传图片
+                                                <br>2. 点击✓插入到光标位置
+                                                <br>3. 继续编辑文字
+                                                <br>
+                                                <br><strong>插入格式：</strong>[图片1] [图片2]
+                                            </div>
+                                            
+                                            <div class="images-status" id="imagesStatus">
+                                                暂无上传的图片
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 手机端响应式 -->
+                                <style>
+                                    @media (max-width: 768px) {
+                                        .editor-container {
+                                            flex-direction: column !important;
+                                        }
+                                        
+                                        .image-helper {
+                                            max-height: 200px !important;
+                                            min-width: auto !important;
+                                        }
+                                    }
+                                </style>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="form-section__title">图片上传</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label">相关图片</label>
+                                <div class="image-upload">
+                                    <div class="upload-area" id="imageUpload">
+                                        <div class="upload-icon">📷</div>
+                                        <div class="upload-text">
+                                            <p>点击上传图片或拖拽到此处</p>
+                                            <small>支持 JPG、PNG 格式，最大 5MB</small>
+                                        </div>
+                                        <input type="file" class="upload-input" id="imageInput" 
+                                            accept="image/*" multiple hidden>
+                                    </div>
+                                    <div class="image-preview" id="imagePreview">
+                                        <!-- 图片预览将显示在这里 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="form-section__title">标签设置</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="topicTags">话题标签</label>
+                                <input type="text" class="form-input" id="topicTags" 
+                                    placeholder="输入标签，用空格分隔，如：家常菜 简单 下饭">
+                                <div class="form-hint">
+                                    标签有助于其他用户发现您的话题，最多5个标签
+                                </div>
+                                <div class="tags-preview" id="tagsPreview">
+                                    <!-- 标签预览将显示在这里 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 预览区域 -->
+                        <div class="form-section preview-section" id="previewSection" style="display: none;">
+                            <h3 class="form-section__title">内容预览</h3>
+                            <div class="topic-preview" id="topicPreview">
+                                <!-- 预览内容将显示在这里 -->
+                            </div>
+                        </div>
+
+                        <!-- 提交按钮 -->
+                        <div class="form-actions">
+                            <button type="button" class="btn btn--outline" id="previewBtn">预览</button>
+                            <button type="button" class="btn btn--secondary" id="saveDraftBtn">保存草稿</button>
+                            <button type="submit" class="btn btn--primary" id="publishBtn">发布话题</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 帮助信息 -->
+                <aside class="create-sidebar">
+                    <div class="sidebar-widget">
+                        <h4 class="widget__title">发布须知</h4>
+                        <div class="tips-list">
+                            <div class="tip-item">
+                                <span class="tip-icon">·</span>
+                                <span class="tip-text">选择合适分类</span>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-icon">·</span>
+                                <span class="tip-text">标题简洁明了</span>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-icon">·</span>
+                                <span class="tip-text">内容详细具体</span>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-icon">·</span>
+                                <span class="tip-text">保持友善态度</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-widget">
+                        <h4 class="widget__title">热门标签</h4>
+                        <div class="popular-tags" id="popularTags">
+                            <span class="tag tag--popular">家常菜</span>
+                            <span class="tag tag--popular">新手</span>
+                            <span class="tag tag--popular">川菜</span>
+                            <span class="tag tag--popular">烘焙</span>
+                            <span class="tag tag--popular">快手菜</span>
+                            <span class="tag tag--popular">汤品</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">关于我们</h3>
+                    <p class="footer__text">
+                        炒菜学习平台致力于传播中华美食文化，让每个人都能轻松学会做菜。
+                    </p>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">快速链接</h3>
+                    <ul class="footer__links">
+                        <li><a href="../recipes/list.html">菜谱大全</a></li>
+                        <li><a href="../guide/basics.html">烹饪基础</a></li>
+                        <li><a href="index.html">美食论坛</a></li>
+                        <li><a href="../about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">联系方式</h3>
+                    <ul class="footer__contact">
+                        <li>📧 contact@cooking-platform.com</li>
+                        <li>📱 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2024 炒菜学习平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 文件 -->
+    <script src="../../js/utils/global-search.js"></script>
+    <script src="../../js/utils/storage.js"></script>
+    <script src="../../js/utils/dom.js"></script>
+    <script src="../../js/data/forum.js"></script>
+    <script src="../../js/components/header.js"></script>
+    <script src="../../js/components/search.js"></script>
+    <script src="../../js/pages/forum-create.js"></script>
+    <script src="../../js/app.js"></script>
+</body>
+</html>

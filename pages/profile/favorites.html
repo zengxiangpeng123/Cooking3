@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的收藏 - 炒菜学习平台</title>
+    <meta name="description" content="查看您收藏的菜谱">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    <link rel="shortcut icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    
+    <!-- CSS 样式文件 -->
+    <link rel="stylesheet" href="../../css/base/reset.css">
+    <link rel="stylesheet" href="../../css/base/variables.css">
+    <link rel="stylesheet" href="../../css/base/base.css">
+    <link rel="stylesheet" href="../../css/components/header.css">
+    <link rel="stylesheet" href="../../css/components/footer.css">
+    <link rel="stylesheet" href="../../css/components/card.css">
+    <link rel="stylesheet" href="../../css/components/cool-search.css">
+    <link rel="stylesheet" href="../../css/pages/profile.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__logo">
+                    <a href="../../main.html" class="logo">
+                        <img src="../../data/imgs/图标.png" alt="炒菜学习平台" class="logo__icon">
+                        <span class="logo__text">炒菜学习平台</span>
+                    </a>
+                </div>
+                
+                <nav class="header__nav">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="../../main.html" class="nav__link">首页</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../recipes/list.html" class="nav__link">菜谱大全</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../guide/basics.html" class="nav__link">烹饪指南</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../forum/index.html" class="nav__link">美食论坛</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="favorites.html" class="nav__link nav__link--active">我的收藏</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="center.html" class="nav__link">用户中心</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="header__search">
+                    <form class="search__form" id="searchForm">
+                        <input type="text" class="search__input" placeholder="搜索菜谱或食材..." id="searchInput">
+                        <button type="submit" class="search__btn">
+                            <span class="search__icon">🔍</span>
+                        </button>
+                    </form>
+                </div>
+                
+                <button class="header__menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main">
+        <!-- 页面标题 -->
+        <section class="page-header" style="
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8b5a 100%);
+            color: white;
+            padding: 60px 0;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
+            position: relative;
+            overflow: hidden;
+        ">
+            <!-- 标题区域内的背景图 -->
+            <div style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                pointer-events: none;
+            ">
+                <img src="../../data/imgs/模块的背景图片/我的收藏.png" 
+                     alt="" 
+                     style="
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 100%;
+                        height: 100%;
+                        opacity: 0.30;
+                        object-fit: cover;
+                     "
+                     onerror="this.style.display='none'">
+            </div>
+            
+            <div class="container" style="position: relative; z-index: 1; text-align: center;">
+                <h1 class="page-title" style="
+                    font-size: 2.5rem;
+                    font-weight: 700;
+                    color: white;
+                    margin-bottom: 15px;
+                    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+                ">我的收藏</h1>
+                <p class="page-description" style="
+                    font-size: 1.2rem;
+                    color: white;
+                    opacity: 0.95;
+                    margin: 0;
+                ">您收藏的美味菜谱</p>
+            </div>
+        </section>
+
+        <!-- 收藏内容 -->
+        <section class="favorites">
+            <div class="container">
+                <!-- 收藏统计 -->
+                <div class="favorites__stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="favoritesCount">0</span>
+                        <span class="stat-label">收藏菜谱</span>
+                    </div>
+                </div>
+
+                <!-- 筛选选项 -->
+                <div class="favorites__filters">
+                    <div class="filter__group">
+                        <label class="filter__label">排序：</label>
+                        <select class="filter__select" id="sortSelect">
+                            <option value="newest">最新收藏</option>
+                            <option value="oldest">最早收藏</option>
+                            <option value="name">按名称排序</option>
+                            <option value="difficulty">按难度排序</option>
+                        </select>
+                    </div>
+                    <button class="btn btn--outline" id="clearAllBtn">
+                        <span class="btn__icon">🗑️</span>
+                        <span class="btn__text">清空收藏</span>
+                    </button>
+                </div>
+
+                <!-- 收藏列表 -->
+                <div class="favorites__content" id="favoritesContent">
+                    <!-- 收藏的菜谱将通过JavaScript动态生成 -->
+                </div>
+
+                <!-- 空状态 -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-state__icon">💝</div>
+                    <h3 class="empty-state__title">还没有收藏任何菜谱</h3>
+                    <p class="empty-state__description">
+                        去菜谱大全浏览您喜欢的菜谱，点击❤️图标即可收藏！<br>
+                        收藏的菜谱会自动显示在这里哦～
+                    </p>
+                    <a href="../recipes/list.html" class="btn btn--primary" style="
+                        background: linear-gradient(135deg, #ff6b35 0%, #ff8b5a 100%);
+                        color: white;
+                        padding: 12px 30px;
+                        border-radius: 30px;
+                        text-decoration: none;
+                        display: inline-block;
+                        font-weight: 600;
+                        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+                        transition: all 0.3s ease;
+                        cursor: pointer;
+                        position: relative;
+                        z-index: 100;
+                    " onclick="window.location.href='../recipes/list.html'">
+                        🍳 去浏览菜谱
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">关于我们</h3>
+                    <p class="footer__text">
+                        炒菜学习平台致力于传播中华美食文化，让每个人都能轻松学会做菜。
+                    </p>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">快速链接</h3>
+                    <ul class="footer__links">
+                        <li><a href="../recipes/list.html">菜谱大全</a></li>
+                        <li><a href="../guide/basics.html">烹饪基础</a></li>
+                        <li><a href="../guide/tips.html">烹饪技巧</a></li>
+                        <li><a href="../about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">联系方式</h3>
+                    <ul class="footer__contact">
+                        <li>📧 contact@cooking-platform.com</li>
+                        <li>📱 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2024 炒菜学习平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 文件 -->
+    <script src="../../js/utils/global-search.js"></script>
+    <script src="../../js/utils/storage.js"></script>
+    <script src="../../js/utils/dom.js"></script>
+    <script src="../../js/data/recipes.js"></script>
+    <script src="../../js/data/categories.js"></script>
+    <script src="../../js/utils/user-center-manager.js"></script>
+    <script src="../../js/utils/data-migration.js"></script>
+    <script src="../../js/components/header.js"></script>
+    <script src="../../js/components/search.js"></script>
+    <script src="../../js/pages/profile.js"></script>
+    <script src="../../js/app.js"></script>
+    
+    <!-- 收藏页面增强脚本 - 确保功能正常 -->
+    <script>
+    console.log('=== 我的收藏页面加载 ===');
+    
+    // 确保在DOM完全加载后再次初始化
+    window.addEventListener('DOMContentLoaded', function() {
+        console.log('开始加载收藏页面...');
+        
+        // 等待一下确保所有脚本都已执行
+        setTimeout(function() {
+            loadAndDisplayFavorites();
+            setupFavoriteButtons();
+            
+            // 监听来自其他页面的收藏变化事件
+            window.addEventListener('favoriteChanged', function(e) {
+                console.log('收到收藏变化事件:', e.detail);
+                setTimeout(() => {
+                    loadAndDisplayFavorites();
+                }, 100);
+            });
+        }, 300);
+    });
+    
+    // 加载并显示收藏的菜谱
+    function loadAndDisplayFavorites() {
+        console.log('loadAndDisplayFavorites 开始执行');
+        
+        // 确保UserPreferences已加载
+        if (!window.UserPreferences) {
+            console.error('UserPreferences 系统未加载');
+            setTimeout(loadAndDisplayFavorites, 500); // 延迟重试
+            return;
+        }
+        
+        const favoriteIds = window.UserPreferences.getFavorites();
+        console.log('收藏的菜谱ID列表:', favoriteIds);
+        console.log('使用的存储系统: UserPreferences (cooking_favorites)');
+        
+        const container = document.getElementById('favoritesContent');
+        const emptyState = document.getElementById('emptyState');
+        const countElement = document.getElementById('favoritesCount');
+        
+        if (!container) {
+            console.error('未找到 favoritesContent 容器！');
+            return;
+        }
+        
+        // 更新统计
+        if (countElement) {
+            countElement.textContent = favoriteIds.length;
+        }
+        
+        if (favoriteIds.length === 0) {
+            // 显示空状态
+            container.style.display = 'none';
+            if (emptyState) {
+                emptyState.style.display = 'block';
+            }
+            console.log('没有收藏，显示空状态');
+            return;
+        }
+        
+        // 隐藏空状态
+        if (emptyState) {
+            emptyState.style.display = 'none';
+        }
+        container.style.display = 'grid';
+        container.innerHTML = '';
+        
+        // 渲染每个收藏的菜谱
+        favoriteIds.forEach(function(recipeId, index) {
+            const recipe = RecipeUtils.getRecipeById(recipeId);
+            if (!recipe) {
+                console.warn('未找到菜谱:', recipeId);
+                return;
+            }
+            
+            const card = createFavoriteCard(recipe, index);
+            container.appendChild(card);
+        });
+        
+        console.log('✅ 成功渲染', favoriteIds.length, '个收藏菜谱');
+    }
+    
+    // 创建收藏卡片
+    function createFavoriteCard(recipe, index) {
+        const card = document.createElement('article');
+        card.className = 'recipe-card card';
+        card.style.animationDelay = (index * 0.1) + 's';
+        
+        const cuisineInfo = RecipeUtils.getCuisineInfo(recipe.cuisine);
+        const difficultyInfo = RecipeUtils.getDifficultyInfo(recipe.difficulty);
+        
+        // 生成标准图片路径
+        const standardImagePath = generateStandardImagePath(recipe);
+        const hasRealImage = standardImagePath;
+        
+        if (hasRealImage) {
+            // 使用真实图片作为背景
+            card.innerHTML = `
+                <div class="recipe-card__image" style="
+                    background-image: url('${standardImagePath}');
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    height: 200px;
+                    position: relative;
+                ">
+                    <!-- 半透明遮罩 -->
+                    <div style="
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6));
+                        z-index: 1;
+                    "></div>
+                    <!-- 菜名显示在图片上 -->
+                    <div style="
+                        position: absolute;
+                        bottom: 15px;
+                        left: 15px;
+                        right: 15px;
+                        color: white;
+                        z-index: 2;
+                    ">
+                        <div style="font-size: 1.1rem; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">${recipe.title}</div>
+                        <div style="font-size: 0.85rem; opacity: 0.9; margin-top: 0.25rem; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">${cuisineInfo.name}</div>
+                    </div>
+                    <button class="recipe-card__favorite recipe-card__favorite--active" 
+                            data-recipe-id="${recipe.id}" style="z-index: 3;">
+                        ♥
+                    </button>
+                    <div class="recipe-card__badge" style="z-index: 3;">${difficultyInfo.name}</div>
+                </div>`;
+        } else {
+            // 使用彩色占位符
+            card.innerHTML = `
+                <div class="recipe-card__image">
+                    <div class="recipe-card__image-placeholder" style="
+                        background: linear-gradient(135deg, ${cuisineInfo.color}, ${darkenColor(cuisineInfo.color, 20)});
+                        height: 200px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                    ">
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">${cuisineInfo.icon}</div>
+                            <div style="font-size: 1rem; font-weight: 600; opacity: 0.9;">${recipe.title}</div>
+                            <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.25rem;">${cuisineInfo.name}</div>
+                        </div>
+                    </div>
+                    <button class="recipe-card__favorite recipe-card__favorite--active" 
+                            data-recipe-id="${recipe.id}">
+                        ♥
+                    </button>
+                    <div class="recipe-card__badge">${difficultyInfo.name}</div>
+                </div>
+            `;
+        }
+        
+        // 添加内容区域（对所有卡片都一样）
+        const contentHtml = `
+            <div class="recipe-card__content">
+                <h3 class="recipe-card__title">${recipe.title}</h3>
+                <p class="recipe-card__description">${recipe.description}</p>
+                <div class="recipe-card__meta">
+                    <span class="recipe-card__difficulty recipe-card__difficulty--${recipe.difficulty}">
+                        ${difficultyInfo.name}
+                    </span>
+                    <div class="recipe-card__time">⏰ ${recipe.cookTime}</div>
+                </div>
+                <div class="recipe-card__stats">
+                    <div class="recipe-card__stat">⭐ ${recipe.rating || '4.5'}</div>
+                    <div class="recipe-card__stat">👁️ ${formatNumber(recipe.viewCount || 0)}</div>
+                </div>
+            </div>
+        `;
+        
+        card.innerHTML += contentHtml;
+        
+        // 点击卡片跳转详情（但不包括收藏按钮）
+        card.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('recipe-card__favorite')) {
+                window.location.href = '../recipes/detail.html?id=' + recipe.id;
+            }
+        });
+        
+        return card;
+    }
+    
+    // 设置收藏按钮事件 - 使用统一的UserPreferences系统
+    function setupFavoriteButtons() {
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('recipe-card__favorite')) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const recipeId = e.target.getAttribute('data-recipe-id');
+                console.log('点击收藏按钮，菜谱ID:', recipeId);
+                
+                if (!recipeId || !window.UserPreferences) {
+                    showToast('收藏功能暂不可用', 'error');
+                    return;
+                }
+                
+                // 移除收藏
+                const success = window.UserPreferences.removeFavorite(recipeId);
+                if (success) {
+                    console.log('✅ 已取消收藏:', recipeId, '(使用UserPreferences系统)');
+                    
+                    // 重新加载列表
+                    loadAndDisplayFavorites();
+                    
+                    // 触发收藏变化事件，通知其他页面
+                    const favoriteEvent = new CustomEvent('favoriteChanged', {
+                        detail: { recipeId, isFavorite: false }
+                    });
+                    window.dispatchEvent(favoriteEvent);
+                    
+                    showToast('已取消收藏', 'info');
+                } else {
+                    showToast('取消收藏失败', 'error');
+                }
+            }
+        });
+    }
+    
+    // 辅助函数
+    function darkenColor(color, percent) {
+        const num = parseInt(color.replace("#", ""), 16);
+        const amt = Math.round(2.55 * percent);
+        const R = Math.max(0, Math.min(255, (num >> 16) - amt));
+        const G = Math.max(0, Math.min(255, (num >> 8 & 0x00FF) - amt));
+        const B = Math.max(0, Math.min(255, (num & 0x0000FF) - amt));
+        return "#" + ((1 << 24) + (R << 16) + (G << 8) + B).toString(16).slice(1);
+    }
+    
+    function formatNumber(num) {
+        if (num < 1000) return num.toString();
+        if (num < 10000) return (num / 1000).toFixed(1) + 'K';
+        return Math.floor(num / 1000) + 'K';
+    }
+    
+    function showToast(message, type) {
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: ${type === 'success' ? '#4caf50' : '#2196f3'};
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 10000;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.3s ease;
+        `;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(0)';
+        }, 10);
+        
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100px)';
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+    
+    // 清空所有收藏
+    document.getElementById('clearAllBtn')?.addEventListener('click', function() {
+        if (confirm('确定要清空所有收藏吗？此操作不可恢复！')) {
+            if (window.UserPreferences) {
+                const favorites = window.UserPreferences.getFavorites();
+                favorites.forEach(id => window.UserPreferences.removeFavorite(id));
+                loadAndDisplayFavorites();
+                showToast('已清空所有收藏', 'info');
+                console.log('✅ 使用UserPreferences系统清空收藏');
+            } else {
+                showToast('收藏系统未加载，请刷新页面重试', 'error');
+            }
+        }
+    });
+    
+    // 生成标准图片路径
+    function generateStandardImagePath(recipe) {
+        const cuisineMapping = {
+            'sichuan': '川菜',
+            'hunan': '湘菜', 
+            'cantonese': '粵菜',
+            'shandong': '鲁菜',
+            'jiangsu': '苏菜',
+            'zhejiang': '浙菜',
+            'fujian': '闽菜',
+            'anhui': '徽菜'
+        };
+        
+        const cuisineFolder = cuisineMapping[recipe.cuisine];
+        if (!cuisineFolder) {
+            console.warn(`未知菜系: ${recipe.cuisine} (菜谱: ${recipe.title})`);
+            return null;
+        }
+        
+        return `/cooking-platform/data/imgs/${cuisineFolder}/${recipe.title}.png`;
+    }
+    </script>
+</body>
+</html>

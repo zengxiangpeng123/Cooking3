@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜谱大全 - 炒菜学习平台</title>
+    <meta name="description" content="浏览海量中式菜谱，按菜系、难度、时长筛选您喜欢的菜谱">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    <link rel="shortcut icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    
+    <!-- CSS 样式文件 -->
+    <link rel="stylesheet" href="../../css/base/reset.css">
+    <link rel="stylesheet" href="../../css/base/variables.css">
+    <link rel="stylesheet" href="../../css/base/base.css">
+    <link rel="stylesheet" href="../../css/components/header.css">
+    <link rel="stylesheet" href="../../css/components/footer.css">
+    <link rel="stylesheet" href="../../css/components/card.css">
+    <link rel="stylesheet" href="../../css/components/cool-search.css">
+    <link rel="stylesheet" href="../../css/components/pagination.css">
+    <link rel="stylesheet" href="../../css/pages/recipe-list.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__logo">
+                    <a href="../../index.html" class="logo">
+                        <img src="../../data/imgs/图标.png" alt="炒菜学习平台" class="logo__icon">
+                        <span class="logo__text">炒菜学习平台</span>
+                    </a>
+                </div>
+                
+                <nav class="header__nav">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="../../main.html" class="nav__link">首页</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="list.html" class="nav__link nav__link--active">菜谱大全</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../guide/basics.html" class="nav__link">烹饪指南</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../forum/index.html" class="nav__link">美食论坛</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../profile/favorites.html" class="nav__link">我的收藏</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../profile/center.html" class="nav__link">用户中心</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="header__search">
+                    <form class="search__form" id="searchForm">
+                        <input type="text" class="search__input" placeholder="搜索菜谱或食材..." id="searchInput">
+                        <button type="submit" class="search__btn">
+                            <span class="search__icon">🔍</span>
+                        </button>
+                    </form>
+                </div>
+                
+                <button class="header__menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main">
+        <!-- 页面标题 -->
+        <section class="page-header" style="
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8b5a 100%);
+            color: white;
+            padding: 60px 0;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
+            position: relative;
+            overflow: hidden;
+        ">
+            <!-- 标题区域内的背景图 -->
+            <div style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                pointer-events: none;
+            ">
+                <img src="../../data/imgs/模块的背景图片/菜谱大全.png" 
+                     alt="" 
+                     style="
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 100%;
+                        height: 100%;
+                        opacity: 0.30;
+                        object-fit: cover;
+                     "
+                     onerror="this.style.display='none'">
+            </div>
+            
+            <div class="container" style="position: relative; z-index: 1; text-align: center;">
+                <h1 class="page-title" style="
+                    font-size: 2.5rem;
+                    font-weight: 700;
+                    color: white;
+                    margin-bottom: 15px;
+                    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+                ">菜谱大全</h1>
+                <p class="page-description" style="
+                    font-size: 1.2rem;
+                    color: white;
+                    opacity: 0.95;
+                    margin: 0;
+                ">发现更多美味，学会更多菜谱</p>
+            </div>
+        </section>
+
+        <!-- 筛选和排序 -->
+        <section class="filters">
+            <div class="container">
+                <div class="filters__content">
+                    <!-- 菜系筛选 -->
+                    <div class="filter__group">
+                        <label class="filter__label">菜系：</label>
+                        <div class="filter__options" id="cuisineFilter">
+                            <button class="filter__btn filter__btn--active" data-cuisine="all">全部</button>
+                            <button class="filter__btn" data-cuisine="sichuan">川菜</button>
+                            <button class="filter__btn" data-cuisine="cantonese">粤菜</button>
+                            <button class="filter__btn" data-cuisine="hunan">湘菜</button>
+                            <button class="filter__btn" data-cuisine="shandong">鲁菜</button>
+                            <button class="filter__btn" data-cuisine="jiangsu">苏菜</button>
+                            <button class="filter__btn" data-cuisine="zhejiang">浙菜</button>
+                            <button class="filter__btn" data-cuisine="fujian">闽菜</button>
+                            <button class="filter__btn" data-cuisine="anhui">徽菜</button>
+                        </div>
+                    </div>
+
+                    <!-- 难度筛选 -->
+                    <div class="filter__group">
+                        <label class="filter__label">难度：</label>
+                        <div class="filter__options" id="difficultyFilter">
+                            <button class="filter__btn filter__btn--active" data-difficulty="all">全部</button>
+                            <button class="filter__btn" data-difficulty="easy">简单</button>
+                            <button class="filter__btn" data-difficulty="medium">中等</button>
+                            <button class="filter__btn" data-difficulty="hard">困难</button>
+                        </div>
+                    </div>
+
+                    <!-- 时间筛选 -->
+                    <div class="filter__group">
+                        <label class="filter__label">用时：</label>
+                        <div class="filter__options" id="timeFilter">
+                            <button class="filter__btn filter__btn--active" data-time="all">全部</button>
+                            <button class="filter__btn" data-time="quick">15分钟内</button>
+                            <button class="filter__btn" data-time="medium">15-30分钟</button>
+                            <button class="filter__btn" data-time="long">30分钟以上</button>
+                        </div>
+                    </div>
+
+                    <!-- 排序方式 -->
+                    <div class="filter__group">
+                        <label class="filter__label">排序：</label>
+                        <select class="filter__select" id="sortSelect">
+                            <option value="default">默认排序</option>
+                            <option value="popular">最受欢迎</option>
+                            <option value="newest">最新发布</option>
+                            <option value="rating">评分最高</option>
+                            <option value="time-asc">用时最短</option>
+                        </select>
+                    </div>
+
+                    <!-- 视图切换 -->
+                    <div class="filter__group filter__view">
+                        <button class="view__btn view__btn--active" data-view="grid" id="gridViewBtn">
+                            <span class="view__icon">▦</span>
+                        </button>
+                        <button class="view__btn" data-view="list" id="listViewBtn">
+                            <span class="view__icon">☰</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 菜谱列表 -->
+        <section class="recipes">
+            <div class="container">
+                <!-- 结果统计 -->
+                <div class="recipes__info">
+                    <span class="recipes__count" id="recipesCount">共找到 0 道菜谱</span>
+                </div>
+
+                <!-- 菜谱网格 -->
+                <div class="recipes__grid" id="recipesGrid">
+                    <!-- 菜谱卡片将通过JavaScript动态生成 -->
+                </div>
+
+                <!-- 加载状态 -->
+                <div class="loading" id="loading" style="display: none;">
+                    <div class="loading__spinner"></div>
+                    <p>正在加载...</p>
+                </div>
+
+                <!-- 分页 -->
+                <div class="pagination" id="pagination">
+                    <!-- 分页按钮将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">关于我们</h3>
+                    <p class="footer__text">
+                        炒菜学习平台致力于传播中华美食文化，让每个人都能轻松学会做菜。
+                    </p>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">快速链接</h3>
+                    <ul class="footer__links">
+                        <li><a href="list.html">菜谱大全</a></li>
+                        <li><a href="../guide/basics.html">烹饪基础</a></li>
+                        <li><a href="../guide/tips.html">烹饪技巧</a></li>
+                        <li><a href="../about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">联系方式</h3>
+                    <ul class="footer__contact">
+                        <li>📧 contact@cooking-platform.com</li>
+                        <li>📱 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2024 炒菜学习平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 文件 -->
+    <script src="../../js/utils/global-search.js"></script>
+    <script src="../../js/utils/storage.js"></script>
+    <script src="../../js/utils/dom.js"></script>
+    <script src="../../js/utils/api.js"></script>
+    <script src="../../js/data/recipes.js"></script>
+    <script src="../../js/data/categories.js"></script>
+    <script src="../../js/components/header.js"></script>
+    <script src="../../js/components/search.js"></script>
+    <script src="../../js/components/pagination.js"></script>
+    <script src="../../js/pages/recipe-list.js"></script>
+    <script src="../../js/app.js"></script>
+    
+    <!-- 收藏功能修复 -->
+    <script>
+    // 确保收藏功能在页面加载后正确绑定
+    // 绑定收藏按钮事件的函数
+    window.bindFavoriteEvents = function() {
+        const favoriteButtons = document.querySelectorAll('.recipe-card__favorite');
+        console.log('绑定收藏事件，找到按钮数量:', favoriteButtons.length);
+        
+        favoriteButtons.forEach(function(btn) {
+            // 移除旧事件，避免重复绑定
+            btn.removeEventListener('click', btn._favoriteHandler);
+            
+            // 创建新的事件处理器
+            btn._favoriteHandler = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const recipeId = this.getAttribute('data-recipe-id');
+                console.log('点击收藏按钮，菜谱ID:', recipeId);
+                
+                if (!recipeId) {
+                    console.error('未找到菜谱ID！');
+                    return;
+                }
+                
+                const isFavorite = UserPreferences.isFavorite(recipeId);
+                const recipe = RecipeUtils.getRecipeById(recipeId);
+                
+                if (isFavorite) {
+                    // 取消收藏
+                    UserPreferences.removeFavorite(recipeId);
+                    this.classList.remove('recipe-card__favorite--active');
+                    this.innerHTML = '♡';
+                    console.log('✅ 已取消收藏:', recipe ? recipe.title : recipeId);
+                    showToast('已取消收藏 "' + (recipe ? recipe.title : '菜谱') + '"', 'info');
+                } else {
+                    // 添加收藏
+                    UserPreferences.addFavorite(recipeId);
+                    this.classList.add('recipe-card__favorite--active');
+                    this.innerHTML = '♥';
+                    console.log('✅ 已添加收藏:', recipe ? recipe.title : recipeId);
+                    showToast('已收藏 "' + (recipe ? recipe.title : '菜谱') + '"', 'success');
+                }
+                
+                // 显示当前收藏列表
+                console.log('当前收藏列表:', UserPreferences.getFavorites());
+            };
+            
+            // 绑定新事件
+            btn.addEventListener('click', btn._favoriteHandler);
+        });
+    };
+
+    // 页面加载时初始化
+    window.addEventListener('DOMContentLoaded', function() {
+        setTimeout(window.bindFavoriteEvents, 500);
+    });
+    
+    // 简单的toast提示函数
+    function showToast(message, type) {
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: ${type === 'success' ? '#4caf50' : '#2196f3'};
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 10000;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.3s ease;
+        `;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(0)';
+        }, 10);
+        
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100px)';
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+    </script>
+</body>
+</html>

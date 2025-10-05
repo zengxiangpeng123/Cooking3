@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">菜谱详情 - 炒菜学习平台</title>
+    <meta name="description" content="详细的菜谱制作步骤和烹饪技巧">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    <link rel="shortcut icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    
+    <!-- CSS 样式文件 -->
+    <link rel="stylesheet" href="../../css/base/reset.css">
+    <link rel="stylesheet" href="../../css/base/variables.css">
+    <link rel="stylesheet" href="../../css/base/base.css">
+    <link rel="stylesheet" href="../../css/components/header.css">
+    <link rel="stylesheet" href="../../css/components/footer.css">
+    <link rel="stylesheet" href="../../css/components/card.css">
+    <link rel="stylesheet" href="../../css/components/cool-search.css">
+    <link rel="stylesheet" href="../../css/components/modal.css">
+    <link rel="stylesheet" href="../../css/pages/recipe-detail.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__logo">
+                    <a href="../../index.html" class="logo">
+                        <img src="../../data/imgs/图标.png" alt="炒菜学习平台" class="logo__icon">
+                        <span class="logo__text">炒菜学习平台</span>
+                    </a>
+                </div>
+                
+                <nav class="header__nav">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="../../main.html" class="nav__link">首页</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="list.html" class="nav__link nav__link--active">菜谱大全</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../guide/basics.html" class="nav__link">烹饪指南</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../forum/index.html" class="nav__link">美食论坛</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../profile/favorites.html" class="nav__link">我的收藏</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../profile/center.html" class="nav__link">用户中心</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="header__search">
+                    <form class="search__form" id="searchForm">
+                        <input type="text" class="search__input" placeholder="搜索菜谱或食材..." id="searchInput">
+                        <button type="submit" class="search__btn">
+                            <span class="search__icon">🔍</span>
+                        </button>
+                    </form>
+                </div>
+                
+                <button class="header__menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main" id="recipeDetail">
+        <!-- 面包屑导航 -->
+        <nav class="breadcrumb">
+            <div class="container">
+                <ol class="breadcrumb__list">
+                    <li class="breadcrumb__item">
+                        <a href="../../index.html">首页</a>
+                    </li>
+                    <li class="breadcrumb__item">
+                        <a href="list.html">菜谱大全</a>
+                    </li>
+                    <li class="breadcrumb__item breadcrumb__item--current" id="breadcrumbCurrent">
+                        加载中...
+                    </li>
+                </ol>
+            </div>
+        </nav>
+
+        <!-- 菜谱概览 -->
+        <section class="recipe-overview">
+            <div class="container">
+                <div class="recipe__header">
+                    <div class="recipe__image">
+                        <img id="recipeImage" src="" alt="菜谱图片" class="recipe__img">
+                        <div class="recipe__image-placeholder" id="imagePlaceholder">
+                            <span class="placeholder-icon">🍽️</span>
+                        </div>
+                    </div>
+                    <div class="recipe__info">
+                        <h1 class="recipe__title" id="recipeTitle">加载中...</h1>
+                        <p class="recipe__description" id="recipeDescription">加载中...</p>
+                        
+                        <div class="recipe__meta">
+                            <div class="meta__item">
+                                <span class="meta__icon">⏰</span>
+                                <span class="meta__text" id="recipeCookTime">-</span>
+                            </div>
+                            <div class="meta__item">
+                                <span class="meta__icon">👥</span>
+                                <span class="meta__text" id="recipeServings">-</span>
+                            </div>
+                            <div class="meta__item">
+                                <span class="meta__icon">📊</span>
+                                <span class="meta__text difficulty" id="recipeDifficulty">-</span>
+                            </div>
+                            <div class="meta__item">
+                                <span class="meta__icon">🏷️</span>
+                                <span class="meta__text" id="recipeCuisine">-</span>
+                            </div>
+                        </div>
+
+                        <div class="recipe__actions">
+                            <button class="btn btn--primary" id="favoriteBtn">
+                                <span class="btn__icon">♡</span>
+                                <span class="btn__text">收藏菜谱</span>
+                            </button>
+                            <button class="btn btn--secondary" id="shareBtn">
+                                <span class="btn__icon">📤</span>
+                                <span class="btn__text">分享</span>
+                            </button>
+                            <button class="btn btn--outline" id="printBtn">
+                                <span class="btn__icon">🖨️</span>
+                                <span class="btn__text">打印</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 食材清单 -->
+        <section class="ingredients">
+            <div class="container">
+                <h2 class="section__title">所需食材</h2>
+                <div class="ingredients__content">
+                    <div class="ingredients__list" id="ingredientsList">
+                        <!-- 食材列表将通过JavaScript动态生成 -->
+                    </div>
+                    <div class="ingredients__tips">
+                        <h3 class="tips__title">采购小贴士</h3>
+                        <ul class="tips__list" id="ingredientsTips">
+                            <!-- 采购建议将通过JavaScript动态生成 -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 制作步骤 -->
+        <section class="cooking-steps">
+            <div class="container">
+                <h2 class="section__title">制作步骤</h2>
+                <div class="steps__list" id="cookingSteps">
+                    <!-- 制作步骤将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 烹饪技巧 -->
+        <section class="cooking-tips">
+            <div class="container">
+                <h2 class="section__title">烹饪技巧</h2>
+                <div class="tips__content" id="cookingTips">
+                    <!-- 烹饪技巧将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 营养信息 -->
+        <section class="nutrition">
+            <div class="container">
+                <h2 class="section__title">营养信息</h2>
+                <div class="nutrition__content" id="nutritionInfo">
+                    <!-- 营养信息将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 相关推荐 -->
+        <section class="related-recipes">
+            <div class="container">
+                <h2 class="section__title">相关推荐</h2>
+                <div class="recipes__grid" id="relatedRecipes">
+                    <!-- 相关菜谱将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 分享模态框 -->
+    <div class="modal" id="shareModal">
+        <div class="modal__overlay"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 class="modal__title">分享菜谱</h3>
+                <button class="modal__close" id="closeShareModal">&times;</button>
+            </div>
+            <div class="modal__body">
+                <p>分享这道美味菜谱给朋友们：</p>
+                <div class="share__options">
+                    <button class="share__btn" data-platform="wechat">
+                        <span class="share__icon">💬</span>
+                        <span class="share__text">微信</span>
+                    </button>
+                    <button class="share__btn" data-platform="weibo">
+                        <span class="share__icon">📝</span>
+                        <span class="share__text">微博</span>
+                    </button>
+                    <button class="share__btn" data-platform="qq">
+                        <span class="share__icon">🐧</span>
+                        <span class="share__text">QQ</span>
+                    </button>
+                    <button class="share__btn" id="copyLinkBtn">
+                        <span class="share__icon">🔗</span>
+                        <span class="share__text">复制链接</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">关于我们</h3>
+                    <p class="footer__text">
+                        炒菜学习平台致力于传播中华美食文化，让每个人都能轻松学会做菜。
+                    </p>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">快速链接</h3>
+                    <ul class="footer__links">
+                        <li><a href="list.html">菜谱大全</a></li>
+                        <li><a href="../guide/basics.html">烹饪基础</a></li>
+                        <li><a href="../guide/tips.html">烹饪技巧</a></li>
+                        <li><a href="../about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">联系方式</h3>
+                    <ul class="footer__contact">
+                        <li>📧 contact@cooking-platform.com</li>
+                        <li>📱 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2024 炒菜学习平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 文件 -->
+    <script src="../../js/utils/global-search.js"></script>
+    <script src="../../js/utils/storage.js"></script>
+    <script src="../../js/utils/dom.js"></script>
+    <script src="../../js/utils/api.js"></script>
+    <script src="../../js/data/recipes.js"></script>
+    <script src="../../js/data/categories.js"></script>
+    <script src="../../js/utils/user-center-manager.js"></script>
+    <script src="../../js/components/header.js"></script>
+    <script src="../../js/components/search.js"></script>
+    <script src="../../js/components/modal.js"></script>
+    <script src="../../js/pages/recipe-detail.js"></script>
+    <script src="../../js/app.js"></script>
+</body>
+</html>

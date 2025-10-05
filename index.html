@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>炒菜学习平台 | 学会做菜，从这里开始</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data/imgs/图标.iconfont">
+    <link rel="shortcut icon" type="image/x-icon" href="data/imgs/图标.iconfont">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/components/cool-search.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f5f2;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 背景装饰 */
+        .bg-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-decoration::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(179, 36, 36, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(46, 125, 50, 0.06) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        .cuisine-images {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .cuisine-img {
+            position: absolute;
+            border-radius: 20px;
+            opacity: 0.3;
+            filter: blur(1px);
+            transition: all 0.3s ease;
+        }
+        
+        .cuisine-img:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            width: 150px;
+            height: 100px;
+            animation: floatImg1 15s ease-in-out infinite;
+        }
+        
+        .cuisine-img:nth-child(2) {
+            top: 20%;
+            right: 15%;
+            width: 120px;
+            height: 80px;
+            animation: floatImg2 18s ease-in-out infinite;
+        }
+        
+        .cuisine-img:nth-child(3) {
+            bottom: 30%;
+            left: 5%;
+            width: 100px;
+            height: 70px;
+            animation: floatImg3 22s ease-in-out infinite;
+        }
+        
+        .cuisine-img:nth-child(4) {
+            bottom: 20%;
+            right: 10%;
+            width: 130px;
+            height: 90px;
+            animation: floatImg4 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            33% { transform: rotate(1deg) scale(1.02); }
+            66% { transform: rotate(-1deg) scale(0.98); }
+        }
+        
+        @keyframes floatImg1 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+        
+        @keyframes floatImg2 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(-1deg); }
+        }
+        
+        @keyframes floatImg3 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(1deg); }
+        }
+        
+        @keyframes floatImg4 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-18px) rotate(-2deg); }
+        }
+        
+        /* 导航栏 */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #ff6b35;
+            text-decoration: none;
+        }
+        
+        .logo img {
+            margin-right: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover img {
+            transform: scale(1.05);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ff6b35;
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #ff6b35;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .auth-buttons button {
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .login-btn {
+            background: transparent;
+            border: 2px solid #ff6b35 !important;
+            color: #ff6b35;
+            margin-right: 15px;
+        }
+        
+        .signup-btn {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8b5a 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+        
+        .auth-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.25);
+        }
+        
+        .login-btn:hover {
+            background: #ff6b35;
+            color: white;
+        }
+        
+        /* 用户信息样式 */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #ff6b35;
+            transition: transform 0.3s ease;
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.05);
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .user-dropdown {
+            position: relative;
+        }
+        
+        .user-menu-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-menu-btn:hover {
+            background-color: #f0f0f0;
+            color: #ff6b35;
+        }
+        
+        .user-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            min-width: 200px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e0e0e0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .user-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .user-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .user-menu-item:hover {
+            background-color: #f8f9fa;
+            color: #ff6b35;
+        }
+        
+        .user-menu-item:first-child {
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .user-menu-item:last-child {
+            border-radius: 0 0 12px 12px;
+        }
+        
+        .user-menu-item i {
+            font-size: 14px;
+            width: 16px;
+        }
+        
+        /* 主内容区域 */
+        .hero {
+            margin-top: 120px;
+            padding: 100px 0;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        .hero-text {
+            flex: 1;
+            padding-right: 60px;
+        }
+        
+        .hero-image {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero-image::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(179, 36, 36, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        h1 {
+            font-size: 52px;
+            font-weight: 800;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #333 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 22px;
+            color: #666;
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+        
+        .hero-buttons {
+            margin-top: 50px;
+        }
+        
+        .cta-button {
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s;
+            border: none;
+            margin-right: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8b5a 100%);
+            color: white;
+        }
+        
+        .secondary-btn {
+            background: transparent;
+            color: #ff6b35;
+            border: 3px solid #ff6b35;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .secondary-btn:hover {
+            background: #ff6b35;
+            color: white;
+        }
+        
+        /* 主图 */
+        .main-illustration {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .main-illustration:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 特性部分 */
+        .features {
+            padding: 120px 0;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            margin: 60px 0;
+            border-radius: 30px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 80px;
+            color: #333;
+            position: relative;
+            font-weight: 700;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8b5a 100%);
+            border-radius: 3px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.8));
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px 25px;
+            text-align: center;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.1),
+                0 1px 8px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 107, 53, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.05), transparent);
+            transition: left 0.5s;
+        }
+        
+        .feature-card:hover::before {
+            left: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.15),
+                0 5px 15px rgba(255, 107, 53, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 248, 245, 0.9));
+            border-color: rgba(255, 107, 53, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 50px;
+            color: #ff6b35;
+            margin-bottom: 25px;
+            display: block;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+            color: #e55a2b;
+        }
+        
+        .feature-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .feature-desc {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        
+        /* 页脚 */
+        footer {
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            color: white;
+            padding: 80px 0 40px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 50px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            padding: 0 25px;
+        }
+        
+        .footer-column h3 {
+            font-size: 22px;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .footer-column h3::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #ff6b35;
+            border-radius: 2px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .social-icons {
+            display: flex;
+            margin-top: 25px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 107, 53, 0.2);
+            border-radius: 50%;
+            margin-right: 15px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 18px;
+        }
+        
+        .social-icons a:hover {
+            background: #ff6b35;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #999;
+            font-size: 16px;
+        }
+        
+        /* 登录弹窗 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 10% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close:hover {
+            color: #ff6b35;
+        }
+        
+        .modal h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 28px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+        
+        .login-form-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8b5a 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .login-form-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-text {
+                padding-right: 0;
+                margin-bottom: 50px;
+            }
+            
+            h1 {
+                font-size: 42px;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .feature-card {
+                padding: 35px 20px;
+            }
+            
+            .footer-content {
+                flex-wrap: wrap;
+            }
+            
+            .footer-column {
+                flex: 0 0 50%;
+                margin-bottom: 40px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .navbar {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 25px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+            }
+            
+            .hero {
+                margin-top: 180px;
+                padding: 60px 0;
+            }
+            
+            h1 {
+                font-size: 36px;
+            }
+            
+            .cta-button {
+                display: block;
+                margin: 10px 0;
+                width: 100%;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .feature-card {
+                padding: 30px 20px;
+            }
+            
+            .feature-icon {
+                font-size: 45px;
+                margin-bottom: 20px;
+            }
+            
+            .feature-title {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+            
+            .feature-desc {
+                font-size: 15px;
+            }
+            
+            .footer-column {
+                flex: 0 0 100%;
+            }
+            
+            .cuisine-img {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景装饰 -->
+    <div class="bg-decoration">
+        <!-- 背景装饰图片已移除，保留渐变效果 -->
+    </div>
+
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <img src="data/imgs/图标.png" alt="炒菜学习平台" style="width: 32px; height: 32px; margin-right: 12px; object-fit: contain;">
+                    炒菜学习平台
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#features">特色功能</a></li>
+                    <li><a href="#about">关于我们</a></li>
+                    <li><a href="#contact">联系我们</a></li>
+                </ul>
+                <div class="auth-buttons" id="authButtons">
+                    <button class="login-btn" onclick="openLoginModal()">登录</button>
+                    <button class="signup-btn" onclick="openSignupModal()">注册</button>
+                </div>
+                
+                <!-- 用户信息区域（登录后显示） -->
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNmZjZiMzUiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9IndoaXRlIj4KPHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Ik0xMiAxMkMxNC4yMDkxIDEyIDE2IDEwLjIwOTEgMTYgOEMxNiA1Ljc5MDg2IDE0LjIwOTEgNCAxMiA0QzkuNzkwODYgNCA4IDUuNzkwODYgOCA4QzggMTAuMjA5MSA5Ljc5MDg2IDEyIDEyIDEyWiIgZmlsbD0iY3VycmVudENvbG9yIi8+CjxwYXRoIGQ9Ik0xMiAxNEM5LjMzIDEzLjk5NiA2LjgwNiAxNS4wNzggNS4xNzUgMTYuOTlDNC4xMjkgMTcuOTg2IDQuMDY2IDE5LjU3NiA1LjAxNyAyMC42NjdDNS43MTQgMjEuNDgyIDYuOTIgMjEuOTk3IDguMTY2IDIySDguMTc2SDE1LjgyNEMxNy4wOCAyMS45OTcgMTguMjg2IDIxLjQ4MiAxOC45ODMgMjAuNjY3QzE5LjkzNCAxOS41NzYgMTkuODcxIDE3Ljk4NiAxOC44MjUgMTYuOTlDMTcuMTk0IDE1LjA3OCAxNC42NyAxMy45OTYgMTIgMTRaIiBmaWxsPSJjdXJyZW50Q29sb3IiLz4KPC9zdmc+Cjwvc3ZnPgo8L3N2Zz4=" alt="用户头像" id="userAvatar">
+                    </div>
+                    <span class="user-name" id="userName">用户名</span>
+                    <div class="user-dropdown">
+                        <button class="user-menu-btn" onclick="toggleUserMenu()">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="user-menu" id="userMenu">
+                            <a href="main.html" class="user-menu-item">
+                                <i class="fas fa-home"></i>
+                                进入平台
+                            </a>
+                            <a href="pages/profile/favorites.html" class="user-menu-item">
+                                <i class="fas fa-heart"></i>
+                                我的收藏
+                            </a>
+                            <button class="user-menu-item" onclick="logout()" style="color: #e74c3c;">
+                                <i class="fas fa-sign-out-alt"></i>
+                                退出登录
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+        <section class="hero">
+            <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>学会做菜，从这里开始</h1>
+                    <p class="subtitle">专业的中式炒菜学习平台，提供丰富的菜谱、详细的制作步骤和实用的烹饪技巧。让每个人都能轻松掌握美味炒菜的秘诀。</p>
+                    <div class="hero-buttons">
+                        <button class="cta-button primary-btn" onclick="startCookingJourney()">开启厨艺之旅</button>
+                        <button class="cta-button secondary-btn" onclick="scrollToSection('features')">了解更多</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="data/imgs/首页图片.png" alt="炒菜学习平台" class="main-illustration" onerror="this.style.display='none'">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <!-- 特性部分 -->
+    <section class="features" id="features">
+            <div class="container">
+            <h2 class="section-title">平台特色</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-utensils feature-icon"></i>
+                    <h3 class="feature-title">丰富菜谱</h3>
+                    <p class="feature-desc">精选各地经典炒菜菜谱，涵盖家常菜、地方特色菜等多种类型，满足不同口味需求。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-tasks feature-icon"></i>
+                    <h3 class="feature-title">详细教程</h3>
+                    <p class="feature-desc">每个菜谱都配有详细的制作步骤和烹饪技巧，让初学者也能轻松上手。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-graduation-cap feature-icon"></i>
+                    <h3 class="feature-title">专业指导</h3>
+                    <p class="feature-desc">专业厨师团队精心整理的烹饪技巧和注意事项，帮助您快速提升厨艺水平。</p>
+            </div>
+                <div class="feature-card">
+                    <i class="fas fa-comments feature-icon"></i>
+                    <h3 class="feature-title">互动交流</h3>
+                    <p class="feature-desc">美食论坛让您与其他烹饪爱好者分享心得，交流经验，共同进步。</p>
+                </div>
+                </div>
+            </div>
+        </section>
+
+    <!-- 页脚 -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>关于我们</h3>
+                    <p>炒菜学习平台致力于传播中华美食文化，让每个人都能轻松学会做菜，掌握炒菜技巧。</p>
+                    <div class="social-icons">
+                        <a href="#" title="微信"><i class="fab fa-weixin"></i></a>
+                        <a href="#" title="微博"><i class="fab fa-weibo"></i></a>
+                        <a href="#" title="QQ"><i class="fab fa-qq"></i></a>
+                        <a href="#" title="抖音"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>学习资源</h3>
+                    <ul class="footer-links">
+                        <li><a href="pages/guide/basics.html">新手入门指南</a></li>
+                        <li><a href="pages/guide/basics.html">进阶烹饪技巧</a></li>
+                        <li><a href="pages/recipes/list.html">精品菜谱</a></li>
+                        <li><a href="pages/guide/basics.html">食材选购知识</a></li>
+                        <li><a href="pages/guide/basics.html">厨具使用技巧</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>精选菜系</h3>
+                    <ul class="footer-links">
+                        <li><a href="pages/recipes/list.html?cuisine=sichuan">经典川菜</a></li>
+                        <li><a href="pages/recipes/list.html?cuisine=cantonese">正宗粤菜</a></li>
+                        <li><a href="pages/recipes/list.html?cuisine=hunan">江南湘菜</a></li>
+                        <li><a href="pages/recipes/list.html?cuisine=shandong">北方鲁菜</a></li>
+                        <li><a href="pages/recipes/list.html">地方特色菜</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> 北京市朝阳区烹饪艺术大厦</li>
+                        <li><i class="fas fa-phone"></i> 400-123-4567</li>
+                        <li><i class="fas fa-envelope"></i> contact@cooking-platform.com</li>
+                        <li><i class="fas fa-clock"></i> 周一至周日 9:00-21:00</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 炒菜学习平台 版权所有 | 学会做菜，从这里开始</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 登录弹窗 -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>欢迎回来</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">用户名或邮箱</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-form-btn">登录</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 注册弹窗 -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>加入我们</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupUsername">用户名</label>
+                    <input type="text" id="signupUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">邮箱</label>
+                    <input type="email" id="signupEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">密码</label>
+                    <input type="password" id="signupPassword" name="password" required>
+                </div>
+                <button type="submit" class="login-form-btn">注册</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript 文件 -->
+    <script src="js/utils/global-search.js"></script>
+    <script src="js/utils/user-manager.js"></script>
+    
+    <script>
+        // 页面交互逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            // 用户管理系统会自动检查登录状态并更新显示
+            
+            // 平滑滚动
+            window.scrollToSection = function(sectionId) {
+                document.getElementById(sectionId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            };
+            
+            // 弹窗控制
+            window.openLoginModal = function() {
+                document.getElementById('loginModal').style.display = 'block';
+            };
+            
+            window.openSignupModal = function() {
+                document.getElementById('signupModal').style.display = 'block';
+            };
+            
+            // 关闭弹窗
+            document.querySelectorAll('.close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    this.closest('.modal').style.display = 'none';
+                });
+            });
+            
+            // 点击弹窗外部关闭
+            window.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
+            });
+            
+            // 登录表单提交
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                if (username && password) {
+                    // 使用用户管理系统登录
+                    window.userManager.login(username);
+                    
+                    // 关闭登录弹窗
+                    document.getElementById('loginModal').style.display = 'none';
+                    
+                    // 清空表单
+                    document.getElementById('loginForm').reset();
+                    
+                    console.log('登录成功，用户：' + username);
+                } else {
+                    alert('请填写完整的登录信息');
+                }
+            });
+            
+            // 注册表单提交
+            document.getElementById('signupForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('signupUsername').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                
+                if (username && email && password) {
+                    // 使用用户管理系统注册
+                    window.userManager.login(username, email);
+                    
+                    // 关闭注册弹窗
+                    document.getElementById('signupModal').style.display = 'none';
+                    
+                    // 清空表单
+                    document.getElementById('signupForm').reset();
+                    
+                    console.log('注册成功，用户：' + username);
+                } else {
+                    alert('请填写完整的注册信息');
+                }
+            });
+            
+            // 导航链接高亮
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        const sectionId = href.substring(1);
+                        scrollToSection(sectionId);
+                    }
+                });
+            });
+            
+            // 页面滚动效果
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 100) {
+                    header.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                }
+            });
+            
+            // 特性卡片动画
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+            
+            // 切换用户菜单
+            window.toggleUserMenu = function() {
+                const userMenu = document.getElementById('userMenu');
+                if (userMenu) {
+                    userMenu.classList.toggle('show');
+                }
+            };
+            
+            // 退出登录
+            window.logout = function() {
+                if (confirm('确定要退出登录吗？')) {
+                    // 使用用户管理系统退出登录
+                    window.userManager.logout();
+                    
+                    // 隐藏用户菜单
+                    const userMenu = document.getElementById('userMenu');
+                    if (userMenu) {
+                        userMenu.classList.remove('show');
+                    }
+                    
+                    console.log('用户已退出登录');
+                }
+            };
+            
+            // 点击页面其他地方关闭用户菜单
+            document.addEventListener('click', function(e) {
+                const userDropdown = document.querySelector('.user-dropdown');
+                const userMenu = document.getElementById('userMenu');
+                
+                if (userDropdown && !userDropdown.contains(e.target)) {
+                    if (userMenu) {
+                        userMenu.classList.remove('show');
+                    }
+                }
+            });
+        });
+        
+        // 开启厨艺之旅功能
+        function startCookingJourney() {
+            // 检查是否已登录
+            if (window.userManager && window.userManager.isLoggedIn()) {
+                // 已登录，直接跳转到主页
+                window.location.href = 'main.html';
+            } else {
+                // 未登录，显示登录弹窗
+                openLoginModal();
+            }
+        }
+    </script>
+</body>
+</html>

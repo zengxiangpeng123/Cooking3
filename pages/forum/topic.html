@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">话题详情 - 美食论坛</title>
+    <meta name="description" content="查看话题详情并参与讨论">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    <link rel="shortcut icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    
+    <!-- CSS 样式文件 -->
+    <link rel="stylesheet" href="../../css/base/reset.css">
+    <link rel="stylesheet" href="../../css/base/variables.css">
+    <link rel="stylesheet" href="../../css/base/base.css">
+    <link rel="stylesheet" href="../../css/components/header.css">
+    <link rel="stylesheet" href="../../css/components/footer.css">
+    <link rel="stylesheet" href="../../css/components/card.css">
+    <link rel="stylesheet" href="../../css/components/cool-search.css">
+    <link rel="stylesheet" href="../../css/components/modal.css">
+    <link rel="stylesheet" href="../../css/pages/forum-warm.css">
+    <link rel="stylesheet" href="../../css/components/notification.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__logo">
+                    <a href="../../index.html" class="logo">
+                        <img src="../../data/imgs/图标.png" alt="炒菜学习平台" class="logo__icon">
+                        <span class="logo__text">炒菜学习平台</span>
+                    </a>
+                </div>
+                
+                <nav class="header__nav">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="../../index.html" class="nav__link">首页</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../recipes/list.html" class="nav__link">菜谱大全</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../guide/basics.html" class="nav__link">烹饪指南</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="index.html" class="nav__link nav__link--active">美食论坛</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../profile/favorites.html" class="nav__link">我的收藏</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="header__search">
+                    <form class="search__form" id="searchForm">
+                        <input type="text" class="search__input" placeholder="搜索话题..." id="searchInput">
+                        <button type="submit" class="search__btn">
+                            <span class="search__icon">🔍</span>
+                        </button>
+                    </form>
+                </div>
+                
+                <button class="header__menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main">
+        <!-- 面包屑导航 -->
+        <nav class="breadcrumb">
+            <div class="container">
+                <ol class="breadcrumb__list">
+                    <li class="breadcrumb__item">
+                        <a href="../../index.html">首页</a>
+                    </li>
+                    <li class="breadcrumb__item">
+                        <a href="index.html">美食论坛</a>
+                    </li>
+                    <li class="breadcrumb__item">
+                        <a href="topics.html">话题列表</a>
+                    </li>
+                    <li class="breadcrumb__item breadcrumb__item--current" id="breadcrumbCurrent">
+                        加载中...
+                    </li>
+                </ol>
+            </div>
+        </nav>
+
+        <!-- 话题详情 -->
+        <section class="topic-detail" id="topicDetail">
+            <div class="container">
+                <div class="topic__header">
+                    <div class="topic__meta">
+                        <span class="topic__category" id="topicCategory">分类</span>
+                        <span class="topic__featured" id="topicFeatured" style="display: none;">精华</span>
+                        <span class="topic__pinned" id="topicPinned" style="display: none;">置顶</span>
+                    </div>
+                    <h1 class="topic__title" id="topicTitle">加载中...</h1>
+                    <div class="topic__author-info">
+                        <div class="author__avatar">
+                            <span class="avatar__icon" id="authorAvatar">👤</span>
+                        </div>
+                        <div class="author__details">
+                            <div class="author__name" id="authorName">作者</div>
+                            <div class="author__time" id="topicTime">发布时间</div>
+                        </div>
+                        <div class="topic__stats">
+                            <div class="stat-item">
+                                <span class="stat-icon">👁️</span>
+                                <span class="stat-number" id="topicViews">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">💬</span>
+                                <span class="stat-number" id="topicReplies">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">👍</span>
+                                <span class="stat-number" id="topicLikes">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic__content">
+                    <div class="topic__body" id="topicContent">
+                        加载中...
+                    </div>
+                    <div class="topic__actions">
+                        <button class="btn btn--outline" id="likeBtn">
+                            <span class="btn__icon">👍</span>
+                            <span class="btn__text">点赞</span>
+                        </button>
+                        <button class="btn btn--outline" id="favoriteBtn">
+                            <span class="btn__icon">⭐</span>
+                            <span class="btn__text">收藏</span>
+                        </button>
+                        <button class="btn btn--outline" id="shareBtn">
+                            <span class="btn__icon">📤</span>
+                            <span class="btn__text">分享</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 回复列表 -->
+        <section class="replies-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section__title">
+                        回复 (<span id="repliesCount">0</span>)
+                    </h2>
+                    <div class="replies__sort">
+                        <select class="filter__select" id="repliesSort">
+                            <option value="newest">最新回复</option>
+                            <option value="oldest">最早回复</option>
+                            <option value="likes">最多点赞</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="replies__list" id="repliesList">
+                    <!-- 回复列表将通过JavaScript动态生成 -->
+                </div>
+
+                <div class="replies__pagination" id="repliesPagination">
+                    <!-- 分页将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 发表回复 -->
+        <section class="reply-form-section">
+            <div class="container">
+                <div class="reply-form__header">
+                    <h3 class="reply-form__title">发表回复</h3>
+                </div>
+                <form class="reply-form" id="replyForm">
+                    <div class="form-group">
+                        <label class="form-label" for="replyContent">回复内容</label>
+                        <textarea class="form-textarea" id="replyContent" 
+                                placeholder="请输入您的回复内容..." 
+                                rows="6" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn--outline" id="previewBtn">预览</button>
+                        <button type="submit" class="btn btn--primary">发表回复</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- 相关话题推荐 -->
+        <section class="related-topics">
+            <div class="container">
+                <h2 class="section__title">相关话题</h2>
+                <div class="topics__grid" id="relatedTopics">
+                    <!-- 相关话题将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 分享模态框 -->
+    <div class="modal" id="shareModal">
+        <div class="modal__overlay"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 class="modal__title">分享话题</h3>
+                <button class="modal__close" id="closeShareModal">&times;</button>
+            </div>
+            <div class="modal__body">
+                <p>分享这个精彩话题：</p>
+                <div class="share__options">
+                    <button class="share__btn" data-platform="wechat">
+                        <span class="share__icon">💬</span>
+                        <span class="share__text">微信</span>
+                    </button>
+                    <button class="share__btn" data-platform="weibo">
+                        <span class="share__icon">📝</span>
+                        <span class="share__text">微博</span>
+                    </button>
+                    <button class="share__btn" data-platform="qq">
+                        <span class="share__icon">🐧</span>
+                        <span class="share__text">QQ</span>
+                    </button>
+                    <button class="share__btn" id="copyLinkBtn">
+                        <span class="share__icon">🔗</span>
+                        <span class="share__text">复制链接</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">关于我们</h3>
+                    <p class="footer__text">
+                        炒菜学习平台致力于传播中华美食文化，让每个人都能轻松学会做菜。
+                    </p>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">快速链接</h3>
+                    <ul class="footer__links">
+                        <li><a href="../recipes/list.html">菜谱大全</a></li>
+                        <li><a href="../guide/basics.html">烹饪基础</a></li>
+                        <li><a href="index.html">美食论坛</a></li>
+                        <li><a href="../about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">联系方式</h3>
+                    <ul class="footer__contact">
+                        <li>📧 contact@cooking-platform.com</li>
+                        <li>📱 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2024 炒菜学习平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 文件 -->
+    <script src="../../js/utils/global-search.js"></script>
+    <script src="../../js/utils/storage.js"></script>
+    <script src="../../js/utils/dom.js"></script>
+    <script src="../../js/data/forum.js"></script>
+    <script src="../../js/components/header.js"></script>
+    <script src="../../js/components/search.js"></script>
+    <script src="../../js/components/modal.js"></script>
+    <script src="../../js/pages/forum-topic.js"></script>
+    <script src="../../js/app.js"></script>
+</body>
+</html>

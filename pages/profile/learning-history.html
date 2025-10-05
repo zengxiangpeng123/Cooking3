@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习记录 - 炒菜学习平台</title>
+    <meta name="description" content="查看您的完整学习历史记录">
+    
+    <!-- CSS 样式文件 -->
+    <link rel="stylesheet" href="../../css/base/reset.css">
+    <link rel="stylesheet" href="../../css/base/variables.css">
+    <link rel="stylesheet" href="../../css/base/base.css">
+    <link rel="stylesheet" href="../../css/components/header.css">
+    <link rel="stylesheet" href="../../css/components/footer.css">
+    <link rel="stylesheet" href="../../css/components/card.css">
+    <link rel="stylesheet" href="../../css/components/cool-search.css">
+    <link rel="stylesheet" href="../../css/pages/profile.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    
+    <style>
+        .learning-history {
+            min-height: 60vh;
+            padding: 40px 0;
+        }
+        
+        .history-filters {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .history-filters__content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        .history-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .history-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .history-card__image {
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .history-card__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .history-card__time-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .history-card__content {
+            padding: 20px;
+        }
+        
+        .history-card__title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .history-card__desc {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .history-card__meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .history-card__actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .history-card__btn {
+            flex: 1;
+            margin-right: 8px;
+            padding: 10px;
+            background: #ff6b35;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .history-card__btn:hover {
+            background: #e55a2b;
+        }
+        
+        .history-card__quick-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .quick-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .quick-btn:hover {
+            background: #f8f9fa;
+            border-color: #ff6b35;
+        }
+        
+        .quick-btn.favorite.active {
+            background: #ff6b35;
+            color: white;
+            border-color: #ff6b35;
+        }
+        
+        .empty-history {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .pagination-info {
+            text-align: center;
+            margin: 30px 0;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .history-filters__content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .history-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__logo">
+                    <a href="../../main.html" class="logo">
+                        <img src="../../data/imgs/图标.png" alt="炒菜学习平台" class="logo__icon">
+                        <span class="logo__text">炒菜学习平台</span>
+                    </a>
+                </div>
+                
+                <nav class="header__nav">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="../../main.html" class="nav__link">首页</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../recipes/list.html" class="nav__link">菜谱大全</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../guide/basics.html" class="nav__link">烹饪指南</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../forum/index.html" class="nav__link">美食论坛</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="favorites.html" class="nav__link">我的收藏</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="center.html" class="nav__link nav__link--active">用户中心</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="header__search">
+                    <form class="search__form" id="searchForm">
+                        <input type="text" class="search__input" placeholder="搜索菜谱或食材..." id="searchInput">
+                        <button type="submit" class="search__btn">
+                            <span class="search__icon">🔍</span>
+                        </button>
+                    </form>
+                </div>
+                
+                <button class="header__menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main">
+        <section class="page-header" style="background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%); color: white; padding: 60px 0;">
+            <div class="container" style="text-align: center;">
+                <h1 class="page-title" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 15px;">📚 学习记录</h1>
+                <p class="page-description" style="font-size: 1.2rem; opacity: 0.95;">我的菜谱学习历程</p>
+                <div style="margin-top: 20px;">
+                    <a href="center.html" class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); text-decoration: none; padding: 10px 20px; border-radius: 6px; margin-right: 10px;">
+                        ← 返回用户中心
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="learning-history">
+            <div class="container">
+                <!-- 筛选和排序 -->
+                <div class="history-filters">
+                    <div class="history-filters__content">
+                        <div class="filter-group">
+                            <label>排序方式：</label>
+                            <select id="sortSelect" class="filter__select">
+                                <option value="newest">最新学习</option>
+                                <option value="oldest">最早学习</option>
+                                <option value="name">按名称排序</option>
+                                <option value="cuisine">按菜系分类</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>筛选菜系：</label>
+                            <select id="cuisineFilter" class="filter__select">
+                                <option value="all">全部菜系</option>
+                                <option value="sichuan">川菜</option>
+                                <option value="cantonese">粤菜</option>
+                                <option value="hunan">湘菜</option>
+                                <option value="shandong">鲁菜</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>时间范围：</label>
+                            <select id="timeFilter" class="filter__select">
+                                <option value="all">全部时间</option>
+                                <option value="today">今天</option>
+                                <option value="week">本周</option>
+                                <option value="month">本月</option>
+                            </select>
+                        </div>
+                        
+                        <div class="history-stats">
+                            <span id="historyCount">共 0 条记录</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 学习记录网格 -->
+                <div class="history-grid" id="historyGrid">
+                    <!-- 学习记录将通过JavaScript动态生成 -->
+                </div>
+
+                <!-- 分页信息 -->
+                <div class="pagination-info" id="paginationInfo"></div>
+
+                <!-- 空状态 -->
+                <div class="empty-history" id="emptyHistory" style="display: none;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">📚</div>
+                    <h3>还没有学习记录</h3>
+                    <p>浏览菜谱详情页面即会自动记录学习历史</p>
+                    <a href="../recipes/list.html" class="btn btn--primary" style="margin-top: 20px;">
+                        🍳 开始学习菜谱
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">关于我们</h3>
+                    <p class="footer__text">炒菜学习平台致力于传播中华美食文化，让每个人都能轻松学会做菜。</p>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">快速链接</h3>
+                    <ul class="footer__links">
+                        <li><a href="../recipes/list.html">菜谱大全</a></li>
+                        <li><a href="../guide/basics.html">烹饪基础</a></li>
+                        <li><a href="center.html">用户中心</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">联系方式</h3>
+                    <ul class="footer__contact">
+                        <li>📧 contact@cooking-platform.com</li>
+                        <li>📱 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2024 炒菜学习平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 文件 -->
+    <script src="../../js/utils/global-search.js"></script>
+    <script src="../../js/utils/storage.js"></script>
+    <script src="../../js/utils/dom.js"></script>
+    <script src="../../js/data/recipes.js"></script>
+    <script src="../../js/utils/user-center-manager.js"></script>
+
+    <script>
+        class LearningHistoryPage {
+            constructor() {
+                this.currentPage = 1;
+                this.itemsPerPage = 12;
+                this.currentSort = 'newest';
+                this.currentCuisine = 'all';
+                this.currentTime = 'all';
+                this.allHistory = [];
+                this.filteredHistory = [];
+                this.init();
+            }
+
+            init() {
+                this.loadHistory();
+                this.bindEvents();
+                this.applyFiltersAndRender();
+            }
+
+            loadHistory() {
+                const historyData = JSON.parse(localStorage.getItem('learning_history') || '[]');
+                
+                this.allHistory = historyData.map(item => ({
+                    ...item,
+                    timestamp: new Date(item.timestamp),
+                    recipe: this.getRecipeById(item.recipeId)
+                })).filter(item => item.recipe);
+                
+                console.log(`加载了 ${this.allHistory.length} 条学习记录`);
+            }
+
+            bindEvents() {
+                // 排序选择
+                document.getElementById('sortSelect').addEventListener('change', (e) => {
+                    this.currentSort = e.target.value;
+                    this.applyFiltersAndRender();
+                });
+
+                // 菜系筛选
+                document.getElementById('cuisineFilter').addEventListener('change', (e) => {
+                    this.currentCuisine = e.target.value;
+                    this.applyFiltersAndRender();
+                });
+
+                // 时间筛选
+                document.getElementById('timeFilter').addEventListener('change', (e) => {
+                    this.currentTime = e.target.value;
+                    this.applyFiltersAndRender();
+                });
+
+                // 收藏按钮事件委托
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('favorite-btn')) {
+                        e.stopPropagation();
+                        const recipeId = e.target.getAttribute('data-recipe-id');
+                        this.toggleFavorite(recipeId, e.target);
+                    } else if (e.target.classList.contains('share-btn')) {
+                        e.stopPropagation();
+                        const recipeId = e.target.getAttribute('data-recipe-id');
+                        this.shareRecipe(recipeId);
+                    }
+                });
+            }
+
+            applyFiltersAndRender() {
+                this.filteredHistory = this.filterHistory();
+                this.sortHistory();
+                this.renderHistory();
+                this.updateStats();
+            }
+
+            filterHistory() {
+                let filtered = [...this.allHistory];
+
+                // 菜系筛选
+                if (this.currentCuisine !== 'all') {
+                    filtered = filtered.filter(item => item.recipe.cuisine === this.currentCuisine);
+                }
+
+                // 时间筛选
+                if (this.currentTime !== 'all') {
+                    const now = new Date();
+                    filtered = filtered.filter(item => {
+                        switch (this.currentTime) {
+                            case 'today':
+                                return item.timestamp.toDateString() === now.toDateString();
+                            case 'week':
+                                const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                                return item.timestamp >= weekAgo;
+                            case 'month':
+                                const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                                return item.timestamp >= monthAgo;
+                            default:
+                                return true;
+                        }
+                    });
+                }
+
+                return filtered;
+            }
+
+            sortHistory() {
+                switch (this.currentSort) {
+                    case 'newest':
+                        this.filteredHistory.sort((a, b) => b.timestamp - a.timestamp);
+                        break;
+                    case 'oldest':
+                        this.filteredHistory.sort((a, b) => a.timestamp - b.timestamp);
+                        break;
+                    case 'name':
+                        this.filteredHistory.sort((a, b) => a.recipe.title.localeCompare(b.recipe.title, 'zh-CN'));
+                        break;
+                    case 'cuisine':
+                        this.filteredHistory.sort((a, b) => a.recipe.cuisine.localeCompare(b.recipe.cuisine));
+                        break;
+                }
+            }
+
+            renderHistory() {
+                const container = document.getElementById('historyGrid');
+                const emptyState = document.getElementById('emptyHistory');
+
+                if (this.filteredHistory.length === 0) {
+                    container.style.display = 'none';
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                container.style.display = 'grid';
+                emptyState.style.display = 'none';
+
+                container.innerHTML = this.filteredHistory.map(item => 
+                    this.createHistoryCard(item)
+                ).join('');
+            }
+
+            createHistoryCard(item) {
+                const recipe = item.recipe;
+                const cuisineInfo = this.getCuisineInfo(recipe.cuisine);
+                const timeDiff = this.getTimeAgo(item.timestamp);
+                const isFavorite = this.getFavorites().includes(recipe.id);
+
+                return `
+                    <div class="history-card">
+                        <div class="history-card__image">
+                            <img src="/cooking-platform/data/imgs/${this.getCuisineFolderName(recipe.cuisine)}/${recipe.title}.png" 
+                                 alt="${recipe.title}"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div style="
+                                display: none;
+                                width: 100%; 
+                                height: 100%; 
+                                background: linear-gradient(135deg, ${cuisineInfo.color}, ${this.darkenColor(cuisineInfo.color, 20)});
+                                align-items: center;
+                                justify-content: center;
+                                color: white;
+                            ">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">${cuisineInfo.icon}</div>
+                                    <div style="font-size: 1rem; font-weight: 600;">${recipe.title}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="history-card__time-badge">${timeDiff}</div>
+                        </div>
+                        
+                        <div class="history-card__content">
+                            <h3 class="history-card__title">${recipe.title}</h3>
+                            <p class="history-card__desc">${recipe.description.substring(0, 80)}...</p>
+                            
+                            <div class="history-card__meta">
+                                <span>${cuisineInfo.name} • ${recipe.difficulty} • ${recipe.cookTime}</span>
+                                <span>⭐ ${recipe.rating || '4.5'}</span>
+                            </div>
+                            
+                            <div class="history-card__actions">
+                                <button class="history-card__btn" onclick="window.location.href='../recipes/detail.html?id=${recipe.id}'">
+                                    再次学习
+                                </button>
+                                
+                                <div class="history-card__quick-actions">
+                                    <button class="quick-btn favorite-btn ${isFavorite ? 'active' : ''}" 
+                                            data-recipe-id="${recipe.id}" 
+                                            title="${isFavorite ? '取消收藏' : '收藏'}">
+                                        ${isFavorite ? '♥' : '♡'}
+                                    </button>
+                                    <button class="quick-btn share-btn" 
+                                            data-recipe-id="${recipe.id}" 
+                                            title="分享">
+                                        🔗
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            updateStats() {
+                const countElement = document.getElementById('historyCount');
+                if (countElement) {
+                    countElement.textContent = `共 ${this.filteredHistory.length} 条记录`;
+                }
+            }
+
+            toggleFavorite(recipeId, btn) {
+                const favorites = this.getFavorites();
+                const isFavorite = favorites.includes(recipeId);
+                const recipe = this.getRecipeById(recipeId);
+
+                if (isFavorite) {
+                    const newFavorites = favorites.filter(id => id !== recipeId);
+                    localStorage.setItem('favorites', JSON.stringify(newFavorites));
+                    btn.classList.remove('active');
+                    btn.innerHTML = '♡';
+                    btn.title = '收藏';
+                    this.showToast(`已取消收藏 "${recipe.title}"`, 'info');
+                } else {
+                    favorites.push(recipeId);
+                    localStorage.setItem('favorites', JSON.stringify(favorites));
+                    btn.classList.add('active');
+                    btn.innerHTML = '♥';
+                    btn.title = '取消收藏';
+                    this.showToast(`已收藏 "${recipe.title}"`, 'success');
+                }
+            }
+
+            shareRecipe(recipeId) {
+                const recipe = this.getRecipeById(recipeId);
+                if (!recipe) return;
+
+                const shareUrl = `${window.location.origin}/cooking-platform/pages/recipes/detail.html?id=${recipeId}`;
+                const shareText = `我在炒菜学习平台学习了「${recipe.title}」，推荐给你！`;
+
+                if (navigator.share) {
+                    navigator.share({
+                        title: recipe.title,
+                        text: shareText,
+                        url: shareUrl
+                    });
+                } else {
+                    const fullText = `${shareText}\n${shareUrl}`;
+                    navigator.clipboard.writeText(fullText).then(() => {
+                        this.showToast('分享链接已复制到剪贴板', 'success');
+                    }).catch(() => {
+                        prompt('请复制以下链接分享：', fullText);
+                    });
+                }
+            }
+
+            // 辅助方法
+            getRecipeById(recipeId) {
+                if (window.RecipeData && window.RecipeData.recipes) {
+                    return window.RecipeData.recipes.find(recipe => recipe.id === recipeId);
+                }
+                return null;
+            }
+
+            getFavorites() {
+                return JSON.parse(localStorage.getItem('favorites') || '[]');
+            }
+
+            getCuisineInfo(cuisine) {
+                const cuisines = {
+                    'sichuan': { name: '川菜', icon: '🌶️', color: '#ff4757' },
+                    'cantonese': { name: '粤菜', icon: '🦐', color: '#3742fa' },
+                    'hunan': { name: '湘菜', icon: '🔥', color: '#ff3838' },
+                    'shandong': { name: '鲁菜', icon: '🐟', color: '#2f3542' }
+                };
+                return cuisines[cuisine] || { name: '其他', icon: '🍽️', color: '#57606f' };
+            }
+
+            getCuisineFolderName(cuisine) {
+                const mapping = {
+                    'sichuan': '川菜',
+                    'hunan': '湘菜', 
+                    'cantonese': '粵菜',
+                    'shandong': '鲁菜'
+                };
+                return mapping[cuisine] || '川菜';
+            }
+
+            darkenColor(color, percent) {
+                const num = parseInt(color.replace("#", ""), 16);
+                const amt = Math.round(2.55 * percent);
+                const R = Math.max(0, Math.min(255, (num >> 16) - amt));
+                const G = Math.max(0, Math.min(255, (num >> 8 & 0x00FF) - amt));
+                const B = Math.max(0, Math.min(255, (num & 0x0000FF) - amt));
+                return "#" + ((1 << 24) + (R << 16) + (G << 8) + B).toString(16).slice(1);
+            }
+
+            getTimeAgo(date) {
+                const now = new Date();
+                const diffMs = now - date;
+                const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                const diffMins = Math.floor(diffMs / (1000 * 60));
+
+                if (diffDays > 0) {
+                    return `${diffDays}天前`;
+                } else if (diffHours > 0) {
+                    return `${diffHours}小时前`;
+                } else if (diffMins > 0) {
+                    return `${diffMins}分钟前`;
+                } else {
+                    return '刚刚';
+                }
+            }
+
+            showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.textContent = message;
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 80px;
+                    right: 20px;
+                    background: ${type === 'success' ? '#4caf50' : '#2196f3'};
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                    z-index: 10000;
+                    font-size: 14px;
+                    opacity: 0;
+                    transform: translateX(100px);
+                    transition: all 0.3s ease;
+                `;
+
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.style.opacity = '1';
+                    toast.style.transform = 'translateX(0)';
+                }, 10);
+
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(100px)';
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            new LearningHistoryPage();
+        });
+    </script>
+</body>
+</html>

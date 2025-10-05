@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑个人资料 - 炒菜学习平台</title>
+    <meta name="description" content="编辑和更新您的个人资料信息">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS 样式文件 -->
+    <link rel="stylesheet" href="../../css/base/reset.css">
+    <link rel="stylesheet" href="../../css/base/variables.css">
+    <link rel="stylesheet" href="../../css/base/base.css">
+    <link rel="stylesheet" href="../../css/components/header.css">
+    <link rel="stylesheet" href="../../css/components/footer.css">
+    <link rel="stylesheet" href="../../css/components/clean-form.css">
+    <link rel="stylesheet" href="../../css/components/cool-search.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    
+    <style>
+        .profile-edit {
+            min-height: calc(100vh - 160px);
+            padding: 40px 0;
+            background: #f8f9fa;
+        }
+        
+        .edit-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .edit-header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .page-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .edit-form-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .form-section {
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-header {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-desc {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .section-content {
+            padding: 30px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .form-label.required::after {
+            content: " *";
+            color: #ff6b35;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+        
+        .form-input.error {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+        }
+        
+        .form-input.success {
+            border-color: #28a745;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .form-help {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        
+        .form-error {
+            font-size: 0.85rem;
+            color: #dc3545;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .form-error.show {
+            display: block;
+        }
+        
+        /* 头像上传区域 */
+        .avatar-upload-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .avatar-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 4px solid #ff6b35;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .avatar-preview:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+        }
+        
+        .avatar-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .avatar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .avatar-preview:hover .avatar-overlay {
+            opacity: 1;
+        }
+        
+        .avatar-overlay i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .avatar-overlay span {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .avatar-upload-btn {
+            background: linear-gradient(135deg, #ff6b35, #ff8b5a);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+        
+        .avatar-upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+        }
+        
+        .avatar-remove-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        
+        .avatar-remove-btn:hover {
+            background: #5a6268;
+        }
+        
+        /* 性别选择 */
+        .gender-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+        
+        .gender-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+        
+        .gender-option:hover {
+            background: #f8f9fa;
+        }
+        
+        .gender-option input[type="radio"] {
+            margin: 0;
+        }
+        
+        /* 保存按钮区域 */
+        .form-actions {
+            background: #f8f9fa;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b35, #ff8b5a);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        /* 加载状态 */
+        .saving {
+            pointer-events: none;
+        }
+        
+        .saving .btn-primary {
+            background: #ccc;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* 成功提示 */
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .edit-container {
+                padding: 0 15px;
+            }
+            
+            .edit-header {
+                padding: 20px;
+            }
+            
+            .page-title {
+                font-size: 1.6rem;
+            }
+            
+            .section-content {
+                padding: 20px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .form-actions {
+                padding: 20px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .gender-options {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        /* 返回按钮 */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: #ff6b35;
+        }
+        
+        .back-link i {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__logo">
+                    <a href="../../main.html" class="logo">
+                        <img src="../../data/imgs/图标.png" alt="炒菜学习平台" class="logo__icon">
+                        <span class="logo__text">炒菜学习平台</span>
+                    </a>
+                </div>
+                
+                <nav class="header__nav">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="../../main.html" class="nav__link">首页</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../recipes/list.html" class="nav__link">菜谱大全</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../guide/basics.html" class="nav__link">烹饪指南</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../forum/index.html" class="nav__link">美食论坛</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="favorites.html" class="nav__link">我的收藏</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="center.html" class="nav__link nav__link--active">用户中心</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <button class="header__menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <main class="profile-edit">
+        <div class="edit-container">
+            <!-- 返回链接 -->
+            <a href="center.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                返回用户中心
+            </a>
+            
+            <!-- 页面标题 -->
+            <div class="edit-header">
+                <h1 class="page-title">
+                    <i class="fas fa-user-edit" style="color: #ff6b35;"></i>
+                    编辑个人资料
+                </h1>
+                <p class="page-subtitle">
+                    完善您的个人信息，让其他厨友更好地了解您。所有信息都是可选的，您可以随时修改。
+                </p>
+            </div>
+            
+            <!-- 成功提示 -->
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                个人资料保存成功！
+            </div>
+            
+            <!-- 编辑表单 -->
+            <form class="edit-form-container" id="profileForm">
+                <!-- 头像设置 -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-portrait"></i>
+                            头像设置
+                        </h2>
+                        <p class="section-desc">上传您的个人头像，支持 JPG、PNG 格式，大小不超过 2MB</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="avatar-upload-section">
+                            <div class="avatar-preview" id="avatarPreview">
+                                <img src="../../assets/images/avatars/default.png" alt="头像预览" id="avatarImage"
+                                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjYwIiBmaWxsPSIjZmY2YjM1Ii8+CjxzdmcgeD0iMzAiIHk9IjMwIiB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIGZpbGw9IndoaXRlIj4KPHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Ik0zMCAzMEMzNiAzMCA0MiAyNCA0MiAyNEM0MiAxOCAzNiAxMiAzMCAxMkMyNCAxMiAxOCAxOCAxOCAyNEMxOCAyNCAyNCAzMCAzMCAzMFoiIGZpbGw9ImN1cnJlbnRDb2xvciIvPgo8cGF0aCBkPSJNMzAgMzZDMjQgMzYgMTIgNDIgMTIgNTRDMTIgNTQgMTggNjAgMzAgNjBDNDIgNjAgNDggNTQgNDggNTRDNDggNDIgMzYgMzYgMzAgMzZaIiBmaWxsPSJjdXJyZW50Q29sb3IiLz4KPC9zdmc+Cjwvc3ZnPgo8L3N2Zz4='">
+                                <div class="avatar-overlay">
+                                    <i class="fas fa-camera"></i>
+                                    <span>点击更换</span>
+                                </div>
+                            </div>
+                            <button type="button" class="avatar-upload-btn" id="avatarUploadBtn">
+                                <i class="fas fa-upload"></i>
+                                选择头像
+                            </button>
+                            <button type="button" class="avatar-remove-btn" id="avatarRemoveBtn">
+                                <i class="fas fa-trash"></i>
+                                使用默认头像
+                            </button>
+                            <input type="file" id="avatarInput" accept="image/jpeg,image/png,image/jpg" style="display: none;">
+                            <p class="form-help">建议使用正方形图片，最佳尺寸为 300x300 像素</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 基本信息 -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-id-card"></i>
+                            基本信息
+                        </h2>
+                        <p class="section-desc">这些信息将在您的个人资料中显示</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="username" class="form-label required">用户名</label>
+                                <input type="text" id="username" name="username" class="form-input" 
+                                       placeholder="请输入用户名" maxlength="20" required>
+                                <div class="form-error" id="usernameError">用户名长度应在2-20个字符之间</div>
+                                <div class="form-help">用户名将在论坛和评论中显示</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label required">邮箱地址</label>
+                                <input type="email" id="email" name="email" class="form-input" 
+                                       placeholder="请输入邮箱地址" required>
+                                <div class="form-error" id="emailError">请输入有效的邮箱地址</div>
+                                <div class="form-help">用于找回密码和接收重要通知</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="phone" class="form-label">手机号码</label>
+                                <input type="tel" id="phone" name="phone" class="form-input" 
+                                       placeholder="请输入手机号码" maxlength="11">
+                                <div class="form-error" id="phoneError">请输入有效的手机号码</div>
+                                <div class="form-help">可选，用于账户安全验证</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="realName" class="form-label">真实姓名</label>
+                                <input type="text" id="realName" name="realName" class="form-input" 
+                                       placeholder="请输入真实姓名" maxlength="10">
+                                <div class="form-help">可选，不会公开显示</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">性别</label>
+                            <div class="gender-options">
+                                <label class="gender-option">
+                                    <input type="radio" name="gender" value="male">
+                                    <i class="fas fa-mars" style="color: #007bff;"></i>
+                                    <span>男</span>
+                                </label>
+                                <label class="gender-option">
+                                    <input type="radio" name="gender" value="female">
+                                    <i class="fas fa-venus" style="color: #e91e63;"></i>
+                                    <span>女</span>
+                                </label>
+                                <label class="gender-option">
+                                    <input type="radio" name="gender" value="other">
+                                    <i class="fas fa-genderless" style="color: #6c757d;"></i>
+                                    <span>其他</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 详细信息 -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-info-circle"></i>
+                            详细信息
+                        </h2>
+                        <p class="section-desc">让其他厨友更好地了解您的兴趣和背景</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="location" class="form-label">所在地区</label>
+                                <input type="text" id="location" name="location" class="form-input" 
+                                       placeholder="如：北京市朝阳区" maxlength="50">
+                                <div class="form-help">可选，便于寻找附近的厨友</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="birthday" class="form-label">生日</label>
+                                <input type="date" id="birthday" name="birthday" class="form-input">
+                                <div class="form-help">可选，不会公开显示具体日期</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bio" class="form-label">个人简介</label>
+                            <textarea id="bio" name="bio" class="form-input form-textarea" 
+                                     placeholder="介绍一下您的烹饪经验、喜欢的菜系或美食心得..." 
+                                     maxlength="200"></textarea>
+                            <div class="form-help">最多200个字符，将在您的个人主页显示</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="interests" class="form-label">兴趣标签</label>
+                            <input type="text" id="interests" name="interests" class="form-input" 
+                                   placeholder="如：川菜、粤菜、烘焙、素食，用逗号分隔" maxlength="100">
+                            <div class="form-help">用逗号分隔多个标签，便于其他用户找到志同道合的厨友</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 操作按钮 -->
+                <div class="form-actions">
+                    <div>
+                        <button type="button" class="btn btn-secondary" id="resetBtn">
+                            <i class="fas fa-redo"></i>
+                            重置表单
+                        </button>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary" id="saveBtn">
+                            <i class="fas fa-save"></i>
+                            保存资料
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">关于我们</h3>
+                    <p class="footer__text">炒菜学习平台致力于传播中华美食文化，让每个人都能轻松学会做菜。</p>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">快速链接</h3>
+                    <ul class="footer__links">
+                        <li><a href="../recipes/list.html">菜谱大全</a></li>
+                        <li><a href="../guide/basics.html">烹饪基础</a></li>
+                        <li><a href="favorites.html">我的收藏</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">联系方式</h3>
+                    <ul class="footer__contact">
+                        <li>📧 contact@cooking-platform.com</li>
+                        <li>📱 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2024 炒菜学习平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 文件 -->
+    <script src="../../js/utils/global-search.js"></script>
+    <script src="../../js/utils/storage.js"></script>
+    <script src="../../js/utils/dom.js"></script>
+    <script src="../../js/components/header.js"></script>
+
+    <script>
+        // 个人资料编辑页面管理
+        class ProfileEditPage {
+            constructor() {
+                this.form = document.getElementById('profileForm');
+                this.avatarInput = document.getElementById('avatarInput');
+                this.avatarPreview = document.getElementById('avatarPreview');
+                this.avatarImage = document.getElementById('avatarImage');
+                this.saveBtn = document.getElementById('saveBtn');
+                this.resetBtn = document.getElementById('resetBtn');
+                this.successMessage = document.getElementById('successMessage');
+                
+                this.init();
+            }
+            
+            init() {
+                console.log('🚀 个人资料编辑页面初始化...');
+                this.loadCurrentData();
+                this.bindEvents();
+                this.setupValidation();
+            }
+            
+            // 加载当前用户数据
+            loadCurrentData() {
+                const userData = {
+                    username: localStorage.getItem('username') || '',
+                    email: localStorage.getItem('email') || '',
+                    phone: localStorage.getItem('phone') || '',
+                    realName: localStorage.getItem('realName') || '',
+                    gender: localStorage.getItem('gender') || '',
+                    location: localStorage.getItem('location') || '',
+                    birthday: localStorage.getItem('birthday') || '',
+                    bio: localStorage.getItem('bio') || '',
+                    interests: localStorage.getItem('interests') || '',
+                    avatar: localStorage.getItem('userAvatar') || ''
+                };
+                
+                // 填充表单数据
+                Object.keys(userData).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        if (element.type === 'radio') {
+                            const radioGroup = document.querySelectorAll(`input[name="${key}"]`);
+                            radioGroup.forEach(radio => {
+                                if (radio.value === userData[key]) {
+                                    radio.checked = true;
+                                }
+                            });
+                        } else {
+                            element.value = userData[key];
+                        }
+                    }
+                });
+                
+                // 加载头像
+                if (userData.avatar) {
+                    this.avatarImage.src = userData.avatar;
+                }
+                
+                console.log('✅ 用户数据已加载');
+            }
+            
+            // 绑定事件
+            bindEvents() {
+                // 表单提交
+                this.form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveProfile();
+                });
+                
+                // 重置表单
+                this.resetBtn.addEventListener('click', () => {
+                    if (confirm('确定要重置表单吗？未保存的修改将丢失。')) {
+                        this.loadCurrentData();
+                        this.clearErrors();
+                        this.showToast('表单已重置', 'info');
+                    }
+                });
+                
+                // 头像上传
+                document.getElementById('avatarUploadBtn').addEventListener('click', () => {
+                    this.avatarInput.click();
+                });
+                
+                this.avatarPreview.addEventListener('click', () => {
+                    this.avatarInput.click();
+                });
+                
+                this.avatarInput.addEventListener('change', (e) => {
+                    this.handleAvatarUpload(e.target.files[0]);
+                });
+                
+                // 移除头像
+                document.getElementById('avatarRemoveBtn').addEventListener('click', () => {
+                    this.removeAvatar();
+                });
+                
+                // 实时验证
+                this.form.addEventListener('input', (e) => {
+                    this.validateField(e.target);
+                });
+                
+                // 返回上一页警告
+                window.addEventListener('beforeunload', (e) => {
+                    if (this.hasUnsavedChanges()) {
+                        e.preventDefault();
+                        e.returnValue = '您有未保存的修改，确定要离开吗？';
+                    }
+                });
+            }
+            
+            // 设置验证规则
+            setupValidation() {
+                this.validationRules = {
+                    username: {
+                        required: true,
+                        minLength: 2,
+                        maxLength: 20,
+                        pattern: /^[\u4e00-\u9fa5a-zA-Z0-9_]+$/,
+                        message: '用户名只能包含中文、英文、数字和下划线，长度2-20个字符'
+                    },
+                    email: {
+                        required: true,
+                        pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: '请输入有效的邮箱地址'
+                    },
+                    phone: {
+                        required: false,
+                        pattern: /^1[3-9]\d{9}$/,
+                        message: '请输入有效的手机号码'
+                    }
+                };
+            }
+            
+            // 验证单个字段
+            validateField(field) {
+                const name = field.name || field.id;
+                const value = field.value.trim();
+                const rule = this.validationRules[name];
+                
+                if (!rule) return true;
+                
+                let isValid = true;
+                let message = '';
+                
+                // 必填验证
+                if (rule.required && !value) {
+                    isValid = false;
+                    message = '此字段为必填项';
+                }
+                
+                // 长度验证
+                if (value && rule.minLength && value.length < rule.minLength) {
+                    isValid = false;
+                    message = `长度不能少于${rule.minLength}个字符`;
+                }
+                
+                if (value && rule.maxLength && value.length > rule.maxLength) {
+                    isValid = false;
+                    message = `长度不能超过${rule.maxLength}个字符`;
+                }
+                
+                // 格式验证
+                if (value && rule.pattern && !rule.pattern.test(value)) {
+                    isValid = false;
+                    message = rule.message || '格式不正确';
+                }
+                
+                this.showFieldValidation(field, isValid, message);
+                return isValid;
+            }
+            
+            // 显示字段验证状态
+            showFieldValidation(field, isValid, message) {
+                const errorElement = document.getElementById(field.name + 'Error') || 
+                                   document.getElementById(field.id + 'Error');
+                
+                if (isValid) {
+                    field.classList.remove('error');
+                    field.classList.add('success');
+                    if (errorElement) {
+                        errorElement.classList.remove('show');
+                    }
+                } else {
+                    field.classList.remove('success');
+                    field.classList.add('error');
+                    if (errorElement) {
+                        errorElement.textContent = message;
+                        errorElement.classList.add('show');
+                    }
+                }
+            }
+            
+            // 清除所有错误提示
+            clearErrors() {
+                document.querySelectorAll('.form-input').forEach(input => {
+                    input.classList.remove('error', 'success');
+                });
+                document.querySelectorAll('.form-error').forEach(error => {
+                    error.classList.remove('show');
+                });
+            }
+            
+            // 验证整个表单
+            validateForm() {
+                let isValid = true;
+                const requiredFields = ['username', 'email'];
+                
+                requiredFields.forEach(fieldName => {
+                    const field = document.getElementById(fieldName);
+                    if (field && !this.validateField(field)) {
+                        isValid = false;
+                    }
+                });
+                
+                // 验证可选字段
+                const optionalFields = ['phone'];
+                optionalFields.forEach(fieldName => {
+                    const field = document.getElementById(fieldName);
+                    if (field && field.value.trim()) {
+                        if (!this.validateField(field)) {
+                            isValid = false;
+                        }
+                    }
+                });
+                
+                return isValid;
+            }
+            
+            // 处理头像上传
+            handleAvatarUpload(file) {
+                if (!file) return;
+                
+                // 检查文件类型
+                if (!file.type.match(/^image\/(jpeg|png|jpg)$/)) {
+                    this.showToast('请选择 JPG 或 PNG 格式的图片', 'error');
+                    return;
+                }
+                
+                // 检查文件大小（2MB）
+                if (file.size > 2 * 1024 * 1024) {
+                    this.showToast('图片大小不能超过 2MB', 'error');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.avatarImage.src = e.target.result;
+                    this.showToast('头像已更新，记得保存资料', 'success');
+                };
+                reader.onerror = () => {
+                    this.showToast('头像上传失败，请重试', 'error');
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            // 移除头像
+            removeAvatar() {
+                if (confirm('确定要使用默认头像吗？')) {
+                    this.avatarImage.src = '../../assets/images/avatars/default.png';
+                    this.avatarInput.value = '';
+                    this.showToast('已设置为默认头像，记得保存资料', 'info');
+                }
+            }
+            
+            // 保存个人资料
+            async saveProfile() {
+                if (!this.validateForm()) {
+                    this.showToast('请检查表单中的错误信息', 'error');
+                    return;
+                }
+                
+                // 显示保存状态
+                this.form.classList.add('saving');
+                this.saveBtn.disabled = true;
+                this.saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 保存中...';
+                
+                try {
+                    // 收集表单数据
+                    const formData = new FormData(this.form);
+                    const profileData = {};
+                    
+                    // 基本字段
+                    ['username', 'email', 'phone', 'realName', 'location', 'birthday', 'bio', 'interests'].forEach(field => {
+                        const value = formData.get(field) || document.getElementById(field)?.value || '';
+                        profileData[field] = value.trim();
+                    });
+                    
+                    // 性别字段
+                    const genderRadio = document.querySelector('input[name="gender"]:checked');
+                    profileData.gender = genderRadio ? genderRadio.value : '';
+                    
+                    // 头像
+                    if (this.avatarImage.src && !this.avatarImage.src.includes('default.png')) {
+                        profileData.userAvatar = this.avatarImage.src;
+                    } else {
+                        profileData.userAvatar = '';
+                    }
+                    
+                    // 模拟保存延迟
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    // 保存到本地存储
+                    Object.keys(profileData).forEach(key => {
+                        if (profileData[key]) {
+                            localStorage.setItem(key, profileData[key]);
+                        } else {
+                            localStorage.removeItem(key);
+                        }
+                    });
+                    
+                    // 更新时间戳
+                    localStorage.setItem('profileUpdatedAt', new Date().toISOString());
+                    
+                    // 显示成功信息
+                    this.showSuccessMessage();
+                    this.showToast('个人资料保存成功！', 'success');
+                    
+                    // 触发个人资料更新事件
+                    window.dispatchEvent(new CustomEvent('profileUpdated', {
+                        detail: profileData
+                    }));
+                    
+                    console.log('✅ 个人资料保存成功', profileData);
+                    
+                } catch (error) {
+                    console.error('❌ 保存失败:', error);
+                    this.showToast('保存失败，请重试', 'error');
+                } finally {
+                    // 恢复保存按钮状态
+                    this.form.classList.remove('saving');
+                    this.saveBtn.disabled = false;
+                    this.saveBtn.innerHTML = '<i class="fas fa-save"></i> 保存资料';
+                }
+            }
+            
+            // 显示成功消息
+            showSuccessMessage() {
+                this.successMessage.classList.add('show');
+                setTimeout(() => {
+                    this.successMessage.classList.remove('show');
+                }, 5000);
+            }
+            
+            // 检查是否有未保存的修改
+            hasUnsavedChanges() {
+                // 简单检查：比较表单数据与本地存储
+                const currentUsername = document.getElementById('username').value.trim();
+                const savedUsername = localStorage.getItem('username') || '';
+                
+                return currentUsername !== savedUsername;
+            }
+            
+            // 显示提示消息
+            showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.textContent = message;
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 80px;
+                    right: 20px;
+                    background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff'};
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                    z-index: 10000;
+                    font-size: 14px;
+                    font-weight: 500;
+                    opacity: 0;
+                    transform: translateX(100px);
+                    transition: all 0.3s ease;
+                    max-width: 300px;
+                `;
+
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.style.opacity = '1';
+                    toast.style.transform = 'translateX(0)';
+                }, 10);
+
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(100px)';
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            window.profileEditPage = new ProfileEditPage();
+        });
+    </script>
+</body>
+</html>

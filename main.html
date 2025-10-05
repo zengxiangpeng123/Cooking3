@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>炒菜学习平台 - 学会做菜，从这里开始</title>
+    <meta name="description" content="专业的中式炒菜学习平台，提供丰富的菜谱、详细的制作步骤和烹饪技巧">
+    <meta name="keywords" content="炒菜,菜谱,烹饪,中式菜谱,学做菜">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data/imgs/图标.iconfont">
+    <link rel="shortcut icon" type="image/x-icon" href="data/imgs/图标.iconfont">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS 样式文件 -->
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/base/variables.css">
+    <link rel="stylesheet" href="css/base/base.css">
+    <link rel="stylesheet" href="css/components/header.css">
+    <link rel="stylesheet" href="css/components/footer.css">
+    <link rel="stylesheet" href="css/components/card.css">
+    <link rel="stylesheet" href="css/components/cool-search.css">
+    <link rel="stylesheet" href="css/components/text-animations.css">
+    <link rel="stylesheet" href="css/pages/home.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <!-- Logo和网站名称 -->
+                <div class="header__logo">
+                    <a href="main.html" class="logo">
+                        <img src="data/imgs/图标.png" alt="炒菜学习平台" class="logo__icon">
+                        <span class="logo__text">炒菜学习平台</span>
+                    </a>
+                </div>
+                
+                <!-- 主导航菜单 -->
+                <nav class="header__nav">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="main.html" class="nav__link nav__link--active">首页</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="pages/recipes/list.html" class="nav__link">菜谱大全</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="pages/guide/basics.html" class="nav__link">烹饪指南</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="pages/forum/index.html" class="nav__link">美食论坛</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="pages/profile/favorites.html" class="nav__link">我的收藏</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="pages/profile/center.html" class="nav__link">用户中心</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <!-- 搜索框 -->
+                <div class="header__search">
+                    <form class="search__form" id="searchForm">
+                        <input type="text" class="search__input" placeholder="搜索菜谱或食材..." id="searchInput">
+                        <button type="submit" class="search__btn">
+                            <span class="search__icon">🔍</span>
+                        </button>
+                    </form>
+                </div>
+                
+                
+                <!-- 移动端菜单按钮 -->
+                <button class="header__menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main">
+        <!-- 英雄区域 -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero__content">
+                    <h1 class="hero__title page-title-animated">学会做菜，从这里开始</h1>
+                    <p class="hero__description page-subtitle-animated">
+                        专业的中式炒菜学习平台，为您提供丰富的菜谱<br>详细的制作步骤和实用的烹饪技巧
+                    </p>
+                    <div class="hero__actions animate-fade-in animate-delay-8">
+                        <a href="pages/recipes/list.html" class="btn btn--primary hover-lift">开始学习</a>
+                        <a href="pages/guide/basics.html" class="btn btn--secondary hover-lift">烹饪指南</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特色菜系分类 -->
+        <section class="categories">
+            <div class="container">
+                <h2 class="section__title animate-on-scroll animate-highlight">热门菜系</h2>
+                <div class="categories__grid cards-animated" id="categoriesGrid">
+                    <!-- 菜系分类卡片将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 推荐菜谱 -->
+        <section class="featured-recipes">
+            <div class="container">
+                <h2 class="section__title animate-on-scroll animate-gradient-text">今日推荐</h2>
+                <div class="recipes__grid cards-animated" id="featuredRecipes">
+                    <!-- 推荐菜谱卡片将通过JavaScript动态生成 -->
+                </div>
+                <div class="section__actions animate-on-scroll">
+                    <a href="pages/recipes/list.html" class="btn btn--outline hover-lift">查看更多菜谱</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 热门菜谱 -->
+        <section class="popular-recipes">
+            <div class="container">
+                <h2 class="section__title animate-on-scroll animate-pulse">热门菜谱</h2>
+                <div class="recipes__grid cards-animated" id="popularRecipes">
+                    <!-- 热门菜谱卡片将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 烹饪技巧预览 -->
+        <section class="cooking-tips">
+            <div class="container">
+                <h2 class="section__title animate-on-scroll animate-glow">烹饪小贴士</h2>
+                <div class="tips__grid cards-animated" id="cookingTips">
+                    <!-- 烹饪技巧卡片将通过JavaScript动态生成 -->
+                </div>
+                <div class="section__actions animate-on-scroll">
+                    <a href="pages/guide/basics.html" class="btn btn--outline hover-scale">更多技巧</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">关于我们</h3>
+                    <p class="footer__text">
+                        炒菜学习平台致力于传播中华美食文化，让每个人都能轻松学会做菜。
+                    </p>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">快速链接</h3>
+                    <ul class="footer__links">
+                        <li><a href="pages/recipes/list.html">菜谱大全</a></li>
+                        <li><a href="pages/guide/basics.html">烹饪基础</a></li>
+                        <li><a href="pages/profile/favorites.html">我的收藏</a></li>
+                        <li><a href="pages/about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">联系方式</h3>
+                    <ul class="footer__contact">
+                        <li>📧 contact@cooking-platform.com</li>
+                        <li>📱 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2024 炒菜学习平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 文件 -->
+    <!-- 全局搜索功能 -->
+    <script src="js/utils/global-search.js"></script>
+    <!-- 用户管理系统 -->
+    <script src="js/utils/user-manager.js"></script>
+    
+    <script>
+        // 检查用户登录状态和初始化用户信息
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查登录状态
+            if (!window.userManager.isLoggedIn()) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // 用户管理系统会自动更新用户信息显示
+            initUserDropdown();
+            initLogout();
+        });
+        
+        // 初始化用户信息显示
+        function initUserInfo() {
+            const username = localStorage.getItem('username');
+            const email = localStorage.getItem('email');
+            
+            if (username) {
+                document.getElementById('userName').textContent = username;
+                console.log('欢迎回来，' + username + '！');
+            }
+            
+            // 可以根据用户名生成头像或设置默认头像
+            const userAvatar = document.getElementById('userAvatar');
+            if (userAvatar && username) {
+                // 这里可以根据用户名生成头像，现在使用默认头像
+                userAvatar.alt = username + '的头像';
+            }
+        }
+        
+        // 初始化用户下拉菜单
+        function initUserDropdown() {
+            const userToggle = document.getElementById('userToggle');
+            const userMenu = document.getElementById('userMenu');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            if (userToggle && userMenu) {
+                userToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userMenu.classList.toggle('show');
+                });
+                
+                // 点击其他地方关闭下拉菜单
+                document.addEventListener('click', function(e) {
+                    if (!userDropdown.contains(e.target)) {
+                        userMenu.classList.remove('show');
+                    }
+                });
+            }
+        }
+        
+        // 初始化退出登录功能
+        function initLogout() {
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 确认退出
+                    if (confirm('确定要退出登录吗？')) {
+                        // 使用用户管理系统退出登录
+                        window.userManager.logout();
+                        
+                        // 跳转到引导页面
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        }
+    </script>
+    <script src="js/utils/storage.js"></script>
+    <script src="js/utils/dom.js"></script>
+    <script src="js/utils/api.js"></script>
+    <script src="js/data/recipes.js"></script>
+    <script src="js/data/categories.js"></script>
+    <script src="js/components/header.js"></script>
+    <script src="js/components/search.js"></script>
+    <script src="js/pages/home.js"></script>
+    <script src="js/app.js"></script>
+    
+    <script>
+        // 初始化滚动动效
+        document.addEventListener('DOMContentLoaded', function() {
+            initScrollAnimations();
+        });
+        
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in-view');
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.animate-on-scroll').forEach(element => {
+                observer.observe(element);
+            });
+        }
+    </script>
+</body>
+</html>

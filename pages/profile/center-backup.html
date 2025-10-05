@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户中心 - 炒菜学习平台</title>
+    <meta name="description" content="管理您的个人信息、学习进度和账户设置">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    <link rel="shortcut icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS 样式文件 -->
+    <link rel="stylesheet" href="../../css/base/reset.css">
+    <link rel="stylesheet" href="../../css/base/variables.css">
+    <link rel="stylesheet" href="../../css/base/base.css">
+    <link rel="stylesheet" href="../../css/components/header.css">
+    <link rel="stylesheet" href="../../css/components/footer.css">
+    <link rel="stylesheet" href="../../css/components/card.css">
+    <link rel="stylesheet" href="../../css/pages/profile.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    
+    <!-- 用户中心增强样式 -->
+    <style>
+        /* 统计卡片图标样式 */
+        .stats__icon img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+        
+        /* 最近学习网格 */
+        .recent-learning__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        /* 学习记录卡片 */
+        .learning-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .learning-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .learning-card__image {
+            position: relative;
+            height: 160px;
+            overflow: hidden;
+        }
+        
+        /* 本周学习样式增强 */
+        .weekly__grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+        
+        .day__item {
+            text-align: center;
+            padding: 15px 8px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            position: relative;
+            min-height: 100px;
+        }
+        
+        .day__item.completed {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            transform: scale(1.02);
+        }
+        
+        .day__item.current {
+            background: linear-gradient(135deg, #ff6b35, #ff8b5a);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .day__item.missed {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+        }
+        
+        .day__item.future {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px dashed #ddd;
+        }
+        
+        .day__name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: block;
+        }
+        
+        .day__status {
+            font-size: 1.5rem;
+            margin: 8px 0;
+        }
+        
+        .day__date {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        
+        .day__count {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255,255,255,0.3);
+            color: inherit;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+        
+        /* 周总结样式 */
+        .weekly__summary {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .summary__item {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .week-range {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: normal;
+        }
+        
+        /* 用户中心布局修复 - 左侧边栏独立滚动 */
+        .center__content {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start; /* 重要：顶部对齐 */
+            max-height: calc(100vh - 200px); /* 限制总高度 */
+        }
+        
+        .center__sidebar {
+            flex: 0 0 280px;
+            position: sticky;
+            top: 120px; /* 粘性定位，相对于头部 */
+            max-height: calc(100vh - 140px); /* 最大高度 */
+            overflow-y: auto; /* 独立滚动条 */
+            padding-right: 10px; /* 为滚动条留空间 */
+        }
+        
+        .center__main {
+            flex: 1;
+            min-height: 0; /* 允许内容收缩 */
+        }
+        
+        /* 美化滚动条 */
+        .center__sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .center__sidebar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .center__sidebar::-webkit-scrollbar-thumb {
+            background: #ff6b35;
+            border-radius: 3px;
+        }
+        
+        .center__sidebar::-webkit-scrollbar-thumb:hover {
+            background: #e55a2b;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .center__content {
+                flex-direction: column;
+                max-height: none;
+            }
+            
+            .center__sidebar {
+                flex: 1;
+                position: static;
+                max-height: none;
+                overflow-y: visible;
+                padding-right: 0;
+            }
+            
+            .recent-learning__grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .weekly__grid {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 8px;
+            }
+            
+            .day__item {
+                padding: 10px 4px;
+                min-height: 80px;
+            }
+            
+            .day__name {
+                font-size: 0.75rem;
+            }
+            
+            .day__status {
+                font-size: 1.2rem;
+                margin: 4px 0;
+            }
+            
+            .weekly__summary {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__logo">
+                    <a href="../../main.html" class="logo">
+                        <img src="../../data/imgs/图标.png" alt="炒菜学习平台" class="logo__icon">
+                        <span class="logo__text">炒菜学习平台</span>
+                    </a>
+                </div>
+                
+                <nav class="header__nav">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="../../main.html" class="nav__link">首页</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../recipes/list.html" class="nav__link">菜谱大全</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../guide/basics.html" class="nav__link">烹饪指南</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../forum/index.html" class="nav__link">美食论坛</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="favorites.html" class="nav__link">我的收藏</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="center.html" class="nav__link nav__link--active">用户中心</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="header__search">
+                    <form class="search__form" id="searchForm">
+                        <input type="text" class="search__input" placeholder="搜索菜谱或食材..." id="searchInput">
+                        <button type="submit" class="search__btn">
+                            <span class="search__icon">🔍</span>
+                        </button>
+                    </form>
+                </div>
+                
+                <button class="header__menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main">
+        <!-- 用户中心内容 -->
+        <section class="user-center">
+            <div class="container">
+                <h1 class="page__title">用户中心</h1>
+                <div class="center__content">
+                    <div class="center__sidebar">
+                        <div class="user__profile-card">
+                            <div class="profile__avatar-wrapper">
+                                <div class="profile__avatar">
+                                    <img src="../../assets/images/avatars/default.png" alt="用户头像" id="profileAvatar" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iNDAiIGZpbGw9IiNmZjZiMzUiLz4KPHN2ZyB4PSIyMCIgeT0iMjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0id2hpdGUiPgo8c3ZnIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTIwIDIwQzI0IDIwIDI4IDE2IDI4IDE2QzI4IDEyIDI0IDggMjAgOEMxNiA4IDEyIDEyIDEyIDE2QzEyIDE2IDE2IDIwIDIwIDIwWiIgZmlsbD0iY3VycmVudENvbG9yIi8+CjxwYXRoIGQ9Ik0yMCAyNEMxNiAyNCA4IDI4IDggMzZDOCAzNiAxMiA0MCAyMCA0MEMyOCA0MCAzMiAzNiAzMiAzNkMzMiAyOCAyNCAyNCAyMCAyNFoiIGZpbGw9ImN1cnJlbnRDb2xvciIvPgo8L3N2Zz4KPC9zdmc+Cjwvc3ZnPgo='; this.style.border='3px solid #ff6b35'">
+                                </div>
+                                <button class="avatar__upload-btn" id="avatarUploadBtn" title="更换头像">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                                <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                            </div>
+                            <div class="profile__info">
+                                <h2 class="profile__name" id="profileName">用户名</h2>
+                                <p class="profile__email" id="profileEmail">email@example.com</p>
+                                <button class="profile__edit-btn" id="editProfileBtn">编辑资料</button>
+                            </div>
+                        </div>
+                        
+                        <nav class="center__nav">
+                            <a href="#profile" class="center__nav-item center__nav-item--active" data-section="profile">
+                                <i class="fas fa-user"></i>
+                                个人信息
+                            </a>
+                            <a href="#learning" class="center__nav-item" data-section="learning">
+                                <i class="fas fa-chart-line"></i>
+                                学习进度
+                            </a>
+                            <a href="favorites.html" class="center__nav-item">
+                                <i class="fas fa-heart"></i>
+                                我的收藏
+                            </a>
+                            <a href="#security" class="center__nav-item" data-section="security">
+                                <i class="fas fa-shield-alt"></i>
+                                账户安全
+                            </a>
+                            <a href="#notifications" class="center__nav-item" data-section="notifications">
+                                <i class="fas fa-bell"></i>
+                                通知设置
+                            </a>
+                            <a href="#help" class="center__nav-item" data-section="help">
+                                <i class="fas fa-question-circle"></i>
+                                帮助中心
+                            </a>
+                        </nav>
+                    </div>
+                    
+                    <div class="center__main">
+                        <!-- 统计卡片 -->
+                        <div class="stats__grid">
+                            <div class="stats__card">
+                                <div class="stats__icon">
+                                    <img src="../../data/imgs/用户中心/已学菜谱.png" alt="已学菜谱" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <div class="fallback-icon" style="display:none;">📚</div>
+                                </div>
+                                <div class="stats__number" id="learnedRecipes">12</div>
+                                <div class="stats__label">已学菜谱</div>
+                            </div>
+                            <div class="stats__card">
+                                <div class="stats__icon">
+                                    <img src="../../data/imgs/用户中心/收藏菜谱.png" alt="收藏菜谱" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <div class="fallback-icon" style="display:none;">❤️</div>
+                                </div>
+                                <div class="stats__number" id="favoriteCount">8</div>
+                                <div class="stats__label">收藏菜谱</div>
+                            </div>
+                            <div class="stats__card">
+                                <div class="stats__icon">
+                                    <img src="../../data/imgs/用户中心/学习天数.png" alt="学习天数" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <div class="fallback-icon" style="display:none;">📅</div>
+                                </div>
+                                <div class="stats__number" id="studyDays">15</div>
+                                <div class="stats__label">学习天数</div>
+                            </div>
+                            <div class="stats__card">
+                                <div class="stats__icon">
+                                    <img src="../../data/imgs/用户中心/获得成就.png" alt="获得成就" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <div class="fallback-icon" style="display:none;">🏆</div>
+                                </div>
+                                <div class="stats__number" id="achievements">3</div>
+                                <div class="stats__label">获得成就</div>
+                            </div>
+                        </div>
+
+                        <!-- 个人信息 -->
+                        <div class="center__section" id="profileSection">
+                            <div class="section__header">
+                                <h3 class="section__title">个人信息</h3>
+                                <button class="section__edit-btn" id="toggleEditMode">
+                                    <i class="fas fa-edit"></i>
+                                    编辑资料
+                                </button>
+                            </div>
+                            
+                            <!-- 查看模式 -->
+                            <div class="info__view" id="profileView">
+                                <div class="info__grid">
+                                    <div class="info__item">
+                                        <label>用户名</label>
+                                        <span id="displayUsername">用户名</span>
+                                    </div>
+                                    <div class="info__item">
+                                        <label>邮箱地址</label>
+                                        <span id="displayEmail">email@example.com</span>
+                                    </div>
+                                    <div class="info__item">
+                                        <label>手机号码</label>
+                                        <span id="displayPhone">未绑定</span>
+                                    </div>
+                                    <div class="info__item">
+                                        <label>个人简介</label>
+                                        <span id="displayBio">热爱美食的烹饪爱好者</span>
+                                    </div>
+                                    <div class="info__item">
+                                        <label>注册时间</label>
+                                        <span>2024年10月</span>
+                                    </div>
+                                    <div class="info__item">
+                                        <label>最后活跃</label>
+                                        <span>今天</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 编辑模式 -->
+                            <div class="info__edit" id="profileEdit" style="display: none;">
+                                <form class="edit__form" id="profileEditForm">
+                                    <div class="form__grid">
+                                        <div class="form__group">
+                                            <label for="editUsername" class="form__label">用户名</label>
+                                            <input type="text" id="editUsername" class="form__input" placeholder="请输入用户名">
+                                        </div>
+                                        <div class="form__group">
+                                            <label for="editEmail" class="form__label">邮箱地址</label>
+                                            <input type="email" id="editEmail" class="form__input" placeholder="请输入邮箱">
+                                        </div>
+                                        <div class="form__group">
+                                            <label for="editPhone" class="form__label">手机号码</label>
+                                            <input type="tel" id="editPhone" class="form__input" placeholder="请输入手机号">
+                                        </div>
+                                        <div class="form__group form__group--full">
+                                            <label for="editBio" class="form__label">个人简介</label>
+                                            <textarea id="editBio" class="form__textarea" placeholder="介绍一下自己的烹饪兴趣..." rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form__actions">
+                                        <button type="submit" class="btn btn--primary">
+                                            <i class="fas fa-save"></i>
+                                            保存修改
+                                        </button>
+                                        <button type="button" class="btn btn--secondary" id="cancelEditBtn">
+                                            <i class="fas fa-times"></i>
+                                            取消
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- 最近学习 -->
+                        <div class="center__section" id="learningSection">
+                            <div class="section__header">
+                                <h3 class="section__title">最近学习</h3>
+                                <button class="section__edit-btn" onclick="clearLearningHistory()">
+                                    <i class="fas fa-trash"></i>
+                                    清空记录
+                                </button>
+                            </div>
+                            
+                            <!-- 学习历史网格 -->
+                            <div class="recent-learning__grid" id="recentLearningGrid">
+                                <!-- 学习历史将通过JavaScript动态生成 -->
+                            </div>
+                            
+                            <!-- 查看更多按钮 -->
+                            <div class="section__actions" id="viewMoreLearning" style="text-align: center; margin-top: 20px; display: none;">
+                                <button class="btn btn--outline" onclick="openFullLearningHistory()">
+                                    <i class="fas fa-history"></i>
+                                    查看全部学习记录
+                                </button>
+                            </div>
+                            
+                            <!-- 空状态 -->
+                            <div class="learning-empty-state" id="learningEmptyState" style="display: none;">
+                                <div class="empty-state__icon" style="font-size: 4rem;">📚</div>
+                                <h3 class="empty-state__title">还没有学习记录</h3>
+                                <p class="empty-state__description">
+                                    浏览菜谱详情页即会自动记录学习历史<br>
+                                    快去菜谱大全找找感兴趣的菜谱吧！
+                                </p>
+                                <a href="../recipes/list.html" class="btn btn--primary">
+                                    🍳 去学习菜谱
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- 成就系统 -->
+                        <div class="center__section" id="achievementsSection">
+                            <h3 class="section__title">我的成就</h3>
+                            <div class="achievements__grid">
+                                <div class="achievement-card achievement-card--unlocked">
+                                    <div class="achievement-card__icon">🎖️</div>
+                                    <h4 class="achievement-card__title">初学者</h4>
+                                    <p class="achievement-card__description">完成第一个菜谱学习</p>
+                                    <div class="achievement-card__progress">
+                                        <div class="achievement-card__progress-bar" style="width: 100%;"></div>
+                                    </div>
+                                    <div class="achievement-card__progress-text">已解锁</div>
+                                </div>
+                                
+                                <div class="achievement-card achievement-card--unlocked">
+                                    <div class="achievement-card__icon">🔥</div>
+                                    <h4 class="achievement-card__title">热爱烹饪</h4>
+                                    <p class="achievement-card__description">连续学习7天</p>
+                                    <div class="achievement-card__progress">
+                                        <div class="achievement-card__progress-bar" style="width: 100%;"></div>
+                                    </div>
+                                    <div class="achievement-card__progress-text">已解锁</div>
+                                </div>
+                                
+                                <div class="achievement-card achievement-card--locked">
+                                    <div class="achievement-card__icon">👨‍🍳</div>
+                                    <h4 class="achievement-card__title">厨艺大师</h4>
+                                    <p class="achievement-card__description">学会50个菜谱</p>
+                                    <div class="achievement-card__progress">
+                                        <div class="achievement-card__progress-bar" style="width: 24%;"></div>
+                                    </div>
+                                    <div class="achievement-card__progress-text">12/50</div>
+                                </div>
+                                
+                                <div class="achievement-card achievement-card--locked">
+                                    <div class="achievement-card__icon">🌟</div>
+                                    <h4 class="achievement-card__title">美食专家</h4>
+                                    <p class="achievement-card__description">收藏100个菜谱</p>
+                                    <div class="achievement-card__progress">
+                                        <div class="achievement-card__progress-bar" style="width: 8%;"></div>
+                                    </div>
+                                    <div class="achievement-card__progress-text">8/100</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 数据管理 -->
+                        <div class="center__section" id="dataSection">
+                            <h3 class="section__title">数据管理</h3>
+                            <div class="data__grid">
+                                <div class="data__card">
+                                    <div class="data__header">
+                                        <div class="data__icon">📊</div>
+                                        <div class="data__info">
+                                            <h4 class="data__title">学习数据同步</h4>
+                                            <p class="data__desc">同步您的学习进度和成就</p>
+                                        </div>
+                                    </div>
+                                    <button class="data__action" onclick="syncLearningData()">
+                                        <i class="fas fa-sync"></i>
+                                        同步数据
+                                    </button>
+                                </div>
+                                
+                                <div class="data__card">
+                                    <div class="data__header">
+                                        <div class="data__icon">💾</div>
+                                        <div class="data__info">
+                                            <h4 class="data__title">收藏管理</h4>
+                                            <p class="data__desc">导入导出收藏的菜谱数据</p>
+                                        </div>
+                                    </div>
+                                    <div class="data__actions">
+                                        <button class="data__action" onclick="exportFavorites()">
+                                            <i class="fas fa-download"></i>
+                                            导出收藏
+                                        </button>
+                                        <button class="data__action" onclick="importFavorites()">
+                                            <i class="fas fa-upload"></i>
+                                            导入收藏
+                                        </button>
+                                        <button class="data__action" onclick="clearFavorites()">
+                                            <i class="fas fa-trash"></i>
+                                            清空收藏
+                                        </button>
+                                    </div>
+                                    <input type="file" id="favoritesFileInput" accept=".json" style="display: none;">
+                                </div>
+                                
+                                <div class="data__card">
+                                    <div class="data__header">
+                                        <div class="data__icon">🔄</div>
+                                        <div class="data__info">
+                                            <h4 class="data__title">数据备份</h4>
+                                            <p class="data__desc">备份恢复所有个人数据</p>
+                                        </div>
+                                    </div>
+                                    <div class="data__actions">
+                                        <button class="data__action" onclick="backupAllData()">
+                                            <i class="fas fa-download"></i>
+                                            备份数据
+                                        </button>
+                                        <button class="data__action" onclick="importAllData()">
+                                            <i class="fas fa-upload"></i>
+                                            恢复数据
+                                        </button>
+                                    </div>
+                                    <input type="file" id="backupFileInput" accept=".json" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 账户安全 -->
+                        <div class="center__section" id="securitySection" style="display: none;">
+                            <h3 class="section__title">账户安全</h3>
+                            <div class="security__grid">
+                                <div class="security__card">
+                                    <div class="security__header">
+                                        <div class="security__icon">🔒</div>
+                                        <div class="security__info">
+                                            <h4 class="security__title">密码修改</h4>
+                                            <p class="security__desc">定期更新密码保护账户安全</p>
+                                        </div>
+                                    </div>
+                                    <button class="security__action" onclick="showPasswordModal()">
+                                        <i class="fas fa-key"></i>
+                                        修改密码
+                                    </button>
+                                </div>
+                                
+                                <div class="security__card">
+                                    <div class="security__header">
+                                        <div class="security__icon">📱</div>
+                                        <div class="security__info">
+                                            <h4 class="security__title">二步验证</h4>
+                                            <p class="security__desc">绑定手机号码进行安全验证</p>
+                                        </div>
+                                    </div>
+                                    <div class="security__toggle">
+                                        <label class="toggle__label">
+                                            <input type="checkbox" id="twoFactorToggle">
+                                            <span class="toggle__switch"></span>
+                                            <span class="toggle__text">启用验证</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="security__card">
+                                    <div class="security__header">
+                                        <div class="security__icon">🔐</div>
+                                        <div class="security__info">
+                                            <h4 class="security__title">登录设备</h4>
+                                            <p class="security__desc">管理已登录的设备</p>
+                                        </div>
+                                    </div>
+                                    <button class="security__action" onclick="showDevices()">
+                                        <i class="fas fa-laptop"></i>
+                                        查看设备
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 通知设置 -->
+                        <div class="center__section" id="notificationsSection" style="display: none;">
+                            <h3 class="section__title">通知设置</h3>
+                            <div class="notifications__list">
+                                <div class="notification__item">
+                                    <div class="notification__info">
+                                        <h4 class="notification__title">新菜谱推荐</h4>
+                                        <p class="notification__desc">当有新菜谱更新时通知我</p>
+                                    </div>
+                                    <label class="toggle__label">
+                                        <input type="checkbox" id="recipeNotifications" checked>
+                                        <span class="toggle__switch"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="notification__item">
+                                    <div class="notification__info">
+                                        <h4 class="notification__title">论坛消息</h4>
+                                        <p class="notification__desc">收到论坛回复和私信时通知</p>
+                                    </div>
+                                    <label class="toggle__label">
+                                        <input type="checkbox" id="forumNotifications" checked>
+                                        <span class="toggle__switch"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="notification__item">
+                                    <div class="notification__info">
+                                        <h4 class="notification__title">学习提醒</h4>
+                                        <p class="notification__desc">每日学习提醒</p>
+                                    </div>
+                                    <label class="toggle__label">
+                                        <input type="checkbox" id="studyReminder">
+                                        <span class="toggle__switch"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="notification__item">
+                                    <div class="notification__info">
+                                        <h4 class="notification__title">邮件通知</h4>
+                                        <p class="notification__desc">接收重要更新的邮件通知</p>
+                                    </div>
+                                    <label class="toggle__label">
+                                        <input type="checkbox" id="emailNotifications">
+                                        <span class="toggle__switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 学习计划 -->
+                        <div class="center__section" id="learningPlanSection" style="display: none;">
+                            <h3 class="section__title">我的学习计划</h3>
+                            <div class="plan__content">
+                                <div class="plan__current">
+                                    <h4 class="plan__title">当前目标</h4>
+                                    <div class="plan__progress">
+                                        <div class="progress__bar">
+                                            <div class="progress__fill" style="width: 60%;"></div>
+                                        </div>
+                                        <div class="progress__text">已完成 12/20 个菜谱</div>
+                                    </div>
+                                    <div class="plan__actions">
+                                        <button class="plan__btn" onclick="setPlan()">设置新目标</button>
+                                        <button class="plan__btn plan__btn--secondary" onclick="viewPlanHistory()">历史记录</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="plan__weekly">
+                                    <h4 class="plan__title">本周学习 <span id="currentWeekRange" class="week-range"></span></h4>
+                                    <div class="weekly__grid" id="weeklyGrid">
+                                        <!-- 本周学习状态将通过JavaScript根据实际时间动态生成 -->
+                                    </div>
+                                    <div class="weekly__summary" id="weeklySummary">
+                                        <span class="summary__item">
+                                            <strong id="completedDaysCount">0</strong> 天已学习
+                                        </span>
+                                        <span class="summary__item">
+                                            <strong id="remainingDaysCount">7</strong> 天待学习
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 消息中心 -->
+                        <div class="center__section" id="messagesSection" style="display: none;">
+                            <div class="section__header">
+                                <h3 class="section__title">消息中心</h3>
+                                <button class="section__edit-btn" onclick="markAllRead()">
+                                    <i class="fas fa-check-double"></i>
+                                    全部已读
+                                </button>
+                            </div>
+                            <div class="messages__list">
+                                <div class="message__item unread">
+                                    <div class="message__avatar">🎉</div>
+                                    <div class="message__content">
+                                        <h4 class="message__title">恭喜解锁新成就！</h4>
+                                        <p class="message__text">您已连续学习7天，获得"热爱烹饪"成就徽章</p>
+                                        <div class="message__time">2小时前</div>
+                                    </div>
+                                    <div class="message__actions">
+                                        <button class="message__action" onclick="markMessageRead(this)">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="message__item">
+                                    <div class="message__avatar">👨‍🍳</div>
+                                    <div class="message__content">
+                                        <h4 class="message__title">新菜谱推荐</h4>
+                                        <p class="message__text">根据您的喜好，为您推荐了3道新菜谱</p>
+                                        <div class="message__time">昨天</div>
+                                    </div>
+                                    <div class="message__actions">
+                                        <button class="message__action" onclick="viewRecommendations()">
+                                            <i class="fas fa-external-link-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="message__item">
+                                    <div class="message__avatar">💬</div>
+                                    <div class="message__content">
+                                        <h4 class="message__title">论坛回复</h4>
+                                        <p class="message__text">有人在您的帖子"新手如何做好红烧肉"中回复了</p>
+                                        <div class="message__time">3天前</div>
+                                    </div>
+                                    <div class="message__actions">
+                                        <button class="message__action" onclick="goToForum()">
+                                            <i class="fas fa-reply"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 帮助中心 -->
+                        <div class="center__section" id="helpSection" style="display: none;">
+                            <h3 class="section__title">帮助中心</h3>
+                            <div class="help__content">
+                                <div class="help__grid">
+                                    <div class="help__card">
+                                        <div class="help__icon">❓</div>
+                                        <h4 class="help__title">常见问题</h4>
+                                        <ul class="help__list">
+                                            <li><a href="#" class="help__link">如何添加菜谱到收藏？</a></li>
+                                            <li><a href="#" class="help__link">如何修改个人信息？</a></li>
+                                            <li><a href="#" class="help__link">如何参与论坛讨论？</a></li>
+                                            <li><a href="#" class="help__link">如何设置学习计划？</a></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="help__card">
+                                        <div class="help__icon">📝</div>
+                                        <h4 class="help__title">意见反馈</h4>
+                                        <form class="feedback__form" id="feedbackForm">
+                                            <textarea class="feedback__textarea" placeholder="请告诉我们您的建议或遇到的问题..." rows="4"></textarea>
+                                            <div class="feedback__actions">
+                                                <button type="submit" class="feedback__submit">
+                                                    <i class="fas fa-paper-plane"></i>
+                                                    提交反馈
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    
+                                    <div class="help__card">
+                                        <div class="help__icon">📞</div>
+                                        <h4 class="help__title">联系我们</h4>
+                                        <div class="contact__list">
+                                            <div class="contact__item">
+                                                <i class="fas fa-envelope"></i>
+                                                <span>support@cooking-platform.com</span>
+                                            </div>
+                                            <div class="contact__item">
+                                                <i class="fas fa-phone"></i>
+                                                <span>400-123-4567</span>
+                                            </div>
+                                            <div class="contact__item">
+                                                <i class="fas fa-clock"></i>
+                                                <span>工作时间：9:00-18:00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="help__card">
+                                        <div class="help__icon">📋</div>
+                                        <h4 class="help__title">使用指南</h4>
+                                        <div class="guide__steps">
+                                            <div class="guide__step">
+                                                <span class="step__number">1</span>
+                                                <span class="step__text">浏览菜谱大全</span>
+                                            </div>
+                                            <div class="guide__step">
+                                                <span class="step__number">2</span>
+                                                <span class="step__text">收藏感兴趣的菜谱</span>
+                                            </div>
+                                            <div class="guide__step">
+                                                <span class="step__number">3</span>
+                                                <span class="step__text">跟着步骤学习制作</span>
+                                            </div>
+                                            <div class="guide__step">
+                                                <span class="step__number">4</span>
+                                                <span class="step__text">在论坛分享心得</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 快捷操作 -->
+                        <div class="center__section" id="actionsSection">
+                            <h3 class="section__title">快捷操作</h3>
+                            <div class="actions__grid">
+                                <a href="../recipes/list.html" class="action__card">
+                                    <div class="action__icon">🔍</div>
+                                    <div class="action__content">
+                                        <h4 class="action__title">浏览菜谱</h4>
+                                        <p class="action__desc">发现更多美味菜谱</p>
+                                    </div>
+                                </a>
+                                
+                                <a href="favorites.html" class="action__card">
+                                    <div class="action__icon">❤️</div>
+                                    <div class="action__content">
+                                        <h4 class="action__title">我的收藏</h4>
+                                        <p class="action__desc">查看收藏的菜谱</p>
+                                    </div>
+                                </a>
+                                
+                                <a href="../forum/index.html" class="action__card">
+                                    <div class="action__icon">💬</div>
+                                    <div class="action__content">
+                                        <h4 class="action__title">美食论坛</h4>
+                                        <p class="action__desc">与厨友交流心得</p>
+                                    </div>
+                                </a>
+                                
+                                <a href="../guide/basics.html" class="action__card">
+                                    <div class="action__icon">📖</div>
+                                    <div class="action__content">
+                                        <h4 class="action__title">烹饪指南</h4>
+                                        <p class="action__desc">学习烹饪技巧</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">关于我们</h3>
+                    <p class="footer__text">
+                        炒菜学习平台致力于传播中华美食文化，让每个人都能轻松学会做菜。
+                    </p>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">快速链接</h3>
+                    <ul class="footer__links">
+                        <li><a href="../recipes/list.html">菜谱大全</a></li>
+                        <li><a href="../guide/basics.html">烹饪基础</a></li>
+                        <li><a href="../guide/tips.html">烹饪技巧</a></li>
+                        <li><a href="../about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">联系方式</h3>
+                    <ul class="footer__contact">
+                        <li>📧 contact@cooking-platform.com</li>
+                        <li>📱 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2024 炒菜学习平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 文件 -->
+    <script>
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查登录状态
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                window.location.href = '../../index.html';
+                return;
+            }
+            
+            // 初始化功能
+            loadUserInfo();
+            initAvatarUpload();
+            initProfileEdit();
+            updateStats();
+            initNavigation();
+            initNotificationSettings();
+            initSecurityFeatures();
+        });
+        
+        function loadUserInfo() {
+            const username = localStorage.getItem('username') || '用户名';
+            const email = localStorage.getItem('email') || 'email@example.com';
+            const phone = localStorage.getItem('phone') || '未绑定';
+            const bio = localStorage.getItem('bio') || '热爱美食的烹饪爱好者';
+            
+            // 更新显示
+            document.getElementById('profileName').textContent = username;
+            document.getElementById('profileEmail').textContent = email;
+            document.getElementById('displayUsername').textContent = username;
+            document.getElementById('displayEmail').textContent = email;
+            document.getElementById('displayPhone').textContent = phone;
+            document.getElementById('displayBio').textContent = bio;
+            
+            // 更新编辑表单
+            document.getElementById('editUsername').value = username;
+            document.getElementById('editEmail').value = email;
+            document.getElementById('editPhone').value = phone !== '未绑定' ? phone : '';
+            document.getElementById('editBio').value = bio;
+        }
+        
+        function initAvatarUpload() {
+            const uploadBtn = document.getElementById('avatarUploadBtn');
+            const avatarInput = document.getElementById('avatarInput');
+            const avatarImg = document.getElementById('profileAvatar');
+            
+            uploadBtn.addEventListener('click', function() {
+                avatarInput.click();
+            });
+            
+            avatarInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const newAvatar = e.target.result;
+                        
+                        // 更新当前页面的头像显示
+                        avatarImg.src = newAvatar;
+                        
+                        // 使用用户管理系统更新头像，这会同步到所有页面
+                        if (window.userManager) {
+                            window.userManager.updateUserInfo({
+                                avatar: newAvatar
+                            });
+                            
+                            console.log('头像已更新并同步到所有页面');
+                            
+                            // 显示更新成功提示
+                            showToast('头像更新成功！', 'success');
+                        } else {
+                            // 降级处理：如果用户管理系统未加载，使用原来的方式
+                            localStorage.setItem('userAvatar', newAvatar);
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // 从用户管理系统加载头像
+            if (window.userManager && window.userManager.isLoggedIn()) {
+                const userInfo = window.userManager.getCurrentUser();
+                if (userInfo && userInfo.avatar) {
+                    avatarImg.src = userInfo.avatar;
+                }
+            } else {
+                // 降级处理：从localStorage加载
+                const savedAvatar = localStorage.getItem('userAvatar');
+                if (savedAvatar) {
+                    avatarImg.src = savedAvatar;
+                }
+            }
+        }
+        
+        // 显示提示消息
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#4caf50' : '#2196f3'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                z-index: 10000;
+                font-size: 14px;
+                font-weight: 500;
+                opacity: 0;
+                transform: translateX(100px);
+                transition: all 0.3s ease;
+            `;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(0)';
+            }, 10);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100px)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        function initProfileEdit() {
+            const toggleBtn = document.getElementById('toggleEditMode');
+            const viewMode = document.getElementById('profileView');
+            const editMode = document.getElementById('profileEdit');
+            const editForm = document.getElementById('profileEditForm');
+            const cancelBtn = document.getElementById('cancelEditBtn');
+            
+            toggleBtn.addEventListener('click', function() {
+                viewMode.style.display = 'none';
+                editMode.style.display = 'block';
+                toggleBtn.innerHTML = '<i class="fas fa-eye"></i> 查看模式';
+            });
+            
+            cancelBtn.addEventListener('click', function() {
+                editMode.style.display = 'none';
+                viewMode.style.display = 'block';
+                toggleBtn.innerHTML = '<i class="fas fa-edit"></i> 编辑资料';
+                loadUserInfo(); // 重新加载数据
+            });
+            
+            editForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 获取表单数据
+                const username = document.getElementById('editUsername').value;
+                const email = document.getElementById('editEmail').value;
+                const phone = document.getElementById('editPhone').value;
+                const bio = document.getElementById('editBio').value;
+                
+                // 使用用户管理系统更新用户信息
+                if (window.userManager && window.userManager.isLoggedIn()) {
+                    window.userManager.updateUserInfo({
+                        username: username,
+                        email: email
+                    });
+                    
+                    console.log('用户信息已更新并同步到所有页面');
+                    showToast('资料保存成功！', 'success');
+                } else {
+                    // 降级处理：保存到localStorage
+                    localStorage.setItem('username', username);
+                    localStorage.setItem('email', email);
+                    alert('资料保存成功！');
+                }
+                
+                // 保存其他信息到localStorage（手机号、个人简介暂不通过用户管理系统同步）
+                localStorage.setItem('phone', phone || '未绑定');
+                localStorage.setItem('bio', bio);
+                
+                // 更新显示
+                loadUserInfo();
+                
+                // 切换回查看模式
+                editMode.style.display = 'none';
+                viewMode.style.display = 'block';
+                toggleBtn.innerHTML = '<i class="fas fa-edit"></i> 编辑资料';
+            });
+        }
+        
+        function updateStats() {
+            // 使用用户中心管理系统更新统计
+            if (window.userCenterManager) {
+                window.userCenterManager.updateStats();
+                window.userCenterManager.renderRecentLearning();
+                window.userCenterManager.renderWeeklyLearning();
+            } else {
+                // 降级处理
+                const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+                document.getElementById('favoriteCount').textContent = favorites.length;
+                
+                const learnedRecipes = localStorage.getItem('learnedRecipes') || '12';
+                document.getElementById('learnedRecipes').textContent = learnedRecipes;
+                
+                const studyDays = localStorage.getItem('studyDays') || '15';
+                document.getElementById('studyDays').textContent = studyDays;
+                
+                const achievements = localStorage.getItem('achievements') || '3';
+                document.getElementById('achievements').textContent = achievements;
+            }
+        }
+        
+        // 数据管理函数
+        function syncLearningData() {
+            // 模拟数据同步
+            alert('学习数据同步中...');
+            setTimeout(() => {
+                updateStats();
+                alert('数据同步完成！');
+            }, 1000);
+        }
+        
+        function exportFavorites() {
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            const dataStr = JSON.stringify(favorites, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `我的收藏_${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+        
+        function clearFavorites() {
+            if (confirm('确定要清空所有收藏吗？此操作不可撤销！')) {
+                localStorage.removeItem('favorites');
+                updateStats();
+                alert('收藏已清空！');
+            }
+        }
+        
+        function backupAllData() {
+            const allData = {
+                username: localStorage.getItem('username'),
+                email: localStorage.getItem('email'),
+                phone: localStorage.getItem('phone'),
+                bio: localStorage.getItem('bio'),
+                favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
+                learnedRecipes: localStorage.getItem('learnedRecipes'),
+                studyDays: localStorage.getItem('studyDays'),
+                achievements: localStorage.getItem('achievements'),
+                userAvatar: localStorage.getItem('userAvatar'),
+                backupDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(allData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `炒菜平台数据备份_${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            alert('数据备份已下载！');
+        }
+        
+        // 导航切换功能
+        function initNavigation() {
+            const navItems = document.querySelectorAll('[data-section]');
+            const sections = document.querySelectorAll('.center__section');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetSection = this.getAttribute('data-section');
+                    
+                    // 移除所有活动状态
+                    navItems.forEach(nav => nav.classList.remove('center__nav-item--active'));
+                    sections.forEach(section => section.style.display = 'none');
+                    
+                    // 设置当前项目为活动状态
+                    this.classList.add('center__nav-item--active');
+                    
+                    // 显示对应的内容区域
+                    if (targetSection === 'profile') {
+                        document.getElementById('profileSection').style.display = 'block';
+                    } else if (targetSection === 'learning') {
+                        document.getElementById('learningSection').style.display = 'block';
+                        document.getElementById('achievementsSection').style.display = 'block';
+                        document.getElementById('learningPlanSection').style.display = 'block';
+                    } else if (targetSection === 'security') {
+                        document.getElementById('securitySection').style.display = 'block';
+                    } else if (targetSection === 'notifications') {
+                        document.getElementById('notificationsSection').style.display = 'block';
+                    } else if (targetSection === 'help') {
+                        document.getElementById('helpSection').style.display = 'block';
+                    }
+                });
+            });
+        }
+        
+        // 通知设置功能
+        function initNotificationSettings() {
+            const checkboxes = document.querySelectorAll('#notificationsSection input[type="checkbox"]');
+            
+            // 加载保存的设置
+            checkboxes.forEach(checkbox => {
+                const saved = localStorage.getItem(checkbox.id);
+                if (saved !== null) {
+                    checkbox.checked = saved === 'true';
+                }
+                
+                // 监听变化
+                checkbox.addEventListener('change', function() {
+                    localStorage.setItem(this.id, this.checked);
+                });
+            });
+        }
+        
+        // 安全功能
+        function initSecurityFeatures() {
+            const twoFactorToggle = document.getElementById('twoFactorToggle');
+            if (twoFactorToggle) {
+                const saved = localStorage.getItem('twoFactorEnabled');
+                twoFactorToggle.checked = saved === 'true';
+                
+                twoFactorToggle.addEventListener('change', function() {
+                    localStorage.setItem('twoFactorEnabled', this.checked);
+                    if (this.checked) {
+                        alert('二步验证已启用！');
+                    } else {
+                        alert('二步验证已关闭！');
+                    }
+                });
+            }
+        }
+        
+        // 安全功能函数
+        function showPasswordModal() {
+            const newPassword = prompt('请输入新密码:');
+            if (newPassword && newPassword.length >= 6) {
+                localStorage.setItem('userPassword', newPassword);
+                alert('密码修改成功！');
+            } else if (newPassword) {
+                alert('密码长度至少需要6位字符！');
+            }
+        }
+        
+        function showDevices() {
+            alert('当前登录设备：\n1. Chrome浏览器 (当前设备)\n最后活跃：刚刚');
+        }
+        
+        // 消息中心功能
+        function markAllRead() {
+            const unreadMessages = document.querySelectorAll('.message__item.unread');
+            unreadMessages.forEach(msg => {
+                msg.classList.remove('unread');
+            });
+            alert('所有消息已标记为已读！');
+        }
+        
+        function markMessageRead(button) {
+            const messageItem = button.closest('.message__item');
+            messageItem.classList.remove('unread');
+        }
+        
+        function viewRecommendations() {
+            window.location.href = '../recipes/list.html';
+        }
+        
+        function goToForum() {
+            window.location.href = '../forum/index.html';
+        }
+        
+        // 学习计划功能
+        function setPlan() {
+            const target = prompt('请设置您的学习目标（菜谱数量）:', '20');
+            if (target && !isNaN(target)) {
+                localStorage.setItem('learningTarget', target);
+                alert(`学习目标已设置为 ${target} 个菜谱！`);
+            }
+        }
+        
+        function viewPlanHistory() {
+            alert('学习历史：\n本月已学习12个菜谱\n上月学习8个菜谱\n连续学习15天');
+        }
+        
+        // 反馈表单
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const feedback = this.querySelector('.feedback__textarea').value;
+            if (feedback.trim()) {
+                // 模拟提交反馈
+                alert('感谢您的反馈！我们会认真考虑您的建议。');
+                this.reset();
+            } else {
+                alert('请填写反馈内容！');
+            }
+        });
+    </script>
+    <!-- JavaScript 文件 -->
+    <script src="../../js/utils/storage.js"></script>
+    <script src="../../js/utils/dom.js"></script>
+    <script src="../../js/utils/api.js"></script>
+    <script src="../../js/data/recipes.js"></script>
+    <script src="../../js/data/categories.js"></script>
+    <script src="../../js/utils/user-manager.js"></script>
+    <script src="../../js/utils/user-center-manager.js"></script>
+    <script src="../../js/components/header.js"></script>
+    <script src="../../js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美食论坛 - 炒菜学习平台</title>
+    <meta name="description" content="与厨友们交流烹饪心得，分享美食经验">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    <link rel="shortcut icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    
+    <!-- CSS 样式文件 -->
+    <link rel="stylesheet" href="../../css/base/reset.css">
+    <link rel="stylesheet" href="../../css/base/variables.css">
+    <link rel="stylesheet" href="../../css/base/base.css">
+    <link rel="stylesheet" href="../../css/components/header.css">
+    <link rel="stylesheet" href="../../css/components/footer.css">
+    <link rel="stylesheet" href="../../css/components/card.css">
+    <link rel="stylesheet" href="../../css/components/cool-search.css">
+    <link rel="stylesheet" href="../../css/components/text-animations.css">
+    <link rel="stylesheet" href="../../css/pages/forum-warm.css">
+    <link rel="stylesheet" href="../../css/components/notification.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__logo">
+                    <a href="../../main.html" class="logo">
+                        <img src="../../data/imgs/图标.png" alt="炒菜学习平台" class="logo__icon">
+                        <span class="logo__text">炒菜学习平台</span>
+                    </a>
+                </div>
+                
+                <nav class="header__nav">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="../../main.html" class="nav__link">首页</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../recipes/list.html" class="nav__link">菜谱大全</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../guide/basics.html" class="nav__link">烹饪指南</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="index.html" class="nav__link nav__link--active">美食论坛</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../profile/favorites.html" class="nav__link">我的收藏</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../profile/center.html" class="nav__link">用户中心</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="header__search">
+                    <form class="search__form" id="forumSearchForm">
+                        <input type="text" class="search__input" placeholder="搜索话题..." id="forumSearchInput">
+                        <button type="submit" class="search__btn">
+                            <span class="search__icon">🔍</span>
+                        </button>
+                    </form>
+                </div>
+                
+                <button class="header__menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main">
+        <!-- 论坛头部 -->
+        <section class="forum-header" style="position: relative; overflow: hidden;">
+            <!-- 论坛头部区域内的背景图 -->
+            <div style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                pointer-events: none;
+            ">
+                <img src="../../data/imgs/模块的背景图片/美食论坛.png" 
+                     alt="" 
+                     style="
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 100%;
+                        height: 100%;
+                        opacity: 0.30;
+                        object-fit: cover;
+                     "
+                     onerror="this.style.display='none'">
+            </div>
+            
+            <div class="container" style="position: relative; z-index: 1;">
+                <div class="forum-header__content">
+                    <h1 class="forum-header__title page-title-animated animate-glow">美食论坛</h1>
+                    <p class="forum-header__subtitle page-subtitle-animated">与厨友们分享烹饪心得，交流美食经验</p>
+                    <div class="forum-header__stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalTopics">0</span>
+                            <span class="stat-label">话题数</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalReplies">0</span>
+                            <span class="stat-label">回复数</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="onlineUsers">42</span>
+                            <span class="stat-label">在线用户</span>
+                        </div>
+                    </div>
+                    <div class="forum-header__actions animate-bounce-in animate-delay-8">
+                        <a href="create.html" class="btn btn--primary hover-lift animate-pulse">
+                            <span class="btn__icon">✏️</span>
+                            <span class="btn__text">发布话题</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 论坛板块 -->
+        <section class="forum-categories">
+            <div class="container">
+                <h2 class="section__title animate-on-scroll animate-gradient-text">讨论区</h2>
+                <div class="categories__grid cards-animated" id="forumCategories">
+                    <!-- 板块将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 热门话题 -->
+        <section class="hot-topics">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section__title animate-on-scroll animate-highlight">热门话题</h2>
+                    <a href="topics.html" class="section__more animate-on-scroll hover-scale">查看全部</a>
+                </div>
+                <div class="topics__list list-animated" id="hotTopics">
+                    <!-- 热门话题将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 最新话题 -->
+        <section class="recent-topics">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section__title">最新话题</h2>
+                    <a href="topics.html?sort=newest" class="section__more">查看全部</a>
+                </div>
+                <div class="topics__list" id="recentTopics">
+                    <!-- 最新话题将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 精华内容 -->
+        <section class="featured-topics">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section__title">精华内容</h2>
+                    <a href="topics.html?featured=true" class="section__more">查看全部</a>
+                </div>
+                <div class="topics__grid" id="featuredTopics">
+                    <!-- 精华话题将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 论坛规则 -->
+        <section class="forum-rules">
+            <div class="container">
+                <div class="rules__content">
+                    <h3 class="rules__title">📋 论坛规则</h3>
+                    <div class="rules__list">
+                        <div class="rule-item">
+                            <span class="rule-icon">🤝</span>
+                            <span class="rule-text">友善交流，相互尊重</span>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-icon">🍳</span>
+                            <span class="rule-text">分享真实的烹饪经验</span>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-icon">📸</span>
+                            <span class="rule-text">鼓励上传美食图片</span>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-icon">❌</span>
+                            <span class="rule-text">禁止发布违法违规内容</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">关于我们</h3>
+                    <p class="footer__text">
+                        炒菜学习平台致力于传播中华美食文化，让每个人都能轻松学会做菜。
+                    </p>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">快速链接</h3>
+                    <ul class="footer__links">
+                        <li><a href="../recipes/list.html">菜谱大全</a></li>
+                        <li><a href="../guide/basics.html">烹饪基础</a></li>
+                        <li><a href="index.html">美食论坛</a></li>
+                        <li><a href="../about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">联系方式</h3>
+                    <ul class="footer__contact">
+                        <li>📧 contact@cooking-platform.com</li>
+                        <li>📱 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2024 炒菜学习平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 文件 -->
+    <script src="../../js/utils/global-search.js"></script>
+    <script src="../../js/utils/storage.js"></script>
+    <script src="../../js/utils/dom.js"></script>
+    <script src="../../js/data/forum.js"></script>
+    <script src="../../js/components/header.js"></script>
+    <script src="../../js/components/search.js"></script>
+    <script src="../../js/pages/forum-index.js"></script>
+    <script src="../../js/app.js"></script>
+    
+    <script>
+        // 初始化滚动动效
+        document.addEventListener('DOMContentLoaded', function() {
+            initScrollAnimations();
+        });
+        
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in-view');
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.animate-on-scroll').forEach(element => {
+                observer.observe(element);
+            });
+        }
+    </script>
+</body>
+</html>

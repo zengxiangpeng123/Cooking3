@@ -1,0 +1,316 @@
+/* 极简风格的发布话题页面 */
+
+/* 整体背景 */
+.create-topic {
+    padding: 0;
+    background-color: #ffffff;
+    min-height: calc(100vh - var(--header-height));
+}
+
+/* 简洁的页面头部 */
+.page-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: var(--spacing-xl) 0;
+    text-align: center;
+}
+
+.page-header__content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.page-header__icon {
+    display: none; /* 移除图标 */
+}
+
+.page-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    color: #212529;
+    margin: 0;
+}
+
+.page-description {
+    font-size: var(--font-size-sm);
+    color: #6c757d;
+    margin-top: var(--spacing-sm);
+    margin-bottom: 0;
+}
+
+/* 表单容器 */
+.create-form__container {
+    display: block;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-2xl);
+}
+
+.main-content {
+    width: 100%;
+}
+
+/* 简洁表单 */
+.create-form {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: var(--spacing-2xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* 区块标题 */
+.form-section {
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.form-section:last-of-type {
+    margin-bottom: 0;
+}
+
+.form-section__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: #495057;
+    margin-bottom: var(--spacing-lg);
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+/* 表单组件 */
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-label {
+    display: block;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: #495057;
+    margin-bottom: var(--spacing-sm);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: var(--font-size-base);
+    color: #495057;
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.form-textarea {
+    min-height: 120px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+/* 简洁的编辑器工具栏 */
+.editor-toolbar {
+    display: flex;
+    gap: 4px;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+}
+
+.editor-btn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: #495057;
+    transition: all 0.1s ease;
+}
+
+.editor-btn:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #ffffff;
+}
+
+.editor-content {
+    border-radius: 0 0 6px 6px;
+    border-top: none;
+}
+
+/* 简洁的文件上传 */
+.image-upload {
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    padding: var(--spacing-xl);
+    text-align: center;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+}
+
+.image-upload:hover {
+    border-color: #007bff;
+    background-color: #f0f8ff;
+}
+
+.upload-icon {
+    font-size: 2rem;
+    color: #6c757d;
+    margin-bottom: var(--spacing-md);
+}
+
+.upload-text p {
+    font-size: var(--font-size-base);
+    color: #495057;
+    margin-bottom: var(--spacing-xs);
+}
+
+.upload-text small {
+    color: #6c757d;
+    font-size: var(--font-size-sm);
+}
+
+/* 表单提示 */
+.form-hint {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--spacing-sm);
+    font-size: var(--font-size-xs);
+    color: #6c757d;
+}
+
+.char-count {
+    font-weight: 500;
+}
+
+.required {
+    color: #dc3545;
+}
+
+/* 按钮区域 */
+.form-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid #dee2e6;
+    margin-top: var(--spacing-xl);
+}
+
+/* 侧边栏移到表单下方 */
+.create-sidebar {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-2xl) var(--spacing-2xl);
+}
+
+.sidebar-widget {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.widget__title {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: #495057;
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: var(--spacing-sm);
+}
+
+.tips-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-sm);
+}
+
+.tip-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    color: #6c757d;
+}
+
+.tip-icon {
+    font-size: var(--font-size-base);
+}
+
+/* 热门标签 */
+.popular-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.tag--popular {
+    padding: 4px 8px;
+    background-color: #e9ecef;
+    color: #495057;
+    border-radius: 4px;
+    font-size: var(--font-size-xs);
+    border: 1px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+.tag--popular:hover {
+    background-color: #007bff;
+    color: #ffffff;
+    border-color: #007bff;
+}
+
+/* 标签预览 */
+.tag {
+    padding: 2px 6px;
+    background-color: #e9ecef;
+    color: #495057;
+    border-radius: 3px;
+    font-size: var(--font-size-xs);
+    border: 1px solid #dee2e6;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .create-form__container,
+    .create-sidebar {
+        padding: var(--spacing-lg);
+    }
+    
+    .create-form {
+        padding: var(--spacing-lg);
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .tips-list {
+        grid-template-columns: 1fr;
+    }
+}

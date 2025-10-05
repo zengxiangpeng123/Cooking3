@@ -1,0 +1,390 @@
+/* 文字动效系统 - 让页面更加灵动 */
+
+/* 基础动画类 */
+.animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-slide-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 0.8s ease-out forwards;
+}
+
+.animate-slide-down {
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: slideDown 0.8s ease-out forwards;
+}
+
+.animate-slide-left {
+    opacity: 0;
+    transform: translateX(40px);
+    animation: slideLeft 0.8s ease-out forwards;
+}
+
+.animate-slide-right {
+    opacity: 0;
+    transform: translateX(-40px);
+    animation: slideRight 0.8s ease-out forwards;
+}
+
+.animate-scale-in {
+    opacity: 0;
+    transform: scale(0.8);
+    animation: scaleIn 0.8s ease-out forwards;
+}
+
+/* 打字机效果 */
+.animate-typewriter {
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0 auto;
+    animation: typewriter 2s steps(40, end), blink-caret 0.5s step-end infinite;
+    border-right: 3px solid;
+    width: 0;
+}
+
+.animate-typewriter.start {
+    width: 100%;
+    border-right-color: transparent;
+}
+
+/* 渐变文字效果 */
+.animate-gradient-text {
+    background: linear-gradient(-45deg, #ff6b35, #ff8b5a, #ffab7a, #ff6b35);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s ease infinite;
+}
+
+/* 弹跳效果 */
+.animate-bounce-in {
+    opacity: 0;
+    transform: scale(0.3);
+    animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+/* 闪烁强调效果 */
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 摇摆效果 */
+.animate-wiggle {
+    animation: wiggle 1s ease-in-out infinite;
+}
+
+/* 发光效果 */
+.animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+/* 延迟动画类 */
+.animate-delay-1 { animation-delay: 0.1s; }
+.animate-delay-2 { animation-delay: 0.2s; }
+.animate-delay-3 { animation-delay: 0.3s; }
+.animate-delay-4 { animation-delay: 0.4s; }
+.animate-delay-5 { animation-delay: 0.5s; }
+.animate-delay-6 { animation-delay: 0.6s; }
+.animate-delay-7 { animation-delay: 0.7s; }
+.animate-delay-8 { animation-delay: 0.8s; }
+
+/* 动画关键帧定义 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideLeft {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideRight {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink-caret {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: currentColor;
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes wiggle {
+    0%, 7% {
+        transform: rotateZ(0);
+    }
+    15% {
+        transform: rotateZ(-15deg);
+    }
+    20% {
+        transform: rotateZ(10deg);
+    }
+    25% {
+        transform: rotateZ(-10deg);
+    }
+    30% {
+        transform: rotateZ(6deg);
+    }
+    35% {
+        transform: rotateZ(-4deg);
+    }
+    40%, 100% {
+        transform: rotateZ(0);
+    }
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+    }
+    to {
+        text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+    }
+}
+
+/* 特殊页面标题动效 */
+.page-title-animated {
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: slideDown 1s ease-out 0.3s forwards;
+}
+
+.page-subtitle-animated {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 1s ease-out 0.6s forwards;
+}
+
+/* 卡片组进入动效 */
+.cards-animated .card:nth-child(1) { animation-delay: 0.1s; }
+.cards-animated .card:nth-child(2) { animation-delay: 0.2s; }
+.cards-animated .card:nth-child(3) { animation-delay: 0.3s; }
+.cards-animated .card:nth-child(4) { animation-delay: 0.4s; }
+.cards-animated .card:nth-child(5) { animation-delay: 0.5s; }
+.cards-animated .card:nth-child(6) { animation-delay: 0.6s; }
+
+/* 列表项动效 */
+.list-animated .list-item {
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideRight 0.6s ease-out forwards;
+}
+
+.list-animated .list-item:nth-child(1) { animation-delay: 0.1s; }
+.list-animated .list-item:nth-child(2) { animation-delay: 0.15s; }
+.list-animated .list-item:nth-child(3) { animation-delay: 0.2s; }
+.list-animated .list-item:nth-child(4) { animation-delay: 0.25s; }
+.list-animated .list-item:nth-child(5) { animation-delay: 0.3s; }
+.list-animated .list-item:nth-child(6) { animation-delay: 0.35s; }
+
+/* 鼠标悬停动效 */
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.hover-scale {
+    transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.hover-rotate {
+    transition: transform 0.3s ease;
+}
+
+.hover-rotate:hover {
+    transform: rotate(2deg);
+}
+
+/* 加载动效 */
+.loading-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* 响应式动效控制 */
+@media (max-width: 768px) {
+    /* 移动端简化动效 */
+    .animate-slide-up,
+    .animate-slide-down,
+    .animate-slide-left,
+    .animate-slide-right {
+        animation-duration: 0.5s;
+    }
+    
+    .animate-typewriter {
+        animation-duration: 1.5s;
+    }
+}
+
+/* 用户偏好：减少动效 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 交互式动效触发器 */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+}
+
+.animate-on-scroll.animate-in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 计数器动效 */
+.animate-counter {
+    font-variant-numeric: tabular-nums;
+}
+
+/* 文字高亮动效 */
+.animate-highlight {
+    position: relative;
+    display: inline-block;
+}
+
+.animate-highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6b35, #ff8b5a);
+    animation: highlightExpand 2s ease-out forwards;
+}
+
+@keyframes highlightExpand {
+    to {
+        width: 100%;
+    }
+}

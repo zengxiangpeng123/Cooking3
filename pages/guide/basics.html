@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烹饪基础指南 - 炒菜学习平台</title>
+    <meta name="description" content="学习基础烹饪技巧，掌握火候、时间、用油和调味的秘诀">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../data/imgs/图标.iconfont">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS 样式文件 -->
+    <link rel="stylesheet" href="../../css/base/reset.css">
+    <link rel="stylesheet" href="../../css/base/variables.css">
+    <link rel="stylesheet" href="../../css/base/base.css">
+    <link rel="stylesheet" href="../../css/components/header.css">
+    <link rel="stylesheet" href="../../css/components/footer.css">
+    <link rel="stylesheet" href="../../css/components/card.css">
+    <link rel="stylesheet" href="../../css/components/cool-search.css">
+    <link rel="stylesheet" href="../../css/components/text-animations.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    
+    <style>
+        .guide {
+            padding: 0;
+            background: #f8f9fa;
+            margin-top: 0;
+            padding-top: 70px;
+        }
+        
+        .guide-header {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8b5a 100%);
+            color: white;
+            padding: 60px 0 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 35px;
+            margin-top: -70px;
+            padding-top: 130px;
+        }
+        
+        .guide-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background-image: url('../../data/imgs/模块的背景图片/烹饪基础指南.png');
+            background-size: cover;
+            background-position: center top;
+            opacity: 0.15;
+            z-index: 0;
+        }
+        
+        .guide-header__content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .guide-title {
+            font-size: 3.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .guide-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: white;
+        }
+        
+        /* 四个卡片紧密排列 - 炫酷边框效果 */
+        .guides-grid {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+        
+        .guide-card {
+            width: 280px;
+            height: 380px;
+            perspective: 1000px;
+            cursor: pointer;
+            flex-shrink: 0;
+            position: relative;
+            display: flex;
+            place-content: center;
+            place-items: center;
+            overflow: hidden;
+            border-radius: 20px;
+            background: #07182E;
+        }
+        
+        /* 旋转边框效果 */
+        .guide-card::before {
+            content: '';
+            position: absolute;
+            width: 120px;
+            background-image: linear-gradient(180deg, #ff6b35, #ff8b5a, #ffab7a);
+            height: 130%;
+            animation: rotBGimg 4s linear infinite;
+            transition: all 0.2s linear;
+            z-index: 1;
+        }
+        
+        @keyframes rotBGimg {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .guide-card::after {
+            content: '';
+            position: absolute;
+            background: #f8f9fa;
+            inset: 4px;
+            border-radius: 16px;
+            z-index: 2;
+        }
+        
+        /* 悬停时边框效果加速 */
+        .guide-card:hover::before {
+            background-image: linear-gradient(180deg, #ff4757, #ff6b35, #ffa726);
+            animation: rotBGimg 2s linear infinite;
+        }
+        
+        .guide-card__inner {
+            position: relative;
+            width: calc(100% - 8px);
+            height: calc(100% - 8px);
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            border-radius: 16px;
+            z-index: 3;
+        }
+        
+        .guide-card.flipped .guide-card__inner {
+            transform: rotateY(180deg);
+        }
+        
+        .guide-card__front,
+        .guide-card__back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 16px;
+        }
+        
+        /* 正面：纯图片 */
+        .guide-card__front {
+            background: white;
+            overflow: hidden;
+            z-index: 3;
+        }
+        
+        .guide-card__image {
+            width: calc(100% - 0px);
+            height: calc(100% - 0px);
+            object-fit: cover;
+            border-radius: 16px;
+            transition: transform 0.3s ease;
+        }
+        
+        .guide-card:hover .guide-card__image {
+            transform: scale(1.03);
+        }
+        
+        /* 背面：简洁文字 */
+        .guide-card__back {
+            background: linear-gradient(135deg, #ff6b35, #ff8b5a);
+            color: white;
+            transform: rotateY(180deg);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 3;
+        }
+        
+        .guide-card__title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .guide-card__summary {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            text-align: left;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .guide-card__summary p {
+            margin-bottom: 8px;
+        }
+        
+        .guide-card__summary strong {
+            font-weight: 700;
+        }
+        
+        .expand-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        .expand-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .back-hint {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* 详细内容模态框 */
+        .detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .detail-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .detail-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 40px;
+            margin: 20px;
+            position: relative;
+        }
+        
+        .detail-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .detail-close:hover {
+            color: #ff6b35;
+        }
+        
+        .detail-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .detail-content h1 {
+            color: #ff6b35;
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .detail-content h2 {
+            color: #333;
+            font-size: 1.5rem;
+            margin: 25px 0 15px 0;
+            border-bottom: 2px solid #ff6b35;
+            padding-bottom: 8px;
+        }
+        
+        .detail-content h3 {
+            color: #ff6b35;
+            font-size: 1.2rem;
+            margin: 20px 0 10px 0;
+        }
+        
+        .detail-content p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .detail-content ul {
+            margin: 10px 0 20px 20px;
+        }
+        
+        .detail-content li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+            color: #666;
+        }
+        
+        .detail-content strong {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .guides-grid {
+                gap: 12px;
+                padding: 0 15px;
+            }
+            
+            .guide-card {
+                width: 250px;
+                height: 340px;
+            }
+            
+            .guide-card::before {
+                width: 100px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .guide {
+                padding-top: 60px;
+            }
+            
+            .guide-header {
+                padding: 50px 20px 30px;
+                margin-top: -60px;
+                padding-top: 110px;
+                margin-bottom: 25px;
+            }
+            
+            .guide-title {
+                font-size: 2.5rem;
+            }
+            
+            .guide-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .guides-grid {
+                flex-wrap: wrap;
+                gap: 12px;
+                padding: 0 15px;
+            }
+            
+            .guide-card {
+                width: 180px;
+                height: 240px;
+            }
+            
+            .guide-card::before {
+                width: 80px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .guides-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .guide-card {
+                width: 280px;
+                height: 360px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__logo">
+                    <a href="../../main.html" class="logo">
+                        <img src="../../data/imgs/图标.png" alt="炒菜学习平台" class="logo__icon">
+                        <span class="logo__text">炒菜学习平台</span>
+                    </a>
+                </div>
+                
+                <nav class="header__nav">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="../../main.html" class="nav__link">首页</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../recipes/list.html" class="nav__link">菜谱大全</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="basics.html" class="nav__link nav__link--active">烹饪指南</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../forum/index.html" class="nav__link">美食论坛</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../profile/favorites.html" class="nav__link">我的收藏</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="../profile/center.html" class="nav__link">用户中心</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="header__search">
+                    <form class="search__form" id="searchForm">
+                        <input type="text" class="search__input" placeholder="搜索菜谱或食材..." id="searchInput">
+                        <button type="submit" class="search__btn">
+                            <span class="search__icon">🔍</span>
+                        </button>
+                    </form>
+                </div>
+                
+                <button class="header__menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <main class="guide">
+        <!-- 页面标题 -->
+        <section class="guide-header">
+            <div class="container">
+                <div class="guide-header__content">
+                    <h1 class="guide-title page-title-animated">烹饪基础指南</h1>
+                    <p class="guide-subtitle page-subtitle-animated">
+                        掌握烹饪的核心技巧，从火候控制到调味艺术，让每一道菜都充满专业的味道
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 指南卡片 - 四个紧密排列 -->
+        <section class="guides-section">
+            <div class="container">
+                <div class="guides-grid cards-animated">
+                    <!-- 火候掌握 -->
+                    <div class="guide-card animate-on-scroll hover-lift" data-guide="fire">
+                        <div class="guide-card__inner">
+                            <!-- 正面：纯图片 -->
+                            <div class="guide-card__front">
+                                <img src="../../data/imgs/烹饪基础指南/火候掌握.png" alt="火候掌握" class="guide-card__image">
+                            </div>
+                            <!-- 背面：简洁文字 -->
+                            <div class="guide-card__back">
+                                <h3 class="guide-card__title">🔥 火候掌握</h3>
+                                <div class="guide-card__summary">
+                                    <p><strong>大火爆炒</strong> - 蔬菜脆嫩，锁汁出香</p>
+                                    <p><strong>中火焖煮</strong> - 入味均匀，外酥内嫩</p>
+                                    <p><strong>小火慢炖</strong> - 汤清不糊，温和营养</p>
+                                </div>
+                                <button class="expand-btn" onclick="showDetail('fire')">查看更多详情</button>
+                                <div class="back-hint">
+                                    <i class="fas fa-undo"></i>
+                                    再次点击返回
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+                    <!-- 时间掌控 -->
+                    <div class="guide-card animate-on-scroll hover-lift" data-guide="time">
+                        <div class="guide-card__inner">
+                            <!-- 正面：纯图片 -->
+                            <div class="guide-card__front">
+                                <img src="../../data/imgs/烹饪基础指南/时间掌控.png" alt="时间掌控" class="guide-card__image">
+                        </div>
+                            <!-- 背面：简洁文字 -->
+                            <div class="guide-card__back">
+                                <h3 class="guide-card__title">⏰ 时间掌控</h3>
+                                <div class="guide-card__summary">
+                                    <p><strong>1-3分钟</strong> - 绿叶菜，海鲜类</p>
+                                    <p><strong>5-15分钟</strong> - 肉类，根茎类</p>
+                                    <p><strong>30分钟+</strong> - 炖汤，红烧菜</p>
+                        </div>
+                                <button class="expand-btn" onclick="showDetail('time')">查看更多详情</button>
+                                <div class="back-hint">
+                                    <i class="fas fa-undo"></i>
+                                    再次点击返回
+                </div>
+            </div>
+                        </div>
+                        </div>
+
+                    <!-- 用油技巧 -->
+                    <div class="guide-card animate-on-scroll hover-lift" data-guide="oil">
+                        <div class="guide-card__inner">
+                            <!-- 正面：纯图片 -->
+                            <div class="guide-card__front">
+                                <img src="../../data/imgs/烹饪基础指南/用油技巧.png" alt="用油技巧" class="guide-card__image">
+                        </div>
+                            <!-- 背面：简洁文字 -->
+                            <div class="guide-card__back">
+                                <h3 class="guide-card__title">🫒 用油技巧</h3>
+                                <div class="guide-card__summary">
+                                    <p><strong>3-4成热</strong> - 慢炸坚果</p>
+                                    <p><strong>5-6成热</strong> - 炸肉菜类</p>
+                                    <p><strong>7-8成热</strong> - 爆炒过油</p>
+                        </div>
+                                <button class="expand-btn" onclick="showDetail('oil')">查看更多详情</button>
+                                <div class="back-hint">
+                                    <i class="fas fa-undo"></i>
+                                    再次点击返回
+                </div>
+            </div>
+                        </div>
+                    </div>
+
+                    <!-- 调味顺序 -->
+                    <div class="guide-card animate-on-scroll hover-lift" data-guide="seasoning">
+                        <div class="guide-card__inner">
+                            <!-- 正面：纯图片 -->
+                            <div class="guide-card__front">
+                                <img src="../../data/imgs/烹饪基础指南/调味顺序.png" alt="调味顺序" class="guide-card__image">
+                            </div>
+                            <!-- 背面：简洁文字 -->
+                            <div class="guide-card__back">
+                                <h3 class="guide-card__title">🧂 调味顺序</h3>
+                                <div class="guide-card__summary">
+                                    <p><strong>盐</strong> - 提升本味</p>
+                                    <p><strong>糖</strong> - 增加回甘</p>
+                                    <p><strong>酱油</strong> - 调色调味</p>
+                                    <p><strong>香油</strong> - 提香收尾</p>
+                                </div>
+                                <button class="expand-btn" onclick="showDetail('seasoning')">查看更多详情</button>
+                                <div class="back-hint">
+                                    <i class="fas fa-undo"></i>
+                                    再次点击返回
+                                </div>
+                        </div>
+                        </div>
+                        </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">关于我们</h3>
+                    <p class="footer__text">
+                        炒菜学习平台致力于传播中华美食文化，让每个人都能轻松学会做菜。
+                    </p>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">快速链接</h3>
+                    <ul class="footer__links">
+                        <li><a href="../recipes/list.html">菜谱大全</a></li>
+                        <li><a href="basics.html">烹饪基础</a></li>
+                        <li><a href="../profile/favorites.html">我的收藏</a></li>
+                        <li><a href="../about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">联系方式</h3>
+                    <ul class="footer__contact">
+                        <li>📧 contact@cooking-platform.com</li>
+                        <li>📱 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2024 炒菜学习平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 详细内容模态框 -->
+    <div class="detail-modal" id="detailModal">
+        <div class="detail-content">
+            <button class="detail-close" onclick="closeDetail()">&times;</button>
+            <div id="detailBody"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript 文件 -->
+    <script src="../../js/utils/global-search.js"></script>
+    <script src="../../js/components/header.js"></script>
+    <script>
+        // 烹饪指南页面管理
+        class CookingGuideManager {
+            constructor() {
+                // 恢复完整的详细知识内容
+                this.detailData = {
+                    fire: {
+                        title: '🔥 火候掌握完全指南',
+                        image: '../../data/imgs/烹饪基础指南/火候掌握.png',
+                        content: `
+                            <h2>火候掌握的重要性</h2>
+                            <p>火候是中式烹饪的灵魂，不同的火力能够带来截然不同的口感和味道。掌握火候不仅能让食材保持最佳状态，还能创造出独特的"锅气"，这是中式炒菜的精髓所在。火候的掌握需要长期的实践和感悟，是区分业余和专业厨师的重要标志。</p>
+                            
+                            <h3>大火的运用技巧</h3>
+                            <ul>
+                                <li><strong>爆炒青菜：</strong>大火快炒保持蔬菜的翠绿色泽和脆嫩口感，时间控制在30秒-1分钟，锁住营养不流失</li>
+                                <li><strong>煸炒肉丝：</strong>利用高温快速封住肉质纤维，锁住肉汁，避免出水，保持肉质鲜嫩</li>
+                                <li><strong>制作锅气：</strong>高温与食材摩擦产生特有的香味，这是中式炒菜的独特魅力，家庭燃气炉要预热充分</li>
+                                <li><strong>过油处理：</strong>快速过油定型，保持食材形状和颜色，为后续烹饪做准备</li>
+                                <li><strong>爆炒河粉：</strong>大火爆炒能让河粉不粘不烂，吸收调料香味</li>
+                                <li><strong>注意事项：</strong>使用大火时要勤翻动，准备工作要充分，避免手忙脚乱导致烧焦</li>
+                            </ul>
+                            
+                            <h3>中火的妙用</h3>
+                            <ul>
+                                <li><strong>炖煮汤品：</strong>中火能让食材充分释放营养和香味，汤色清澈不浑浊，营养价值最大化</li>
+                                <li><strong>焖烧菜肴：</strong>适中的火力让调料充分渗透，达到入味均匀的效果，如红烧肉、焖排骨</li>
+                                <li><strong>煎制食材：</strong>外表金黄酥脆，内部保持嫩滑，如煎鱼、煎饺、煎蛋等</li>
+                                <li><strong>炒制酱料：</strong>中火能避免酱料糊底，同时充分炒出香味，如豆瓣酱、甜面酱的炒制</li>
+                                <li><strong>蒸制菜品：</strong>中火蒸制能保证食材均匀受热，不会因火力过大导致夹生</li>
+                                <li><strong>烙制面食：</strong>烙饼、烙馍等需要中火慢烙，确保熟透</li>
+                            </ul>
+                            
+                            <h3>小火的精髓</h3>
+                            <ul>
+                                <li><strong>慢炖浓汤：</strong>小火慢炖能让汤品保持清澈，营养成分不被破坏，汤味更加醇厚</li>
+                                <li><strong>调制酱汁：</strong>避免因温度过高导致的糊底现象，如糖色的熬制</li>
+                                <li><strong>温和加热：</strong>保持食材的原有营养，适合婴幼儿食品制作</li>
+                                <li><strong>收汁入味：</strong>最后阶段用小火收汁，让调料充分附着在食材上</li>
+                                <li><strong>保温加热：</strong>剩菜剩饭的温和加热，避免营养流失</li>
+                                <li><strong>融化处理：</strong>巧克力、黄油等的融化需要小火慢化</li>
+                            </ul>
+                            
+                            <h3>火候转换技巧</h3>
+                            <p>很多经典菜品需要在烹饪过程中变换火候，这是烹饪的高级技巧：</p>
+                            <ul>
+                                <li><strong>先大后小：</strong>如红烧肉，先大火上色出香，再转小火慢炖入味</li>
+                                <li><strong>先小后大：</strong>如炖汤，先小火加热防止蛋白凝固，再大火煮开，最后小火慢炖</li>
+                                <li><strong>交替使用：</strong>如糖醋里脊，需要多次变换火候完成不同步骤</li>
+                                <li><strong>渐进调节：</strong>根据食材状态逐步调整火力大小，考验厨师的经验</li>
+                            </ul>
+                            
+                            <h3>不同锅具的火候掌握</h3>
+                            <ul>
+                                <li><strong>铁锅：</strong>导热快但不均匀，需要勤翻动，适合大火爆炒</li>
+                                <li><strong>不锈钢锅：</strong>导热慢但均匀，适合中小火烹饪，不易糊底</li>
+                                <li><strong>不粘锅：</strong>受热均匀，适合小火和中火，大火会损坏涂层</li>
+                                <li><strong>砂锅：</strong>保温性好，适合小火慢炖，受热缓慢但持久</li>
+                                <li><strong>铸铁锅：</strong>蓄热能力强，适合需要持续高温的烹饪</li>
+                            </ul>
+                            
+                            <h3>火候掌握常见问题</h3>
+                            <ul>
+                                <li><strong>火力不足：</strong>食材出水多，口感不佳，营养流失</li>
+                                <li><strong>火力过大：</strong>外焦内生，营养破坏，容易糊锅</li>
+                                <li><strong>火候不变：</strong>缺乏层次感，口味单一</li>
+                                <li><strong>时机不当：</strong>转换火候的时机把握不准，影响最终效果</li>
+                            </ul>
+                        `
+                    },
+                    time: {
+                        title: '⏰ 时间掌控艺术指南',
+                        image: '../../data/imgs/烹饪基础指南/时间掌控.png',
+                        content: `
+                            <h2>时间控制的艺术</h2>
+                            <p>时间是烹饪中最关键的因素之一，恰到好处的时间控制能让食材达到最佳状态，过短则不熟，过长则老化。掌握时间节奏，是从新手成为大厨的必经之路。时间的掌控不仅需要技巧，更需要耐心和经验的积累。</p>
+                            
+                            <h3>快速烹饪技巧 (1-3分钟)</h3>
+                            <ul>
+                                <li><strong>绿叶蔬菜：</strong>菠菜、小白菜、韭菜、生菜等，30秒-1分钟即可，保持翠绿色泽和脆嫩口感，维生素流失最少</li>
+                                <li><strong>嫩肉片：</strong>里脊肉丝、嫩牛肉片、鸡胸肉丝，1-2分钟，保持嫩滑口感，过长会变老发柴</li>
+                                <li><strong>鸡蛋类：</strong>炒蛋、蛋花汤、蒸蛋羹，快速凝固保持嫩滑，时间过长会变老</li>
+                                <li><strong>海鲜类：</strong>虾仁、扇贝、鱿鱼圈等，时间过长会变老变硬，失去鲜美口感</li>
+                                <li><strong>豆腐类：</strong>嫩豆腐、内酯豆腐快速过一下即可，保持形状不散</li>
+                                <li><strong>关键要点：</strong>预热锅具，所有配料准备充分，动作要快且准确</li>
+                            </ul>
+                            
+                            <h3>中等时间烹饪 (5-15分钟)</h3>
+                            <ul>
+                                <li><strong>普通肉类：</strong>猪肉丝、鸡肉块、牛肉片需要充分加热杀菌，确保食品安全</li>
+                                <li><strong>根茎蔬菜：</strong>土豆、胡萝卜、白萝卜、莲藕需要时间变软，释放甜味</li>
+                                <li><strong>蒸制食品：</strong>蒸蛋、蒸鱼、蒸肉饼需要充分受热，内部完全熟透</li>
+                                <li><strong>汤品初制：</strong>让各种食材初步融合出味，汤汁开始浓郁</li>
+                                <li><strong>煎制食品：</strong>煎饺、锅贴、煎包需要底部金黄，内部熟透</li>
+                                <li><strong>炒制米饭：</strong>炒饭需要充分受热，粒粒分明，吸收调料香味</li>
+                                <li><strong>焖制菜品：</strong>焖饭、焖面需要中等时间让食材充分吸收汤汁</li>
+                            </ul>
+                            
+                            <h3>慢工出细活 (30分钟以上)</h3>
+                            <ul>
+                                <li><strong>炖汤类：</strong>骨头汤、鸡汤、鱼汤需要长时间炖煮出浓郁汤汁，营养充分释放</li>
+                                <li><strong>红烧菜：</strong>红烧肉、红烧鱼、红烧排骨需要时间入味透彻，色泽红亮</li>
+                                <li><strong>煲仔饭：</strong>米饭要完全熟透，还要有锅巴香味，层次丰富</li>
+                                <li><strong>炖肉类：</strong>牛腩、羊肉、猪蹄需要长时间炖至软烂，胶质充分析出</li>
+                                <li><strong>熬粥类：</strong>各种粥品需要时间让米粒充分糊化，口感顺滑</li>
+                                <li><strong>卤制品：</strong>卤蛋、卤肉、卤豆干需要长时间入味，色香味俱全</li>
+                                <li><strong>煲汤类：</strong>老火汤需要2-3小时，汤汁浓白如奶，营养丰富</li>
+                            </ul>
+                            
+                            <h3>时间控制的关键要素</h3>
+                            <ul>
+                                <li><strong>食材大小：</strong>切得越小，受热面积越大，烹饪时间越短；块越大，内部需要更多时间受热</li>
+                                <li><strong>食材性质：</strong>嫩的食材时间短，老的食材时间长；含水量高的时间短，干硬的需要时间长</li>
+                                <li><strong>火力大小：</strong>火力大时间短，但要防止外熟内生；火力小时间长，但受热均匀</li>
+                                <li><strong>锅具材质：</strong>导热好的锅具能缩短烹饪时间，如铜锅、铝锅</li>
+                                <li><strong>环境温度：</strong>冬天需要适当延长时间，夏天可以相应缩短</li>
+                                <li><strong>海拔高度：</strong>高海拔地区水的沸点低，需要延长烹饪时间</li>
+                            </ul>
+                            
+                            <h3>时间掌控实用技巧</h3>
+                            <ul>
+                                <li><strong>预处理：</strong>提前腌制、焯水、过油能显著缩短正式烹饪时间</li>
+                                <li><strong>分批下锅：</strong>不同食材按烹饪时间长短分批下锅，确保同时成熟</li>
+                                <li><strong>余温利用：</strong>关火后利用锅具余温继续加热，节能又不会过熟</li>
+                                <li><strong>试尝判断：</strong>通过品尝判断生熟程度，比单纯看时间更准确</li>
+                                <li><strong>定时提醒：</strong>使用计时器避免因为忙碌忘记时间</li>
+                                <li><strong>观察变化：</strong>通过颜色变化、声音变化、香气变化判断烹饪进度</li>
+                                <li><strong>经验积累：</strong>记录成功的时间，形成自己的烹饪时间表</li>
+                            </ul>
+                        `
+                    },
+                    oil: {
+                        title: '🫒 用油技巧完全手册',
+                        image: '../../data/imgs/烹饪基础指南/用油技巧.png',
+                        content: `
+                            <h2>用油的智慧</h2>
+                            <p>油是烹饪的重要媒介，不仅能传导热量，还能带来独特的香味和口感。合理用油不仅让菜品更美味，还能保证健康营养。掌握用油技巧，是烹饪进阶的重要一环，也是健康饮食的基础。</p>
+                            
+                            <h3>油温判断的绝技</h3>
+                            <ul>
+                                <li><strong>3-4成热 (90-120°C)：</strong>
+                                    <ul>
+                                        <li><strong>现象：</strong>油面平静，无泡沫，筷子入油无气泡产生</li>
+                                        <li><strong>适用：</strong>炸花生米、制作油酥、低温慢炸坚果类</li>
+                                        <li><strong>效果：</strong>内外均匀受热，不易外糊内生，保持食材完整形状</li>
+                                        <li><strong>时间：</strong>需要较长时间，但效果最好，营养保存最完整</li>
+                                    </ul>
+                                </li>
+                                <li><strong>5-6成热 (150-180°C)：</strong>
+                                    <ul>
+                                        <li><strong>现象：</strong>油面微动，筷子周围有小气泡缓慢上升</li>
+                                        <li><strong>适用：</strong>炸肉类、鱼类、蔬菜类，最常用的油炸温度</li>
+                                        <li><strong>效果：</strong>外酥内嫩，色泽金黄诱人，口感层次丰富</li>
+                                        <li><strong>优势：</strong>大多数油炸食品的理想温度，成功率最高</li>
+                                    </ul>
+                                </li>
+                                <li><strong>7-8成热 (210-240°C)：</strong>
+                                    <ul>
+                                        <li><strong>现象：</strong>油面翻动，有轻微烟雾，筷子周围气泡密集快速上升</li>
+                                        <li><strong>适用：</strong>爆炒、过油、制作锅气，追求特殊香味时使用</li>
+                                        <li><strong>效果：</strong>快速定型，锁住水分，形成焦糖化反应</li>
+                                        <li><strong>注意：</strong>容易溅油，注意安全防护，时间要控制得很短</li>
+                                    </ul>
+                                </li>
+                                <li><strong>9成热以上：</strong>
+                                    <ul>
+                                        <li><strong>现象：</strong>油烟明显，温度过高，有刺鼻气味</li>
+                                        <li><strong>风险：</strong>容易产生有害物质，破坏营养成分</li>
+                                        <li><strong>应对：</strong>立即降低火力或关火稍候，避免继续加热</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            
+                            <h3>不同油品的特性和最佳用途</h3>
+                            <ul>
+                                <li><strong>花生油：</strong>
+                                    <ul>
+                                        <li><strong>特点：</strong>香味浓郁，烟点高(232°C)，稳定性好，不易变质</li>
+                                        <li><strong>适用：</strong>炒菜、煎炸、红烧等高温烹饪，是中式烹饪的首选</li>
+                                        <li><strong>营养：</strong>富含维生素E和不饱和脂肪酸，有益心血管健康</li>
+                                        <li><strong>注意：</strong>花生过敏者禁用，价格相对较高</li>
+                                    </ul>
+                                </li>
+                                <li><strong>橄榄油：</strong>
+                                    <ul>
+                                        <li><strong>特点：</strong>清香淡雅，营养丰富，但烟点较低(160-210°C)</li>
+                                        <li><strong>适用：</strong>凉拌、低温烹饪、西式料理，直接食用效果最佳</li>
+                                        <li><strong>等级：</strong>特级初榨橄榄油最好，适合直接食用和凉拌</li>
+                                        <li><strong>注意：</strong>不适合高温烹饪，容易产生有害物质和苦味</li>
+                                    </ul>
+                                </li>
+                                <li><strong>菜籽油：</strong>
+                                    <ul>
+                                        <li><strong>特点：</strong>色泽金黄，味道清淡，烟点适中(220°C)</li>
+                                        <li><strong>适用：</strong>各种烹饪方式，性价比高，日常使用首选</li>
+                                        <li><strong>营养：</strong>含有丰富的维生素E和不饱和脂肪酸</li>
+                                        <li><strong>优点：</strong>价格亲民，适合大量使用，无特殊禁忌</li>
+                                    </ul>
+                                </li>
+                                <li><strong>芝麻油(香油)：</strong>
+                                    <ul>
+                                        <li><strong>特点：</strong>香味独特浓郁，营养价值极高，价格较贵</li>
+                                        <li><strong>适用：</strong>调味、提香、凉拌，不适合高温烹饪</li>
+                                        <li><strong>用法：</strong>一般在菜品最后加入提香，起到画龙点睛的作用</li>
+                                        <li><strong>保存：</strong>密封避光保存，开封后尽快使用，防止香味流失</li>
+                                    </ul>
+                                </li>
+                                <li><strong>玉米油：</strong>
+                                    <ul>
+                                        <li><strong>特点：</strong>清淡无味，烟点较高(232°C)，颜色浅</li>
+                                        <li><strong>适用：</strong>各种烹饪方式，特别适合烘焙和西点制作</li>
+                                        <li><strong>营养：</strong>富含维生素E和植物甾醇，有助降低胆固醇</li>
+                                    </ul>
+                                </li>
+                                <li><strong>大豆油：</strong>
+                                    <ul>
+                                        <li><strong>特点：</strong>价格便宜，营养丰富，但豆腥味较重</li>
+                                        <li><strong>适用：</strong>适合各种烹饪，但需要充分加热去除豆腥味</li>
+                                        <li><strong>处理：</strong>使用前可以加热去除生豆味</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            
+                            <h3>用油量的科学控制</h3>
+                            <p><strong>炒菜用油量参考：</strong></p>
+                            <ul>
+                                <li><strong>一般炒菜：</strong>15-20ml (约1汤勺)，够润锅和食材即可</li>
+                                <li><strong>爆炒类：</strong>20-25ml，需要更多油保持高温和润滑</li>
+                                <li><strong>清炒蔬菜：</strong>10-15ml，蔬菜本身含水分</li>
+                                <li><strong>炒蛋类：</strong>稍多一些，约20ml，防止粘锅</li>
+                                <li><strong>炒河粉：</strong>25-30ml，需要较多油润滑防粘</li>
+                                <li><strong>炒年糕：</strong>20-25ml，防止粘锅和糊底</li>
+                            </ul>
+                            
+                            <p><strong>煎制用油量参考：</strong></p>
+                            <ul>
+                                <li><strong>煎鱼：</strong>10-15ml，薄薄一层即可，多了容易溅油</li>
+                                <li><strong>煎饺：</strong>5-10ml，防粘即可，过多影响底部酥脆</li>
+                                <li><strong>煎蛋：</strong>8-12ml，保证不粘锅即可</li>
+                                <li><strong>煎牛排：</strong>15-20ml，需要高温密封肉汁</li>
+                                <li><strong>煎饼：</strong>很少量，刷一层即可</li>
+                            </ul>
+                            
+                            <p><strong>油炸用油量参考：</strong></p>
+                            <ul>
+                                <li><strong>深炸：</strong>油量要能完全淹没食材，确保受热均匀</li>
+                                <li><strong>浅炸：</strong>油量达到食材高度的一半，适合较大的食材</li>
+                                <li><strong>过油：</strong>少量多次，快速过一下定型上色</li>
+                                <li><strong>复炸：</strong>第一次低温定型，第二次高温上色酥脆</li>
+                            </ul>
+                            
+                            <h3>健康用油指导原则</h3>
+                            <ul>
+                                <li><strong>控制总量：</strong>每人每天用油量不超过25-30g，约2.5-3汤勺</li>
+                                <li><strong>多样化选择：</strong>不同油品轮换使用，营养更均衡，避免单一</li>
+                                <li><strong>避免反复使用：</strong>油炸过的油不要反复使用超过3次，会产生有害物质</li>
+                                <li><strong>低温保存：</strong>开封后的油要密封，放在阴凉干燥处，避免光照</li>
+                                <li><strong>观察油色：</strong>油色发黑、粘稠或有异味要及时更换</li>
+                                <li><strong>控制温度：</strong>避免油温过高产生有害物质，影响健康</li>
+                                <li><strong>选择时机：</strong>根据烹饪方式选择合适的油品，不要一油到底</li>
+                            </ul>
+                            
+                            <h3>用油常见误区解析</h3>
+                            <ul>
+                                <li><strong>误区一：</strong>油冒烟才下菜 - 实际上冒烟表示温度过高，营养流失，有害物质产生</li>
+                                <li><strong>误区二：</strong>用油越多越香 - 过量用油不仅不健康，还会掩盖食材本味</li>
+                                <li><strong>误区三：</strong>所有菜都用一种油 - 应该根据烹饪方式和食材特点选择合适的油</li>
+                                <li><strong>误区四：</strong>油炸油可以无限使用 - 反复加热会产生有害物质，影响健康</li>
+                                <li><strong>误区五：</strong>贵油就是好油 - 应该根据用途选择，不是价格越高越适合</li>
+                                <li><strong>误区六：</strong>植物油比动物油健康 - 要看具体油品和使用方式</li>
+                            </ul>
+                        `
+                    },
+                    seasoning: {
+                        title: '🧂 调味顺序黄金法则',
+                        image: '../../data/imgs/烹饪基础指南/调味顺序.png',
+                        content: `
+                            <h2>调味的艺术与科学</h2>
+                            <p>调味不仅是为了增加味道，更是一门精深的艺术。正确的调味顺序能让各种调料发挥最大的效果，错误的顺序则可能让所有努力功亏一篑。掌握调味法则，是成为优秀厨师的必备技能，也是中华烹饪文化的精髓体现。</p>
+                            
+                            <h3>经典调味顺序详解</h3>
+                            <ol>
+                                <li><strong>盐 - 味道的基础</strong>
+                                    <ul>
+                                        <li><strong>作用：</strong>提升食材本身的鲜味，帮助其他调料更好地渗透进食材内部</li>
+                                        <li><strong>时机：</strong>一般在食材半熟时加入，过早会影响食材质地</li>
+                                        <li><strong>注意：</strong>盐能让蛋白质凝固，过早放入会影响肉质嫩度</li>
+                                        <li><strong>例外：</strong>腌制时盐要最先放，炖汤时盐要最后放保持汤色清澈</li>
+                                        <li><strong>用量：</strong>宁少勿多，可以后续调整，过咸难以挽救</li>
+                                    </ul>
+                                </li>
+                                <li><strong>糖 - 增加层次感</strong>
+                                    <ul>
+                                        <li><strong>作用：</strong>增加回甘，平衡酸味和辣味，促进食材上色</li>
+                                        <li><strong>时机：</strong>在盐之后，酱油之前，让糖充分融化</li>
+                                        <li><strong>技巧：</strong>炒糖色时要用小火，糖融化起泡变色即可</li>
+                                        <li><strong>搭配：</strong>糖醋菜品中，糖要比醋先放，避免酸味过重</li>
+                                        <li><strong>选择：</strong>白糖提甜，冰糖增亮增稠，红糖增色增香</li>
+                                    </ul>
+                                </li>
+                                <li><strong>酱油 - 调色调味</strong>
+                                    <ul>
+                                        <li><strong>生抽：</strong>提鲜调味为主，颜色较浅，咸味较重</li>
+                                        <li><strong>老抽：</strong>上色用，颜色较深，咸味较淡，增加色泽</li>
+                                        <li><strong>时机：</strong>食材基本成熟后加入，避免高温破坏鲜味</li>
+                                        <li><strong>技巧：</strong>沿锅边倒入，让酱油受热均匀，香味更浓</li>
+                                        <li><strong>比例：</strong>一般生抽:老抽 = 3:1，根据菜品调整</li>
+                                    </ul>
+                                </li>
+                                <li><strong>醋 - 去腥增香</strong>
+                                    <ul>
+                                        <li><strong>作用：</strong>去腥味，增加酸香，帮助钙质析出，软化食材纤维</li>
+                                        <li><strong>时机：</strong>高温时加入，挥发性更好，去腥效果更佳</li>
+                                        <li><strong>种类：</strong>白醋去腥，香醋调味，陈醋增香，米醋温和</li>
+                                        <li><strong>技巧：</strong>做鱼时可以早一些放，去腥效果更好</li>
+                                        <li><strong>用量：</strong>少量即可，过多会过酸，掩盖其他味道</li>
+                                    </ul>
+                                </li>
+                                <li><strong>香油/麻油 - 提香收尾</strong>
+                                    <ul>
+                                        <li><strong>作用：</strong>增加香味，让菜品更有光泽，提升整体层次</li>
+                                        <li><strong>时机：</strong>关火前最后加入或关火后加入</li>
+                                        <li><strong>原理：</strong>高温会破坏香油的香味成分，降低香气浓度</li>
+                                        <li><strong>用量：</strong>几滴即可，不宜过多，过多会油腻</li>
+                                        <li><strong>效果：</strong>画龙点睛，提升整道菜的香气层次</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                            
+                            <h3>特殊菜品的调味技巧</h3>
+                            <ul>
+                                <li><strong>红烧菜系：</strong>
+                                    <ul>
+                                        <li><strong>顺序：</strong>先炒糖色，再放生抽老抽调色，最后用盐调味</li>
+                                        <li><strong>技巧：</strong>糖色是红烧菜的灵魂，决定菜品的色泽和味道层次</li>
+                                        <li><strong>火候：</strong>炒糖色用小火，放酱油用中火，收汁用小火</li>
+                                    </ul>
+                                </li>
+                                <li><strong>糖醋菜系：</strong>
+                                    <ul>
+                                        <li><strong>顺序：</strong>先放糖，再放醋，最后调盐平衡</li>
+                                        <li><strong>比例：</strong>糖醋比例一般为1:1或2:1，根据个人口味调整</li>
+                                        <li><strong>技巧：</strong>醋要在高温时放入，挥发掉刺激性，保留酸香</li>
+                                    </ul>
+                                </li>
+                                <li><strong>麻辣菜系：</strong>
+                                    <ul>
+                                        <li><strong>顺序：</strong>先炸花椒出香，再放辣椒，最后调其他味</li>
+                                        <li><strong>技巧：</strong>花椒要小火慢炸，变色即可捞出，保持麻味</li>
+                                        <li><strong>搭配：</strong>麻辣要平衡，不能只有辣没有麻，层次要丰富</li>
+                                    </ul>
+                                </li>
+                                <li><strong>清汤菜系：</strong>
+                                    <ul>
+                                        <li><strong>顺序：</strong>盐要最后放，防止蛋白质凝固影响汤色清澈</li>
+                                        <li><strong>技巧：</strong>可以先用少量盐调味，最后再次精确调整</li>
+                                        <li><strong>要点：</strong>保持汤色清澈透明是清汤类菜品的精髓</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            
+                            <h3>调味的高级技巧</h3>
+                            <ul>
+                                <li><strong>复合调味法：</strong>
+                                    <ul>
+                                        <li><strong>方法：</strong>提前调制调味汁，确保味道均匀协调</li>
+                                        <li><strong>常用组合：</strong>蒜蓉汁、糖醋汁、红烧汁、鱼香汁、宫保汁等</li>
+                                        <li><strong>优点：</strong>避免烹饪时手忙脚乱，确保调味准确无误</li>
+                                    </ul>
+                                </li>
+                                <li><strong>分层调味法：</strong>
+                                    <ul>
+                                        <li><strong>方法：</strong>腌制时调一次味，烹饪中调一次味</li>
+                                        <li><strong>效果：</strong>让食材内外都有层次丰富的味道</li>
+                                        <li><strong>应用：</strong>特别适合肉类菜品，味道更加立体饱满</li>
+                                    </ul>
+                                </li>
+                                <li><strong>对比调味法：</strong>
+                                    <ul>
+                                        <li><strong>甜咸对比：</strong>甜中带咸，咸中带甜，层次更丰富</li>
+                                        <li><strong>酸甜对比：</strong>酸甜平衡，突出主要口味</li>
+                                        <li><strong>麻辣对比：</strong>麻味衬托辣味，辣味突出麻味</li>
+                                        <li><strong>原理：</strong>用对比味来衬托和突出主要味道</li>
+                                    </ul>
+                                </li>
+                                <li><strong>温度调味法：</strong>
+                                    <ul>
+                                        <li><strong>考虑因素：</strong>温度对人的味觉感受有很大影响</li>
+                                        <li><strong>热菜调味：</strong>要比冷菜稍重一些，因为高温会减弱味觉敏感度</li>
+                                        <li><strong>冷菜调味：</strong>冷却后味道会变淡，要提前考虑这个因素</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            
+                            <h3>调味问题的解决方案</h3>
+                            <ul>
+                                <li><strong>太咸了：</strong>加糖中和，加醋提鲜，加蛋清或豆腐稀释</li>
+                                <li><strong>太淡了：</strong>少量多次加盐，边尝边调，不要一次性加太多</li>
+                                <li><strong>太酸了：</strong>加糖平衡，或加少许小苏打中和酸性</li>
+                                <li><strong>腥味重：</strong>增加姜蒜用量，多放料酒，适量增加醋</li>
+                                <li><strong>颜色太深：</strong>下次减少老抽用量，增加生抽，或用冰糖调色</li>
+                                <li><strong>味道单一：</strong>尝试复合调味，增加调料种类和层次</li>
+                                <li><strong>口感粗糙：</strong>加入香菜、葱花等提升香气和口感层次</li>
+                            </ul>
+                            
+                            <h3>八大菜系调味特色</h3>
+                            <ul>
+                                <li><strong>川菜调味：</strong>一菜一格，百菜百味，注重复合味型，麻辣鲜香</li>
+                                <li><strong>粤菜调味：</strong>清淡鲜美，突出食材本味，调味精细不重</li>
+                                <li><strong>湘菜调味：</strong>酸辣鲜香，重油重色，口味浓郁</li>
+                                <li><strong>鲁菜调味：</strong>咸鲜为主，突出原汁原味，调味醇厚</li>
+                                <li><strong>苏菜调味：</strong>甜淡适中，南甜北咸，口味清雅</li>
+                                <li><strong>闽菜调味：</strong>鲜美清淡，注重汤汁，善用海鲜调味</li>
+                                <li><strong>浙菜调味：</strong>清淡鲜嫩，注重原汁原味，调味精细</li>
+                                <li><strong>徽菜调味：</strong>重色重油，口味醇厚，善用火腿调味</li>
+                            </ul>
+                        `
+                    }
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.bindEvents();
+            }
+            
+            bindEvents() {
+                // 卡片翻转事件
+                document.querySelectorAll('.guide-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        // 如果点击的是"查看更多"按钮，不触发翻转
+                        if (e.target.classList.contains('expand-btn')) {
+                            e.stopPropagation();
+                            return;
+                        }
+                        card.classList.toggle('flipped');
+                    });
+                });
+                
+                // 模态框关闭事件
+                document.getElementById('detailModal').addEventListener('click', (e) => {
+                    if (e.target.id === 'detailModal') {
+                        this.closeDetail();
+                    }
+                });
+            }
+            
+            showDetail(guideType) {
+                const data = this.detailData[guideType];
+                if (!data) return;
+                
+                const modal = document.getElementById('detailModal');
+                const body = document.getElementById('detailBody');
+                
+                body.innerHTML = `
+                    <img src="${data.image}" alt="${data.title}" class="detail-image">
+                    <h1>${data.title}</h1>
+                    ${data.content}
+                `;
+                
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            closeDetail() {
+                const modal = document.getElementById('detailModal');
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        // 全局函数
+        function showDetail(guideType) {
+            window.cookingGuideManager.showDetail(guideType);
+        }
+        
+        function closeDetail() {
+            window.cookingGuideManager.closeDetail();
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            window.cookingGuideManager = new CookingGuideManager();
+            
+            // 初始化滚动动效
+            initScrollAnimations();
+        });
+        
+        // 滚动动效初始化
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in-view');
+                    }
+                });
+            }, observerOptions);
+            
+            // 观察所有需要动效的元素
+            document.querySelectorAll('.animate-on-scroll').forEach(element => {
+                observer.observe(element);
+            });
+        }
+    </script>
+</body>
+</html>

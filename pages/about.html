@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 - 炒菜学习平台</title>
+    <meta name="description" content="了解炒菜学习平台的使命、愿景和团队">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../data/imgs/图标.iconfont">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS 样式文件 -->
+    <link rel="stylesheet" href="../css/base/reset.css">
+    <link rel="stylesheet" href="../css/base/variables.css">
+    <link rel="stylesheet" href="../css/base/base.css">
+    <link rel="stylesheet" href="../css/components/header.css">
+    <link rel="stylesheet" href="../css/components/footer.css">
+    <link rel="stylesheet" href="../css/components/cool-search.css">
+    <link rel="stylesheet" href="../css/components/text-animations.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    
+    <style>
+        .about {
+            padding: 120px 0 80px;
+            background: #f8f9fa;
+        }
+        
+        .about-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .about-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .about-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .about-section {
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .section-icon {
+            font-size: 2.5rem;
+            color: #ff6b35;
+        }
+        
+        .section-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature-item {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: #ff6b35;
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .feature-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .stats-section {
+            background: linear-gradient(135deg, #ff6b35, #ff8b5a);
+            color: white;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+        
+        .stat-item {
+            padding: 20px;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .team-section {
+            text-align: center;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .team-member {
+            background: #f8f9fa;
+            padding: 40px 30px;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+        }
+        
+        .member-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b35, #ff8b5a);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .member-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .member-role {
+            color: #ff6b35;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .member-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .about {
+                padding: 100px 0 60px;
+            }
+            
+            .about-title {
+                font-size: 2.5rem;
+            }
+            
+            .about-section {
+                padding: 40px 30px;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .features-grid,
+            .team-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__logo">
+                    <a href="../main.html" class="logo">
+                        <img src="../data/imgs/图标.png" alt="炒菜学习平台" class="logo__icon">
+                        <span class="logo__text">炒菜学习平台</span>
+                    </a>
+                </div>
+                
+                <nav class="header__nav">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="../main.html" class="nav__link">首页</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="recipes/list.html" class="nav__link">菜谱大全</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="guide/basics.html" class="nav__link">烹饪指南</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="forum/index.html" class="nav__link">美食论坛</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="profile/favorites.html" class="nav__link">我的收藏</a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="profile/center.html" class="nav__link">用户中心</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <button class="header__menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <main class="about">
+        <div class="container">
+            <!-- 页面标题 -->
+            <div class="about-header">
+                <h1 class="about-title page-title-animated animate-typewriter">关于我们</h1>
+                <p class="about-subtitle page-subtitle-animated">
+                    炒菜学习平台致力于传播中华美食文化，让每个人都能轻松掌握烹饪技巧，享受下厨的乐趣。
+                </p>
+            </div>
+
+            <!-- 我们的使命 -->
+            <div class="about-section animate-on-scroll">
+                <h2 class="section-title animate-gradient-text">
+                    <i class="section-icon fas fa-bullseye animate-wiggle"></i>
+                    我们的使命
+                </h2>
+                <div class="section-content">
+                    <p>
+                        在快节奏的现代生活中，很多人失去了下厨的习惯和技能。我们相信，烹饪不仅是生存的必需技能，
+                        更是连接家人感情、传承文化的重要纽带。炒菜学习平台的使命就是让烹饪变得简单、有趣，
+                        让每个人都能轻松掌握美味佳肴的制作方法。
+                    </p>
+                    <p>
+                        我们希望通过专业的教学内容、互动的学习方式，帮助用户从厨房小白成长为烹饪达人，
+                        让中华美食文化在新时代焕发新的活力。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 我们的特色 -->
+            <div class="about-section animate-on-scroll">
+                <h2 class="section-title animate-glow">
+                    <i class="section-icon fas fa-star animate-pulse"></i>
+                    我们的特色
+                </h2>
+                <div class="features-grid cards-animated">
+                    <div class="feature-item">
+                        <div class="feature-icon">📚</div>
+                        <h3 class="feature-title">丰富的菜谱库</h3>
+                        <p class="feature-desc">
+                            涵盖八大菜系的经典菜谱，从家常菜到宴客菜，从简单到复杂，应有尽有。
+                        </p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">👨‍🍳</div>
+                        <h3 class="feature-title">专业的指导</h3>
+                        <p class="feature-desc">
+                            资深厨师亲自指导，详细的步骤说明，让初学者也能轻松上手。
+                        </p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💬</div>
+                        <h3 class="feature-title">互动交流</h3>
+                        <p class="feature-desc">
+                            活跃的社区氛围，与同样热爱烹饪的朋友分享经验，共同进步。
+                        </p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📱</div>
+                        <h3 class="feature-title">便捷体验</h3>
+                        <p class="feature-desc">
+                            简洁的界面设计，流畅的操作体验，随时随地学习烹饪技巧。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 平台数据 -->
+            <div class="about-section stats-section">
+                <h2 class="section-title">
+                    <i class="section-icon fas fa-chart-line"></i>
+                    平台数据
+                </h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">1000+</div>
+                        <div class="stat-label">精选菜谱</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50,000+</div>
+                        <div class="stat-label">注册用户</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100,000+</div>
+                        <div class="stat-label">学习次数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">用户满意度</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 团队介绍 -->
+            <div class="about-section team-section">
+                <h2 class="section-title">
+                    <i class="section-icon fas fa-users"></i>
+                    我们的团队
+                </h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-avatar">👨‍💼</div>
+                        <h3 class="member-name">张明</h3>
+                        <p class="member-role">产品负责人</p>
+                        <p class="member-desc">10年互联网产品经验，热爱美食，致力于打造最好的烹饪学习平台。</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">👨‍🍳</div>
+                        <h3 class="member-name">李师傅</h3>
+                        <p class="member-role">首席烹饪顾问</p>
+                        <p class="member-desc">30年烹饪经验，曾任知名酒店主厨，精通各大菜系制作技艺。</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">👩‍💻</div>
+                        <h3 class="member-name">王小雨</h3>
+                        <p class="member-role">技术负责人</p>
+                        <p class="member-desc">资深前端工程师，注重用户体验，让技术为美食服务。</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">🎨</div>
+                        <h3 class="member-name">陈设计</h3>
+                        <p class="member-role">UI/UX设计师</p>
+                        <p class="member-desc">5年设计经验，擅长将复杂的烹饪过程用简洁美观的方式呈现。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 联系我们 -->
+            <div class="about-section">
+                <h2 class="section-title">
+                    <i class="section-icon fas fa-envelope"></i>
+                    联系我们
+                </h2>
+                <div class="section-content">
+                    <p>如果您有任何问题、建议或合作意向，欢迎随时联系我们：</p>
+                    <div style="margin-top: 30px; font-size: 1.1rem;">
+                        <p><strong>📧 邮箱：</strong>contact@cooking-platform.com</p>
+                        <p><strong>📱 电话：</strong>400-123-4567</p>
+                        <p><strong>🏢 地址：</strong>北京市朝阳区烹饪艺术大厦</p>
+                        <p><strong>⏰ 工作时间：</strong>周一至周日 9:00-21:00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">关于我们</h3>
+                    <p class="footer__text">
+                        炒菜学习平台致力于传播中华美食文化，让每个人都能轻松学会做菜。
+                    </p>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">快速链接</h3>
+                    <ul class="footer__links">
+                        <li><a href="recipes/list.html">菜谱大全</a></li>
+                        <li><a href="guide/basics.html">烹饪基础</a></li>
+                        <li><a href="profile/favorites.html">我的收藏</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h3 class="footer__title">联系方式</h3>
+                    <ul class="footer__contact">
+                        <li>📧 contact@cooking-platform.com</li>
+                        <li>📱 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2024 炒菜学习平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 文件 -->
+    <script src="../js/utils/global-search.js"></script>
+    <script src="../js/components/header.js"></script>
+    
+    <script>
+        // 打字机效果初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            const typewriter = document.querySelector('.animate-typewriter');
+            if (typewriter) {
+                setTimeout(() => {
+                    typewriter.classList.add('start');
+                }, 500);
+            }
+            
+            initScrollAnimations();
+        });
+        
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in-view');
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.animate-on-scroll').forEach(element => {
+                observer.observe(element);
+            });
+        }
+    </script>
+</body>
+</html>
